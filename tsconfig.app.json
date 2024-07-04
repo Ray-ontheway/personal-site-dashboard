@@ -22,7 +22,23 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    "declaration": true,
+
+    /* alias */
+    "baseUrl": "./",
+    "paths": {
+      /* TODO pinia在定义store时,没有显示声明类型，vscode爆红，使用这个之后能解决，但是不知道会不会有副作用，先记录一下 */
+      "@vue/shared": ["./node_modules/@vue/shared"],
+      "@/*": ["./src/*"],
+      "@store/*": ["./src/store/*"],
+      "@assets/*": ["./src/assets/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "#/*": ["./types/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@styles/*": ["./src/styles/*"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "src/**/*.jsx"]
 }

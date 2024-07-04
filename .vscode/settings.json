@@ -1,6 +1,9 @@
 {
   "workbench.sideBar.location": "right",
   "editor.tabSize": 2,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "never"
+  },
 
   //
   "explorer.fileNesting.enabled": true,
@@ -10,5 +13,6 @@
     "package.json": "pnpm-lock.yaml,LICENSE,README*",
     "tsconfig.json": "tsconfig.*",
     "eslint.config.js": "prettier.config.js,.stylelintrc.json,.prettierignore,.stylelintignore"
-  }
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
