@@ -1,0 +1,14 @@
+{
+  "workbench.sideBar.location": "right",
+  "editor.tabSize": 2,
+
+  //
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "*.env": "$(capture).env.*",
+    "package.json": "pnpm-lock.yaml,LICENSE,README*",
+    "tsconfig.json": "tsconfig.*",
+    "eslint.config.js": "prettier.config.js,.stylelintrc.json,.prettierignore,.stylelintignore"
+  }
+}
