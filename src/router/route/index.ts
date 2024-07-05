@@ -1,4 +1,5 @@
 import { AppRouteRecordRaw } from '@router/types'
+import { RouteConstantEnum } from '@/enums/routeConstantEnum.ts'
 
 const routes: AppRouteRecordRaw[] = [
   {
@@ -10,14 +11,22 @@ const routes: AppRouteRecordRaw[] = [
   {
     name: 'Dashboard',
     path: '/dashboard',
-    meta: { title: 'Dashboard', iconName: 'dashboard', roles: ['admin'] },
+    meta: { title: RouteConstantEnum.DASHBOARD, iconName: 'dashboard' },
     component: () => import('@pages/dashboard.tsx'),
   },
   {
-    name: 'UserManager',
-    path: '/user-manager',
-    meta: { title: 'User Manager', iconName: 'user', roles: ['admin'] },
-    component: () => import('@pages/userManager.tsx'),
+    name: 'Setting',
+    path: '/sys',
+    meta: { title: RouteConstantEnum.SYSTEM_MANAGEMENT, iconName: 'settings' },
+    redirect: '/sys/user',
+    children: [
+      {
+        name: 'UserManager',
+        path: '/sys/user',
+        meta: { title: RouteConstantEnum.USER_MANAGEMENT, iconName: 'user' },
+        component: () => import('@pages/userManager.tsx'),
+      },
+    ],
   },
 ]
 

@@ -18,15 +18,12 @@ import RSider from './sider'
 </script>
 
 <style lang="scss">
-* {
-  font-size: 1.6em;
-}
-
 .header {
-  background-color: #409eff;
   color: #fff;
   text-align: center;
+  background-color: #409eff;
 }
+
 .container {
   min-height: 100vh;
 }
