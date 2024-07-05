@@ -13,6 +13,5 @@
     "package.json": "pnpm-lock.yaml,LICENSE,README*",
     "tsconfig.json": "tsconfig.*",
     "eslint.config.js": "prettier.config.js,.stylelintrc.json,.prettierignore,.stylelintignore"
-  },
-  "typescript.tsdk": "node_modules/typescript/lib"
+  }
 }
