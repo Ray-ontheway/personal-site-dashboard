@@ -11,7 +11,6 @@
     </el-container>
   </el-container>
 </template>
-
 <script setup lang="ts">
 import RHeader from './header'
 import RSider from './sider'
@@ -23,10 +22,11 @@ import RSider from './sider'
 }
 
 .header {
-  background-color: #409eff;
   color: #fff;
   text-align: center;
+  background-color: #409eff;
 }
+
 .container {
   min-height: 100vh;
 }
