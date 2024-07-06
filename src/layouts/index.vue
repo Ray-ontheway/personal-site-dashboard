@@ -17,10 +17,6 @@ import RSider from './sider'
 </script>
 
 <style lang="scss">
-* {
-  font-size: 1.6em;
-}
-
 .header {
   color: #fff;
   text-align: center;
