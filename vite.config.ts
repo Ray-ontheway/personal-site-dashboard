@@ -8,6 +8,7 @@ import { defineConfig } from 'vite'
 import svgLoader from 'vite-svg-loader'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 // import eslintPlugin from 'vite-plugin-eslint'
+import vitePluginExtend from 'vite-plugin-vue-setup-extend'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -16,6 +17,7 @@ export default defineConfig({
     //   include: ['./src/**/*.ts', './src/**/*.tsx', './src/**/*.js', './src/**/*.jsx', './src/**/*.vue'],
     // }),
     vue(),
+    vitePluginExtend(),
     vueJsx(),
     AutoImport({ resolvers: [ElementPlusResolver()] }),
     Components({ resolvers: [ElementPlusResolver()] }),

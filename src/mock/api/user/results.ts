@@ -1,6 +1,7 @@
 import PageObject from '@api/models/common'
 import { UserResp, RoleResp } from '@api/models/userModel'
-
+import random from 'lodash/random'
+import sampleSize from 'lodash/sampleSize'
 import { faker } from '@faker-js/faker'
 
 const sysRoles = [
@@ -22,31 +23,26 @@ const sysRoles = [
 ]
 
 const generateUserRoles: RoleResp[] = () => {
-  faker.seed(3)
-  const rolesCount = faker.number.int()
-  const roles = Array.from({ length: rolesCount }).map((_, idx) => {
-    faker.seed(2)
-    const roleIdx = faker.index.int()
-    return sysRoles[roleIdx]
-  })
-  return roles
+  const count = random(1, sysRoles.length)
+  return sampleSize(sysRoles, count)
 }
 
-const pageUsers = Array.from({ length: 10 }).map(
-  (_, idx) =>
-    ({
-      id: idx + '',
-      userId: faker.string.uuid(),
-      username: faker.internet.userName(),
-      avatar: faker.image.avatar(),
-      short_bio: faker.lorem.sentence(),
-      registeredAt: faker.date.past(),
-      roles: generateUserRoles(),
-    }) as UserResp
-)
+const pageUsers = (): UserResp[] =>
+  Array.from({ length: 10 }).map(
+    (_, idx) =>
+      ({
+        id: idx + '',
+        userId: faker.string.uuid(),
+        username: faker.internet.userName(),
+        avatar: faker.image.avatar(),
+        short_bio: faker.lorem.sentence(),
+        registeredAt: faker.date.past(),
+        roles: generateUserRoles(),
+      }) as UserResp
+  )
 
 export const pageUserInfo: PageObject<UserResp> = {
   pageIdx: 1,
   pageSize: 10,
-  data: pageUsers,
+  data: pageUsers(),
 }

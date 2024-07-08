@@ -1,6 +1,9 @@
 import { defineComponent } from 'vue'
 import axiosClient from '@/utils/http/axios'
-import { UserApiPath } from '../api/paths'
+import { UserApiPath } from '@api/paths'
+import { ElCard } from 'element-plus'
+
+import './index.scss'
 
 export default defineComponent({
   name: 'UserManager',
@@ -25,10 +28,10 @@ export default defineComponent({
     const renderTableOperator = () => <div>操作： 批量删除，查询</div>
 
     return () => (
-      <div>
+      <ElCard class={['']}>
         {renderTableOperator()}
         {renderTable()}
-      </div>
+      </ElCard>
     )
   },
 })

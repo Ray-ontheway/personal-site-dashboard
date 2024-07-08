@@ -24,7 +24,7 @@ const routes: AppRouteRecordRaw[] = [
         name: 'UserManager',
         path: '/sys/user',
         meta: { title: RouteConstantEnum.USER_MANAGEMENT, iconName: 'user' },
-        component: () => import('@pages/userManager.tsx'),
+        component: () => import('@pages/user/index.tsx'),
       },
     ],
   },
