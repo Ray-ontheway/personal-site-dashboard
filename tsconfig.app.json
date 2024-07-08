@@ -40,7 +40,9 @@
       "@pages/*": ["./src/pages/*"],
       "@styles/*": ["./src/styles/*"],
       "@router/*": ["./src/router/*"],
-      "@components/*": ["./src/components/*"]
+      "@components/*": ["./src/components/*"],
+      "@types/*": ["./types/*"],
+      "@api/*": ["./src/api/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "src/**/*.jsx", "types/**/*.d.ts"]

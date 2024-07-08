@@ -7,10 +7,14 @@ import Components from 'unplugin-vue-components/vite'
 import { defineConfig } from 'vite'
 import svgLoader from 'vite-svg-loader'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+// import eslintPlugin from 'vite-plugin-eslint'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    // eslintPlugin({
+    //   include: ['./src/**/*.ts', './src/**/*.tsx', './src/**/*.js', './src/**/*.jsx', './src/**/*.vue'],
+    // }),
     vue(),
     vueJsx(),
     AutoImport({ resolvers: [ElementPlusResolver()] }),
@@ -28,6 +32,19 @@ export default defineConfig({
       '@styles': path.resolve(__dirname, 'src/styles'),
       '@router': path.resolve(__dirname, 'src/router'),
       '@components': path.resolve(__dirname, 'src/components'),
+      '@types': path.resolve(__dirname, 'src/types'),
+      '@api': path.resolve(__dirname, 'src/api'),
     },
   },
+  // server: {
+  //   port: 3000,
+  //   open: false,
+  //   proxy: {
+  //     '/api': {
+  //       target: 'http://localhost:10001',
+  //       changeOrigin: true,
+  //       rewrite: path => path.replace(/^\/api/, ''),
+  //     },
+  //   },
+  // },
 })

@@ -1,4 +1,4 @@
-import { AppRouteRecordRaw } from '@router/types'
+import { AppRouteRecordRaw } from '@types/routes.ts'
 import { RouteConstantEnum } from '@/enums/routeConstantEnum.ts'
 
 const routes: AppRouteRecordRaw[] = [

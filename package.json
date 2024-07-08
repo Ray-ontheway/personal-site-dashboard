@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@vue/shared": "^3.4.31",
+    "axios": "^1.7.2",
     "element-plus": "^2.7.6",
     "pinia": "^2.1.7",
     "vue": "^3.4.29",
@@ -21,9 +22,11 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.6.0",
+    "@faker-js/faker": "^8.4.1",
     "@types/node": "^20.14.9",
     "@vitejs/plugin-vue": "^5.0.5",
     "@vitejs/plugin-vue-jsx": "^4.0.0",
+    "axios-mock-adapter": "^1.22.0",
     "eslint": "9.x",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-vue": "^9.27.0",
@@ -50,6 +53,7 @@
     "unplugin-auto-import": "^0.17.6",
     "unplugin-vue-components": "^0.27.2",
     "vite": "^5.3.1",
+    "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-svg-icons": "^2.0.1",
     "vite-svg-loader": "^5.1.0",
     "vue-tsc": "^2.0.21"

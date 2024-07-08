@@ -1,3 +1,3 @@
-import AppLogo from './appLogo.tsx'
+import AppLogo from './AppLogo'
 
 export { AppLogo }
