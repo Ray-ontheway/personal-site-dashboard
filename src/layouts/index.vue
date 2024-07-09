@@ -1,14 +1,12 @@
 <template>
-  <el-container class="container">
+  <el-container class="home-container">
     <RSider />
     <el-container class="main-container">
-      <el-header class="header">
+      <el-header class="header-container">
         <RHeader />
       </el-header>
-      <el-main>
-        <el-scrollbar>
-          <router-view />
-        </el-scrollbar>
+      <el-main class="scrollable-main">
+        <router-view />
       </el-main>
     </el-container>
   </el-container>
@@ -19,19 +17,37 @@ import RSider from './sider'
 </script>
 
 <style lang="scss">
-.header {
-  color: #fff;
-  text-align: center;
-  background-color: #409eff;
-}
-
-.container {
-  min-height: 100vh;
-}
-
-.main-container .el-main {
+.home-container {
+  height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: row;
+
+  .main-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    .header-container {
+      color: #fff;
+      text-align: center;
+      background-color: #409eff;
+    }
+
+    .scrollable-main {
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      // align-items: center;
+      justify-content: center;
+
+      .el-main {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
 }
+
+// .main-container
 </style>

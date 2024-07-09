@@ -1,7 +1,7 @@
 import { defineComponent, ref, reactive } from 'vue'
 import axiosClient from '@/utils/http/axios'
 import { UserApiPath } from '@api/paths'
-import { ElCard, ElTable, ElTableColumn, ElImage, ElAvatar, ElButton, ElInput } from 'element-plus'
+import { ElCard, ElTable, ElTableColumn, ElAvatar, ElButton, ElInput, ElPagination } from 'element-plus'
 import { UserResp } from '@api/models/userModel'
 import { PageObject } from '@api/models/common'
 import truncate from 'lodash/truncate'
@@ -19,11 +19,16 @@ export default defineComponent({
       pageSize: number
     }
     console.log('UserManager')
-    const userTableState = reactive<UserTable>({})
+    const userTableState = reactive<UserTable>({
+      data: [],
+      total: 0,
+      pageIdx: 1,
+      pageSize: 10,
+    })
 
     // 后续的操作分离出去
-    const pageUsers = axiosClient
-      .get(UserApiPath.PAGE, { params: { pageIdx: 1, pageSize: 10 } })
+    axiosClient
+      .get(UserApiPath.PAGE, { params: { pageIdx: 1, pageSize: 8 } })
       .then(newUsers => {
         console.log(newUsers)
         userTableState.data = newUsers.data
@@ -33,8 +38,7 @@ export default defineComponent({
       })
 
     const handleEdit = (user: UserResp) => {}
-    const handleDelete = (user: UserResp) => {}
-    const handleDetail = (user: UserResp) => {}
+    const handleDeny = (user: UserResp) => {}
     const handleSearch = () => {
       console.log('search')
       axiosClient
@@ -48,7 +52,7 @@ export default defineComponent({
         })
     }
 
-    const renderTableColumn = (label: string, render: (scope: UserResp) => JSX.Element) => (
+    const renderTableColumn = (label: string, render: (scope) => JSX.Element) => (
       <ElTableColumn
         label={label}
         v-slots={{
@@ -60,21 +64,24 @@ export default defineComponent({
     const renderTable = () => (
       <div>
         <ElTable data={userTableState.data as UserResp[]} stripe>
-          {renderTableColumn('头像', (scope: UserResp) => (
+          {renderTableColumn('头像', scope => (
             <ElAvatar src={scope.row.avatar} size="default" />
           ))}
-          {renderTableColumn('用户名', (scope: UserResp) => (
+          {renderTableColumn('用户名', scope => (
             <span>{truncate(scope.row.username, { length: 8, omission: '' })}</span>
           ))}
-          {renderTableColumn('角色', (scope: UserResp) => {
+          {renderTableColumn('角色', scope => {
             const roles = scope.row.roles.map(role => role.name).join(',')
             return <span>{roles}</span>
           })}
-
-          {renderTableColumn('操作', (scope: UserResp) => (
+          {renderTableColumn('操作', scope => (
             <>
-              <ElButton type="primary"> 修改角色 </ElButton>
-              <ElButton type="danger"> 拉黑 </ElButton>
+              <ElButton type="primary" onClick={() => handleEdit(scope.row)}>
+                修改角色
+              </ElButton>
+              <ElButton type="danger" onClick={() => handleDeny(scope.row)}>
+                拉黑
+              </ElButton>
             </>
           ))}
         </ElTable>
@@ -100,10 +107,29 @@ export default defineComponent({
       </div>
     )
 
+    const handleSizeChange = (pageSize: number) => {
+      console.log(pageSize)
+    }
+    const handleCurrentPage = (pageIdx: number) => {
+      console.log(pageIdx)
+    }
+
+    const renderPagination = () => (
+      <ElPagination
+        defaultCurrentPage={1}
+        defaultPageSize={10}
+        current-page={userTableState.pageIdx}
+        size={'default'}
+        pageSizes={[8, 12, 16]}
+        total={userTableState.total}
+      />
+    )
+
     return () => (
       <ElCard class={styles['main-card']}>
         {renderTableOperator()}
         {userTableState.data && renderTable()}
+        {renderPagination()}
       </ElCard>
     )
   },

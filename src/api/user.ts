@@ -21,4 +21,12 @@ class UserApi {
   static async searchUser(username: string): Promise<BaseResult<UserResp>> {
     return axiosClient.get(UserApiPath.SEARCH, { params: { username } })
   }
+
+  static async denyUser(userId: number) {
+    return axiosClient.put(UserApiPath.DENY, { userId })
+  }
+
+  static async updateUserRoles(userId: number, roles: string[]): Promise<UserResp> {
+    return axiosClient.put(UserApiPath.UPDATE_ROLES, { userId, roles })
+  }
 }

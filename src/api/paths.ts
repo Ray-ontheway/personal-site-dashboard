@@ -5,4 +5,6 @@ export enum UserApiPath {
   OPT_CODE = `${USER_BASE_API_PATH}/opt/code`,
   PAGE = `${USER_BASE_API_PATH}/page`,
   SEARCH = `${USER_BASE_API_PATH}/search`,
+  DENY = `${USER_BASE_API_PATH}/deny`,
+  UPDATE_ROLES = `${USER_BASE_API_PATH}/update/roles`,
 }

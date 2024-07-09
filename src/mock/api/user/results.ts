@@ -22,7 +22,7 @@ const sysRoles = [
   },
 ]
 
-const generateUserRoles: RoleResp[] = () => {
+const generateUserRoles = (): RoleResp[] => {
   const count = random(1, sysRoles.length)
   return sampleSize(sysRoles, count)
 }
@@ -41,18 +41,18 @@ const pageUsers = (pageIdx: number, pageSize: number): UserResp[] =>
       }) as UserResp
   )
 
-export const pageUserInfo: PageObject<UserResp> = (pageIdx: number, pageSize: number) => {
+export const pageUserInfo = (pageIdx: number, pageSize: number): PageObject<UserResp> => {
   const min = (pageIdx - 1) * pageSize
   const max = pageIdx * pageSize + 50
   return {
     pageIdx: pageIdx,
     pageSize: pageSize,
-    total: faker.datatype.number(min, max),
+    total: faker.number.int(max * 10) as number,
     data: pageUsers(pageIdx, pageSize),
   }
 }
 
-export const pageUsersResult: BaseResult = (pageIdx: number, pageSize: number) => ({
+export const pageUsersResult = (pageIdx: number, pageSize: number): BaseResult => ({
   status: 200,
   msg: 'success',
   data: pageUserInfo(pageIdx, pageSize),
@@ -72,7 +72,7 @@ const searchUsers = (username: string): UserResp[] =>
       }) as UserResp
   )
 
-export const searchUserResult: BaseResult<UserResp> = (username: string) => ({
+export const searchUserResult = (username: string): BaseResult<UserResp[]> => ({
   status: 200,
   msg: 'success',
   data: searchUsers(username),
