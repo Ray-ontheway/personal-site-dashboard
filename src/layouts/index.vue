@@ -31,7 +31,7 @@ import RSider from './sider'
 
 .main-container .el-main {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
 </style>
