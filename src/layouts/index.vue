@@ -1,12 +1,14 @@
 <template>
   <el-container class="container">
     <RSider />
-    <el-container>
+    <el-container class="main-container">
       <el-header class="header">
         <RHeader />
       </el-header>
       <el-main>
-        <router-view />
+        <el-scrollbar>
+          <router-view />
+        </el-scrollbar>
       </el-main>
     </el-container>
   </el-container>
@@ -25,5 +27,11 @@ import RSider from './sider'
 
 .container {
   min-height: 100vh;
+}
+
+.main-container .el-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

@@ -14,14 +14,9 @@ export default defineComponent({
   name: 'RSider',
   setup() {
     const { getMenus, getCurrentPath } = useMenu()
-    console.log(getMenus.value)
-    console.log(typeof getMenus.value[0])
-
     const renderAppLogo = () => <AppLogo />
 
     const renderMenuItem = (item: AppRouteRecordRaw) => {
-      console.log(item.path)
-
       return (
         <ElMenuItem index={item.path} class={['menu-item']}>
           {item.meta && item.meta.iconName && (
@@ -35,9 +30,6 @@ export default defineComponent({
     }
 
     const renderSubMenu = (item: AppRouteRecordRaw) => {
-      console.log('sub menu: ')
-      console.log(item)
-
       return (
         <ElSubMenu
           class={['menu-item']}

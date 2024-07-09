@@ -2,6 +2,8 @@ import axiosClient from '@/utils/http/axios'
 import { UserLogin } from '@api/models/userModel'
 
 import { UserApiPath } from './paths'
+import { BaseResult, PageObject } from './models/common'
+import { UserResp } from './models/userModel'
 
 class UserApi {
   static async login(userLogin: UserLogin) {
@@ -12,7 +14,11 @@ class UserApi {
     return axiosClient.post(UserApiPath.OPT_CODE, { email })
   }
 
-  static async pageUser(pageIdx: number, pageSize: number) {
-    return axiosClient.get(UserApiPath.PAGE, { params: { pageIdx, pageSize } })
+  static async pageUser(pageIdx: number, pageSize: number): Promise<PageObject<UserResp>> {
+    return axiosClient.get<PageObject<UserResp>>(UserApiPath.PAGE, { params: { pageIdx, pageSize } })
+  }
+
+  static async searchUser(username: string): Promise<BaseResult<UserResp>> {
+    return axiosClient.get(UserApiPath.SEARCH, { params: { username } })
   }
 }

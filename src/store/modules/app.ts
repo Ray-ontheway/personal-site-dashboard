@@ -16,15 +16,12 @@ export const useAppStore = defineStore({
   },
   actions: {
     buildRoutes() {
-      console.log(routes)
       const doFilter = (route: AppRouteRecordRaw): boolean => {
-        console.log('route: {} ', route)
         if (route.meta?.hidden === true) {
           return false
         }
         return true
       }
-      // const filterRoutes = routes.filter(doFilter)
       this.routes = routes.filter(item => doFilter(item))
     },
   },

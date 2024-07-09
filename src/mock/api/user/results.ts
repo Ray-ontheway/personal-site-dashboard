@@ -1,4 +1,4 @@
-import PageObject from '@api/models/common'
+import { PageObject, BaseResult } from '@api/models/common'
 import { UserResp, RoleResp } from '@api/models/userModel'
 import random from 'lodash/random'
 import sampleSize from 'lodash/sampleSize'
@@ -27,8 +27,8 @@ const generateUserRoles: RoleResp[] = () => {
   return sampleSize(sysRoles, count)
 }
 
-const pageUsers = (): UserResp[] =>
-  Array.from({ length: 10 }).map(
+const pageUsers = (pageIdx: number, pageSize: number): UserResp[] =>
+  Array.from({ length: pageSize }).map(
     (_, idx) =>
       ({
         id: idx + '',
@@ -41,8 +41,39 @@ const pageUsers = (): UserResp[] =>
       }) as UserResp
   )
 
-export const pageUserInfo: PageObject<UserResp> = {
-  pageIdx: 1,
-  pageSize: 10,
-  data: pageUsers(),
+export const pageUserInfo: PageObject<UserResp> = (pageIdx: number, pageSize: number) => {
+  const min = (pageIdx - 1) * pageSize
+  const max = pageIdx * pageSize + 50
+  return {
+    pageIdx: pageIdx,
+    pageSize: pageSize,
+    total: faker.datatype.number(min, max),
+    data: pageUsers(pageIdx, pageSize),
+  }
 }
+
+export const pageUsersResult: BaseResult = (pageIdx: number, pageSize: number) => ({
+  status: 200,
+  msg: 'success',
+  data: pageUserInfo(pageIdx, pageSize),
+})
+
+const searchUsers = (username: string): UserResp[] =>
+  Array.from({ length: 4 }).map(
+    (_, idx) =>
+      ({
+        id: idx + '',
+        userId: faker.string.uuid(),
+        username: username + faker.internet.userName(),
+        avatar: faker.image.avatar(),
+        short_bio: faker.lorem.sentence(),
+        registeredAt: faker.date.past(),
+        roles: generateUserRoles(),
+      }) as UserResp
+  )
+
+export const searchUserResult: BaseResult<UserResp> = (username: string) => ({
+  status: 200,
+  msg: 'success',
+  data: searchUsers(username),
+})

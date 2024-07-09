@@ -1,3 +1,4 @@
+import { ElNotification } from 'element-plus'
 import axios from 'axios'
 
 const axiosClient = axios.create({
@@ -20,7 +21,14 @@ axiosClient.interceptors.request.use(
 
 axiosClient.interceptors.response.use(
   response => {
-    return Promise.resolve(response)
+    if (response.status !== 200) {
+      // TODO 处理非200状态
+      ElNotification.error({
+        title: 'HTTP ERROR',
+        message: `${response.data.data.msg}`,
+      })
+    }
+    return Promise.resolve(response.data.data)
   },
   error => {
     return Promise.reject(error)

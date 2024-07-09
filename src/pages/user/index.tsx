@@ -1,36 +1,109 @@
-import { defineComponent } from 'vue'
+import { defineComponent, ref, reactive } from 'vue'
 import axiosClient from '@/utils/http/axios'
 import { UserApiPath } from '@api/paths'
-import { ElCard } from 'element-plus'
+import { ElCard, ElTable, ElTableColumn, ElImage, ElAvatar, ElButton, ElInput } from 'element-plus'
+import { UserResp } from '@api/models/userModel'
+import { PageObject } from '@api/models/common'
+import truncate from 'lodash/truncate'
 
-import './index.scss'
+// style
+import styles from './index.module.scss'
 
 export default defineComponent({
   name: 'UserManager',
   setup() {
+    interface UserTable {
+      data: UserResp[]
+      total: number
+      pageIdx: number
+      pageSize: number
+    }
     console.log('UserManager')
+    const userTableState = reactive<UserTable>({})
 
-    axiosClient
+    // 后续的操作分离出去
+    const pageUsers = axiosClient
       .get(UserApiPath.PAGE, { params: { pageIdx: 1, pageSize: 10 } })
-      .then(res => {
-        console.log(res)
+      .then(newUsers => {
+        console.log(newUsers)
+        userTableState.data = newUsers.data
       })
       .catch(err => {
         console.log(err)
       })
 
-    const renderTable = () => (
-      <>
-        <div>用户表单，表单每一项添加一个查看和修改的操作</div>
-      </>
+    const handleEdit = (user: UserResp) => {}
+    const handleDelete = (user: UserResp) => {}
+    const handleDetail = (user: UserResp) => {}
+    const handleSearch = () => {
+      console.log('search')
+      axiosClient
+        .get(UserApiPath.SEARCH, { params: { username: searchText.value } })
+        .then(res => {
+          console.log(res)
+          userTableState.data = res
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
+
+    const renderTableColumn = (label: string, render: (scope: UserResp) => JSX.Element) => (
+      <ElTableColumn
+        label={label}
+        v-slots={{
+          default: render,
+        }}
+      />
     )
 
-    const renderTableOperator = () => <div>操作： 批量删除，查询</div>
+    const renderTable = () => (
+      <div>
+        <ElTable data={userTableState.data as UserResp[]} stripe>
+          {renderTableColumn('头像', (scope: UserResp) => (
+            <ElAvatar src={scope.row.avatar} size="default" />
+          ))}
+          {renderTableColumn('用户名', (scope: UserResp) => (
+            <span>{truncate(scope.row.username, { length: 8, omission: '' })}</span>
+          ))}
+          {renderTableColumn('角色', (scope: UserResp) => {
+            const roles = scope.row.roles.map(role => role.name).join(',')
+            return <span>{roles}</span>
+          })}
+
+          {renderTableColumn('操作', (scope: UserResp) => (
+            <>
+              <ElButton type="primary"> 修改角色 </ElButton>
+              <ElButton type="danger"> 拉黑 </ElButton>
+            </>
+          ))}
+        </ElTable>
+      </div>
+    )
+
+    const searchText = ref('fadsfdas')
+    const renderTableOperator = () => (
+      <div class={styles['option-container']}>
+        <ElInput
+          v-model={searchText.value}
+          clearable
+          placeholder="请输入用户名或用户ID"
+          onKeydown={(event: KeyboardEvent) => {
+            if (event.key === 'Enter') {
+              handleSearch()
+            }
+          }}
+        />
+        <ElButton type="primary" onClick={handleSearch}>
+          查询
+        </ElButton>
+      </div>
+    )
 
     return () => (
-      <ElCard class={['']}>
+      <ElCard class={styles['main-card']}>
         {renderTableOperator()}
-        {renderTable()}
+        {userTableState.data && renderTable()}
       </ElCard>
     )
   },

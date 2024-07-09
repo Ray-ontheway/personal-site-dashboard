@@ -42,7 +42,8 @@
       "@router/*": ["./src/router/*"],
       "@components/*": ["./src/components/*"],
       "@types/*": ["./types/*"],
-      "@api/*": ["./src/api/*"]
+      "@api/*": ["./src/api/*"],
+      "@utils/*": ["./src/utils/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "src/**/*.jsx", "types/**/*.d.ts"]

@@ -1,0 +1,15 @@
+.main-card {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.option-container {
+  display: flex;
+  .el-input {
+    flex: 1;
+  }
+  .el-button {
+    width: 20rem;
+  }
+}
