@@ -6,8 +6,8 @@
 }
 
 .operation-container {
-  width: 30%;
   display: flex;
+  width: 30%;
 
   .el-input {
     width: 40rem !important;
@@ -19,8 +19,8 @@
 }
 
 .dialog-group {
-  background-color: #e3e3e3;
+  display: block;
   padding-top: 5rem;
   padding-bottom: 5rem;
-  display: block;
+  background-color: #e3e3e3;
 }

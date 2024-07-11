@@ -1,5 +1,15 @@
 import { defineComponent, ref } from 'vue'
-import { ElCard, ElTable, ElTableColumn, ElAvatar, ElButton, ElPagination, ElDialog, ElCheckboxGroup, ElCheckboxButton } from 'element-plus'
+import {
+  ElCard,
+  ElTable,
+  ElTableColumn,
+  ElAvatar,
+  ElButton,
+  ElPagination,
+  ElDialog,
+  ElCheckboxGroup,
+  ElCheckboxButton,
+} from 'element-plus'
 import RSearch from '@/components/search'
 import { UserResp } from '@api/models/userModel'
 import truncate from 'lodash/truncate'
@@ -11,8 +21,17 @@ import styles from './index.module.scss'
 export default defineComponent({
   name: 'UserManager',
   setup() {
-    const { userTableState, allRoles, fetchAllRoles, fetchUsers, handleCurrentPageChange, handlePageSizeChange, searchUsers, denyUser, updateUserRoles } =
-      useUserManager()
+    const {
+      userTableState,
+      allRoles,
+      fetchAllRoles,
+      fetchUsers,
+      handleCurrentPageChange,
+      handlePageSizeChange,
+      searchUsers,
+      denyUser,
+      updateUserRoles,
+    } = useUserManager()
     fetchUsers()
     fetchAllRoles()
 
@@ -30,7 +49,9 @@ export default defineComponent({
       dialogEnabled.value = false
     }
 
-    const renderTableOperator = () => <RSearch class={styles['operation-container']} placeholder="placeholder" onSearch={searchUsers} />
+    const renderTableOperator = () => (
+      <RSearch class={styles['operation-container']} placeholder="placeholder" onSearch={searchUsers} />
+    )
     const renderTableColumn = (label: string, render: (scope) => JSX.Element) => (
       <ElTableColumn
         label={label}

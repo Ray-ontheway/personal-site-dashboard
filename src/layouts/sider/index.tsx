@@ -38,7 +38,10 @@ export default defineComponent({
             title: () => (
               <>
                 <ElIcon>
-                  <SvgIcon name={item.meta.iconName} color={item.path === getCurrentPath.value ? '#4a90E2' : 'c0c0c0'} />
+                  <SvgIcon
+                    name={item.meta.iconName}
+                    color={item.path === getCurrentPath.value ? '#4a90E2' : 'c0c0c0'}
+                  />
                 </ElIcon>
                 <span class={['menu-text']}>{item.meta.title}</span>
               </>

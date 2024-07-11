@@ -22,7 +22,10 @@ export default defineConfig({
     AutoImport({ resolvers: [ElementPlusResolver()] }),
     Components({ resolvers: [ElementPlusResolver()] }),
     svgLoader(),
-    createSvgIconsPlugin({ iconDirs: [path.resolve(process.cwd(), 'src/assets/icons/sprite')], symbolId: 'icon-[name]' }),
+    createSvgIconsPlugin({
+      iconDirs: [path.resolve(process.cwd(), 'src/assets/icons/sprite')],
+      symbolId: 'icon-[name]',
+    }),
   ],
   resolve: {
     alias: {
