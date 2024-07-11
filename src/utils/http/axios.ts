@@ -1,5 +1,6 @@
 import { ElNotification } from 'element-plus'
 import axios from 'axios'
+import { AxiosRequestHeaders } from 'axios'
 
 const axiosClient = axios.create({
   baseURL: '/api',
@@ -9,7 +10,7 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(
   config => {
-    const headers = (config.headers = config.headers || {}) as AxiosRequestHeaders
+    const headers = (config.headers || {}) as AxiosRequestHeaders
     // TODO 添加 jwt TOKEN
     config.headers = headers
     return config

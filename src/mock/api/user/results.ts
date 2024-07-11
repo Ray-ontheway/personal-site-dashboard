@@ -22,6 +22,12 @@ const sysRoles = [
   },
 ]
 
+export const allRolesResult = (): BaseResult<RoleResp[]> => ({
+  status: 200,
+  msg: 'success',
+  data: sysRoles,
+})
+
 const generateUserRoles = (): RoleResp[] => {
   const count = random(1, sysRoles.length)
   return sampleSize(sysRoles, count)
@@ -58,8 +64,21 @@ export const pageUsersResult = (pageIdx: number, pageSize: number): BaseResult =
   data: pageUserInfo(pageIdx, pageSize),
 })
 
-const searchUsers = (username: string): UserResp[] =>
-  Array.from({ length: 4 }).map(
+const generateUser = (idx: string) =>
+  ({
+    id: idx,
+    userId: faker.string.uuid(),
+    username: faker.internet.userName(),
+    avatar: faker.image.avatar(),
+    short_bio: faker.lorem.sentence(),
+    registeredAt: faker.date.past(),
+    roles: generateUserRoles(),
+  }) as UserResp
+
+const searchUsers = (username: string): UserResp[] => {
+  console.log('searchUsers', username)
+
+  return Array.from({ length: 4 }).map(
     (_, idx) =>
       ({
         id: idx + '',
@@ -71,9 +90,24 @@ const searchUsers = (username: string): UserResp[] =>
         roles: generateUserRoles(),
       }) as UserResp
   )
+}
 
-export const searchUserResult = (username: string): BaseResult<UserResp[]> => ({
-  status: 200,
-  msg: 'success',
-  data: searchUsers(username),
-})
+export const searchUserResult = (username: string): BaseResult<UserResp[]> => {
+  console.log('searchUserResult', username)
+
+  return {
+    status: 200,
+    msg: 'success',
+    data: searchUsers(username),
+  }
+}
+
+export const updateUserRolesResult = (userId: string, roleIds: string[]): BaseResult<UserResp> => {
+  const user = generateUser(userId)
+  user.roles = sysRoles.filter(role => roleIds.includes(role.id))
+  return {
+    status: 200,
+    msg: 'success',
+    data: user,
+  }
+}

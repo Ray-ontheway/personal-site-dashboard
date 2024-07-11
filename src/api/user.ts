@@ -1,11 +1,11 @@
 import axiosClient from '@/utils/http/axios'
-import { UserLogin } from '@api/models/userModel'
+import { RoleResp, UserLogin } from '@api/models/userModel'
 
 import { UserApiPath } from './paths'
 import { BaseResult, PageObject } from './models/common'
 import { UserResp } from './models/userModel'
 
-class UserApi {
+export class UserApi {
   static async login(userLogin: UserLogin) {
     return axiosClient.post(UserApiPath.LOGIN, userLogin)
   }
@@ -18,15 +18,19 @@ class UserApi {
     return axiosClient.get<PageObject<UserResp>>(UserApiPath.PAGE, { params: { pageIdx, pageSize } })
   }
 
-  static async searchUser(username: string): Promise<BaseResult<UserResp>> {
+  static async searchUser(username: string): Promise<UserResp[]> {
     return axiosClient.get(UserApiPath.SEARCH, { params: { username } })
   }
 
-  static async denyUser(userId: number) {
+  static async denyUser(userId: string) {
     return axiosClient.put(UserApiPath.DENY, { userId })
   }
 
-  static async updateUserRoles(userId: number, roles: string[]): Promise<UserResp> {
-    return axiosClient.put(UserApiPath.UPDATE_ROLES, { userId, roles })
+  static async updateUserRoles(userId: string, roleIds: string[]): Promise<UserResp> {
+    return axiosClient.put(UserApiPath.UPDATE_ROLES, { userId, roleIds })
+  }
+
+  static async allRoles(): Promise<RoleResp[]> {
+    return axiosClient.get(UserApiPath.ALL_ROLES)
   }
 }

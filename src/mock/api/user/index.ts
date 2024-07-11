@@ -1,5 +1,5 @@
 import MockAdapter from 'axios-mock-adapter'
-import { pageUsersResult, searchUserResult } from './results'
+import { pageUsersResult, searchUserResult, allRolesResult, updateUserRolesResult } from './results'
 import { UserApiPath } from '@api/paths'
 
 export function mockUserApi(mock: MockAdapter) {
@@ -11,5 +11,12 @@ export function mockUserApi(mock: MockAdapter) {
   mock.onGet(UserApiPath.SEARCH).reply(config => {
     const { username } = config.params
     return [200, searchUserResult(username)]
+  })
+
+  mock.onGet(UserApiPath.ALL_ROLES).reply(200, allRolesResult())
+
+  mock.onPut(UserApiPath.UPDATE_ROLES).reply(config => {
+    const { userId, roleIds } = JSON.parse(config.data)
+    return [200, updateUserRolesResult(userId, roleIds)]
   })
 }

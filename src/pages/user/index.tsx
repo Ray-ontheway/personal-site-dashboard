@@ -1,10 +1,9 @@
-import { defineComponent, ref, reactive } from 'vue'
-import axiosClient from '@/utils/http/axios'
-import { UserApiPath } from '@api/paths'
-import { ElCard, ElTable, ElTableColumn, ElAvatar, ElButton, ElInput, ElPagination } from 'element-plus'
+import { defineComponent, ref } from 'vue'
+import { ElCard, ElTable, ElTableColumn, ElAvatar, ElButton, ElPagination, ElDialog, ElCheckboxGroup, ElCheckboxButton } from 'element-plus'
+import RSearch from '@/components/search'
 import { UserResp } from '@api/models/userModel'
-import { PageObject } from '@api/models/common'
 import truncate from 'lodash/truncate'
+import { useUserManager } from './useUserManager'
 
 // style
 import styles from './index.module.scss'
@@ -12,46 +11,26 @@ import styles from './index.module.scss'
 export default defineComponent({
   name: 'UserManager',
   setup() {
-    interface UserTable {
-      data: UserResp[]
-      total: number
-      pageIdx: number
-      pageSize: number
+    const { userTableState, allRoles, fetchAllRoles, fetchUsers, handleCurrentPageChange, handlePageSizeChange, searchUsers, denyUser, updateUserRoles } =
+      useUserManager()
+    fetchUsers()
+    fetchAllRoles()
+
+    const dialogEnabled = ref(false)
+
+    const curUser = ref<UserResp | null>(null)
+    const curRoleIds = ref<string[]>([])
+    const renderRolesEditorDialog = (user: UserResp) => {
+      curUser.value = user
+      user.roles.map(role => curRoleIds.value.push(role.id))
+      dialogEnabled.value = true
     }
-    console.log('UserManager')
-    const userTableState = reactive<UserTable>({
-      data: [],
-      total: 0,
-      pageIdx: 1,
-      pageSize: 10,
-    })
-
-    // 后续的操作分离出去
-    axiosClient
-      .get(UserApiPath.PAGE, { params: { pageIdx: 1, pageSize: 8 } })
-      .then(newUsers => {
-        console.log(newUsers)
-        userTableState.data = newUsers.data
-      })
-      .catch(err => {
-        console.log(err)
-      })
-
-    const handleEdit = (user: UserResp) => {}
-    const handleDeny = (user: UserResp) => {}
-    const handleSearch = () => {
-      console.log('search')
-      axiosClient
-        .get(UserApiPath.SEARCH, { params: { username: searchText.value } })
-        .then(res => {
-          console.log(res)
-          userTableState.data = res
-        })
-        .catch(err => {
-          console.log(err)
-        })
+    const handleUpdateRoles = () => {
+      updateUserRoles(curUser.value.id, curRoleIds.value)
+      dialogEnabled.value = false
     }
 
+    const renderTableOperator = () => <RSearch class={styles['operation-container']} placeholder="placeholder" onSearch={searchUsers} />
     const renderTableColumn = (label: string, render: (scope) => JSX.Element) => (
       <ElTableColumn
         label={label}
@@ -60,7 +39,6 @@ export default defineComponent({
         }}
       />
     )
-
     const renderTable = () => (
       <div>
         <ElTable data={userTableState.data as UserResp[]} stripe>
@@ -76,10 +54,10 @@ export default defineComponent({
           })}
           {renderTableColumn('操作', scope => (
             <>
-              <ElButton type="primary" onClick={() => handleEdit(scope.row)}>
+              <ElButton type="primary" onClick={() => renderRolesEditorDialog(scope.row)}>
                 修改角色
               </ElButton>
-              <ElButton type="danger" onClick={() => handleDeny(scope.row)}>
+              <ElButton type="danger" onClick={() => denyUser(scope.row)}>
                 拉黑
               </ElButton>
             </>
@@ -87,49 +65,50 @@ export default defineComponent({
         </ElTable>
       </div>
     )
-
-    const searchText = ref('fadsfdas')
-    const renderTableOperator = () => (
-      <div class={styles['option-container']}>
-        <ElInput
-          v-model={searchText.value}
-          clearable
-          placeholder="请输入用户名或用户ID"
-          onKeydown={(event: KeyboardEvent) => {
-            if (event.key === 'Enter') {
-              handleSearch()
-            }
-          }}
-        />
-        <ElButton type="primary" onClick={handleSearch}>
-          查询
-        </ElButton>
-      </div>
-    )
-
-    const handleSizeChange = (pageSize: number) => {
-      console.log(pageSize)
-    }
-    const handleCurrentPage = (pageIdx: number) => {
-      console.log(pageIdx)
-    }
-
     const renderPagination = () => (
       <ElPagination
-        defaultCurrentPage={1}
-        defaultPageSize={10}
-        current-page={userTableState.pageIdx}
+        v-model:currentPage={userTableState.pageIdx}
+        v-model:pageSize={userTableState.pageSize}
+        pageSizes={[8, 12, 16, 20]}
         size={'default'}
-        pageSizes={[8, 12, 16]}
+        layout={'total, sizes, prev, pager, next'}
         total={userTableState.total}
+        onSize-change={handlePageSizeChange}
+        onCurrent-change={handleCurrentPageChange}
       />
+    )
+    const renderEditorDialog = () => (
+      <ElDialog
+        title={`修改的角色`}
+        v-model={dialogEnabled.value}
+        v-slots={{
+          footer: () => (
+            <div>
+              <ElButton type="primary" onClick={handleUpdateRoles}>
+                确定
+              </ElButton>
+            </div>
+          ),
+        }}
+      >
+        <div class={styles['dialog-group']}>
+          <ElCheckboxGroup size="large" v-model={curRoleIds.value}>
+            {allRoles.value.map(role => (
+              <ElCheckboxButton label={role.id} key={role.id} value={role.id}>
+                {role.name}
+              </ElCheckboxButton>
+            ))}
+          </ElCheckboxGroup>
+        </div>
+      </ElDialog>
     )
 
     return () => (
       <ElCard class={styles['main-card']}>
         {renderTableOperator()}
-        {userTableState.data && renderTable()}
+        {renderTable()}
         {renderPagination()}
+        {dialogEnabled.value && renderEditorDialog()}
       </ElCard>
     )
   },

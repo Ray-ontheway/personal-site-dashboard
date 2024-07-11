@@ -2,7 +2,7 @@ export default {
   trailingComma: 'es5',
   semi: false,
   singleQuote: true,
-  printWidth: 160,
+  printWidth: 120,
   tabWidth: 2,
   useTabs: false,
   arrowParens: 'avoid',
