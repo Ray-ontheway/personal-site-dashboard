@@ -2,7 +2,7 @@ import axiosClient from '@/utils/http/axios'
 import { RoleResp, UserLogin } from '@api/models/userModel'
 
 import { UserApiPath } from './paths'
-import { BaseResult, PageObject } from './models/common'
+import { PageObject } from './models/common'
 import { UserResp } from './models/userModel'
 
 export class UserApi {

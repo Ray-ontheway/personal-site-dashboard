@@ -5,7 +5,6 @@ import { useMenu } from '@hooks/useMenu'
 import { ElAside, ElMenu, ElSubMenu, ElMenuItem, ElIcon } from 'element-plus'
 import { AppLogo } from '@components/application'
 import { SvgIcon } from '@components/Icon/index.ts'
-import VueIcon from '@assets/vue.svg'
 
 import 'element-plus/dist/index.css'
 import './sider.scss'
@@ -55,7 +54,7 @@ export default defineComponent({
 
     const renderMenu = (menus: AppRouteRecordRaw[], currentPath: string = '/') => {
       return (
-        <ElMenu class={['menu']} defaultActive={getCurrentPath.value} router={true}>
+        <ElMenu class={['menu']} defaultActive={currentPath} router={true}>
           {menus.map(item => {
             if (item.children && item.children.length > 0) {
               return renderSubMenu(item)

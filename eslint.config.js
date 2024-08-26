@@ -1,6 +1,8 @@
 import globals from 'globals'
 import pluginJs from '@eslint/js'
+
 import tseslint from 'typescript-eslint'
+import parserTs from '@typescript-eslint/parser'
 import pluginVue from 'eslint-plugin-vue'
 import parserVue from 'vue-eslint-parser'
 import eslintConfigPrettier from 'eslint-config-prettier'
@@ -12,12 +14,18 @@ export default [
   {
     languageOptions: {
       parser: parserVue,
-      parserOptions: { parser: tseslint.parser },
+      parserOptions: {
+        parser: parserTs,
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: { jsx: true },
+      },
     },
   },
   pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
+  ...tseslint.configs['recommended'],
   ...pluginVue.configs['flat/essential'],
+  ...pluginVue.configs['flat/recommended'],
   eslintConfigPrettier,
   {
     rules: {

@@ -10,17 +10,20 @@ interface SearchProps {
 export default defineComponent({
   name: 'RSearch',
   props: {
-    placeholder: String,
-    onSearch: Function as Prop<SearchProps['onSearch']>,
+    placeholder: string,
   },
   setup(props, { emit }) {
     const { placeholder } = props
-    console.log(placeholder)
 
     const keyword = ref('')
 
     const handleSearch = () => {
       emit('search', keyword.value.trim())
+    }
+    const handleEnter = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        handleSearch()
+      }
     }
 
     const onInput = (newVal: string) => {
@@ -42,6 +45,7 @@ export default defineComponent({
               </ElButton>
             ),
           }}
+          onKeydown={handleEnter}
         />
       </div>
     )

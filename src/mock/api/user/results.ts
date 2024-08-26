@@ -28,7 +28,7 @@ export const allRolesResult = (): BaseResult<RoleResp[]> => ({
   data: sysRoles,
 })
 
-const generateUserRoles = (): RoleResp[] => {
+export const generateUserRoles = (): RoleResp[] => {
   const count = random(1, sysRoles.length)
   return sampleSize(sysRoles, count)
 }

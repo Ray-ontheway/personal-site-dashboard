@@ -1,0 +1,35 @@
+<script setup lang="ts">
+import type { TabItem } from '@hooks/components/usePage'
+
+interface TabProps {
+  tabData: Array<TabItem>
+  activePath: string
+}
+
+const props = withDefaults(defineProps<TabProps>(), {
+  tabData: () => [] as TabItem[],
+  activePath: '',
+})
+
+const emits = defineEmits(['tab-change'])
+
+const { tabData, activePath } = props
+
+const handleClick = (tabName: string) => {
+  const curTabItem = tabData.find(item => item.name === tabName)
+  if (curTabItem) {
+    emits('tab-change', curTabItem)
+  }
+}
+</script>
+
+<template>
+  <el-tabs v-model="activePath" @tab-change="handleClick">
+    <el-tab-pane v-for="item in tabData" :key="item.path" :label="item.title" :name="item.name" class="tab-item" />
+  </el-tabs>
+</template>
+
+<style lang="scss" scoped>
+// .tab-item {
+// }
+</style>

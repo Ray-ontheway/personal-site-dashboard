@@ -1,4 +1,4 @@
-@use '@styles/variable.scss' as *;
+@use '@styles/variables.scss' as *;
 
 .app-logo {
   display: flex;
@@ -7,6 +7,7 @@
   justify-content: center;
   height: $header-height;
   font-size: 2rem;
+  color: #1a1b1c;
 }
 
 .app-logo-icon {

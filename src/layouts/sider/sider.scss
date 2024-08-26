@@ -1,15 +1,17 @@
+@import '@styles/variables.scss';
+
 :root {
-  --el-menu-bg-color: #1e1e1e;
-  --el-menu-text-color: #c0c0c0;
+  --el-menu-bg-color: #f6f7f8;
+  --el-menu-text-color: #1a1b1c;
   --el-menu-active-colot: #4a90e2;
-  --el-menu-hover-bg-color: #37474f;
+  --el-menu-hover-bg-color: #eeeff0;
 }
 
 .aside {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: #1e1e1e;
+  background-color: $primary-background-color;
 }
 
 .menu-text {
