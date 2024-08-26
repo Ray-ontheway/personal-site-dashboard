@@ -106,60 +106,59 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .article-header-container {
-  height: 6.4rem;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
   gap: 0.5rem;
-
+  align-items: center;
+  justify-content: space-between;
+  height: 6.4rem;
   font-size: 1.8rem;
   border-bottom: 0.1rem solid black;
 }
 
 nav {
-  height: 100%;
   flex: 1;
+  height: 100%;
 
   ul {
-    height: 100%;
-    flex: 1;
-    list-style: none;
     display: flex;
+    flex: 1;
     gap: 2rem;
-
+    height: 100%;
     padding: 0;
     margin: 0;
+    list-style: none;
+
     li {
       height: 100%;
 
       &.active {
+        z-index: 10;
         color: #409eff;
         border-bottom: 0.3rem solid #409eff;
-        z-index: 10;
       }
     }
   }
 }
 
 .header-menu-item {
-  cursor: pointer;
-  color: black;
-  height: 100%;
-  text-align: center;
   display: flex;
   align-items: center;
   justify-self: center;
+  height: 100%;
+  color: black;
+  text-align: center;
+  cursor: pointer;
 }
 
 .article-header-search {
   padding: 0.5rem 2rem;
-  cursor: pointer;
   color: black;
+  cursor: pointer;
 }
 
 .article-header-btn {
   padding: 0.5rem 2rem;
-  cursor: pointer;
   color: black;
+  cursor: pointer;
 }
 </style>

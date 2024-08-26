@@ -116,11 +116,11 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
-  background-color: white;
-  min-height: 100%;
   max-width: 90rem;
+  min-height: 100%;
+  padding: 2rem;
   margin: 0 auto;
+  background-color: white;
 }
 
 .el-menu {
@@ -130,13 +130,14 @@ export default defineComponent({
 
 .el-menu-item {
   height: 100%;
-  line-height: 3.6rem;
   font-weight: bold;
+  line-height: 3.6rem;
 }
 
 .el-menu-item:hover {
   background-color: transparent !important;
 }
+
 .el-menu-item.is-active {
   background-color: transparent !important;
 }
@@ -147,14 +148,14 @@ export default defineComponent({
 }
 
 .article-option {
-  height: 4.8rem;
-  width: 100%;
-  align-self: flex-start;
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-items: center;
   gap: 0.5rem;
+  align-items: center;
+  align-self: flex-start;
+  justify-content: center;
+  width: 100%;
+  height: 4.8rem;
   border-bottom: 1px solid #ccc;
 }
 

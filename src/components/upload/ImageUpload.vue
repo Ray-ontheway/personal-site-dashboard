@@ -76,26 +76,27 @@ const onError = () => {
 
 <style lang="scss" scoped>
 .upload-container {
-  flex: 1;
-  min-height: 140px;
   display: flex;
+  flex: 1;
   flex-direction: column;
+  gap: 10px;
   align-items: center;
   justify-content: center;
+  min-height: 140px;
+  cursor: pointer;
   border: 1px dashed #a7a8a9;
   border-radius: 4px;
-  gap: 10px;
-  cursor: pointer;
 
   img {
+    flex: 1;
     width: 100%;
     height: 100%;
-    flex: 1;
     object-fit: cover;
   }
 }
+
 .upload-tip {
-  color: #979899;
   font-size: 16px;
+  color: #979899;
 }
 </style>

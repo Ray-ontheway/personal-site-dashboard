@@ -56,9 +56,9 @@ const handleBtnClick = () => {
 
 <style lang="scss" scoped>
 .category-header {
-  background-color: green !important;
-  padding: 10px 0;
-  border-bottom: 1px solid black;
   height: 60rem;
+  padding: 10px 0;
+  background-color: green !important;
+  border-bottom: 1px solid black;
 }
 </style>

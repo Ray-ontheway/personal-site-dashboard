@@ -21,23 +21,23 @@ const { visible } = toRefs(props)
 
 <style scoped>
 .loading-container {
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
   gap: 10px;
-  background-color: rgba(85, 86, 87, 0.3);
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  background-color: rgb(85 86 87 / 30%);
 }
 
 .loading-spinner {
+  width: 30px;
+  height: 30px;
   border: 4px solid #f3f3f3; /* Light grey */
   border-top: 4px solid #3498db; /* Blue */
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
   animation: spin 1s linear infinite;
 }
 
@@ -45,6 +45,7 @@ const { visible } = toRefs(props)
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }

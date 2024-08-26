@@ -13,7 +13,7 @@ import RSider from './sider'
 </script>
 
 <style lang="scss">
-@import '@styles/variables.scss';
+@import url('@styles/variables');
 
 .header {
   color: #fff;

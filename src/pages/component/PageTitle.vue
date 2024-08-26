@@ -16,11 +16,11 @@ const { pageTitle } = toRefs(props)
 <style lang="scss" scoped>
 .page-title-wrap {
   width: 100%;
-  font-size: 2.4rem;
+  padding: 1.2rem 0;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 2.4rem;
   font-weight: bold;
   color: black;
   text-align: left;
-  padding: 1.2rem 0;
 }
 </style>

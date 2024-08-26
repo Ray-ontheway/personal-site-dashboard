@@ -18,11 +18,13 @@ const handleEdit = () => {
 * {
   color: black;
 }
+
 .page-filter {
   ul {
     display: flex;
     justify-content: space-between;
     padding: 0 20px;
+
     li {
       .filter-item {
         span {
@@ -36,12 +38,9 @@ const handleEdit = () => {
 .header {
   display: flex;
   justify-content: flex-start;
-  background-color: transparent;
+  font-size: 1.6rem;
   color: #333;
-
-  span {
-    font-size: 1.6rem;
-  }
+  background-color: transparent;
 }
 
 .page-content {

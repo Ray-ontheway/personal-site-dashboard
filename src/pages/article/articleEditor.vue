@@ -244,28 +244,31 @@ const publish = () => {
 
 <style lang="scss">
 .editor-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
   width: 100%;
   min-height: 100vh;
   padding: 10px 20px;
   background-color: #f7f8f9;
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
 }
 
 .editor-content {
   flex: 1;
   min-height: 80vh;
+
   &.el-card {
     display: flex;
     flex: 1;
   }
 }
+
 .el-card__body {
-  flex: 1;
   display: flex;
+  flex: 1;
   flex-direction: column;
 }
+
 .md-editor {
   flex: 1;
   height: auto;
@@ -273,37 +276,37 @@ const publish = () => {
 }
 
 .editor-meta {
-  min-width: 320px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-width: 320px;
 
   & > * {
     text-align: left;
 
     &:first-child {
-      margin-top: 0px;
+      margin-top: 0;
     }
   }
 
   &__item {
-    max-width: 360px;
     display: flex;
     flex-direction: column;
+    max-width: 360px;
 
     &__title {
-      text-align: left;
       font-size: 14px;
       font-weight: bold;
+      text-align: left;
       border-bottom: 1px solid #1a1b1c;
     }
   }
 }
 
 .input-summary {
-  min-height: 100px;
-  flex: 1;
   display: flex;
+  flex: 1;
+  min-height: 100px;
 }
 
 .btn-option {

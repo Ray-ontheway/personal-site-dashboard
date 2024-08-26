@@ -69,23 +69,24 @@ export default defineComponent({
 }
 
 .article-category-container {
-  width: 100%;
-  min-height: 13rem;
   display: flex;
   flex-direction: row;
   align-items: center;
+  width: 100%;
+  min-height: 13rem;
   padding: 2rem;
+
   &:hover {
     cursor: pointer;
     background-color: #e7e8e9;
   }
 
   .category-img-wrapper {
-    height: 100%;
-    width: 12rem;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    width: 12rem;
+    height: 100%;
     object-fit: cover;
 
     img {
@@ -96,13 +97,13 @@ export default defineComponent({
   }
 
   .category-info {
-    flex: 1;
     display: flex;
+    flex: 1;
     flex-direction: column;
-    justify-content: space-between;
     align-items: flex-start;
-    padding: 0 1.6rem;
+    justify-content: space-between;
     height: 100%;
+    padding: 0 1.6rem;
 
     .category-name {
       height: 1.8rem;
@@ -111,35 +112,35 @@ export default defineComponent({
     }
 
     .category-summary {
-      flex: 1;
       display: block;
-      text-align: left;
+      flex: 1;
       font-size: 1.4rem;
       line-height: 1.5rem;
       color: #666;
+      text-align: left;
     }
 
     .category-meta {
-      height: 1.3rem;
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      height: 1.3rem;
       font-size: 1.2rem;
-      text-align: left;
       color: blue;
+      text-align: left;
       cursor: pointer;
     }
   }
 
   .category_option {
-    height: 100%;
-    padding: 0 2rem;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
     gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding: 0 2rem;
   }
 }
 </style>

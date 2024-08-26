@@ -26,23 +26,23 @@ const onTabChange = (tabItem: TabItem) => {
 <style lang="scss" scoped>
 .article-page {
   box-sizing: border-box;
-  flex: 1;
   display: flex;
+  flex: 1;
   flex-direction: column;
 }
 
 .page-title {
-  color: #1a1b1c;
-  font-size: 2.4rem;
   display: flex;
   flex-direction: row;
   justify-self: start;
   padding: 3rem 0;
+  font-size: 2.4rem;
+  color: #1a1b1c;
 }
 
 .pane-title {
-  color: #1a1b1c;
   font-size: 3rem;
+  color: #1a1b1c;
 }
 
 .tab-item {
