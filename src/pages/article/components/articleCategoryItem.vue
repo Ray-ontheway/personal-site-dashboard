@@ -133,7 +133,7 @@ export default defineComponent({
     }
   }
 
-  .category_option {
+  .category-option {
     display: flex;
     flex-direction: row;
     gap: 1rem;

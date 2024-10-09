@@ -1,11 +1,11 @@
-import { defineComponent, Prop, ref } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { ElInput, ElButton } from 'element-plus'
 import styles from './index.module.scss'
 
-interface SearchProps {
-  placeholder: string
-  onSearch: (keyword: string) => void
-}
+// interface SearchProps {
+//   placeholder: string
+//   onSearch: (keyword: string) => void
+// }
 
 export default defineComponent({
   name: 'RSearch',

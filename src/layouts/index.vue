@@ -37,7 +37,7 @@ import RSider from './sider'
   height: 100%;
 }
 
-.main-container .el-scrollbar__view {
+.main-container .el-scrollbar-view {
   width: 100%;
   height: 100%;
 }

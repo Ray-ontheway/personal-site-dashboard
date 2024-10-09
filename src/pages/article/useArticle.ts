@@ -4,14 +4,14 @@ import { ref } from 'vue'
 import { ElNotification } from 'element-plus'
 
 const useArticleManager = () => {
-  const currentAricleCategories = ref<ArticleCategoryResp[]>([])
+  const currentArticleCategories = ref<ArticleCategoryResp[]>([])
 
   const fetchArticleCategoryByUserId = (userId: string) => {
     ArticleAPI.allByUser(userId)
       .then((articleCategories: ArticleCategoryResp[]) => {
-        currentAricleCategories.value = articleCategories
+        currentArticleCategories.value = articleCategories
       })
-      .catch(_error => {
+      .catch(() => {
         ElNotification.error({ title: 'Error', message: 'Failed to fetch article categories' })
       })
   }

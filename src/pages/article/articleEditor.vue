@@ -30,7 +30,7 @@ const handleSave = (value: string) => {
 const handleContentChange = (value: string) => {
   articleState.summary = value.slice(0, 50)
 }
-const handleImageUpload = (files: File[], callback: (urls: string[]) => {}) => {
+const handleImageUpload = (files: File[], callback: (urls: string[]) => void) => {
   console.log(files)
   console.log(callback)
   callback(['https://example.com/image.png'])
@@ -125,7 +125,7 @@ const handleTagsChange = (value: any) => {
   }
 }
 
-const handleUpload = (file: File, onLoading: () => void, onSuccess: (urls: string) => void, onError: () => {}) => {
+const handleUpload = (file: File, onLoading: () => void, onSuccess: (urls: string) => void, onError: () => void) => {
   // 处理上传逻辑
   onLoading()
   resolveUpload(file)
@@ -263,7 +263,7 @@ const publish = () => {
   }
 }
 
-.el-card__body {
+.el-card-body {
   display: flex;
   flex: 1;
   flex-direction: column;
