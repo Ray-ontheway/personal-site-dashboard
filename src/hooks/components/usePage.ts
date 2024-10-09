@@ -1,5 +1,5 @@
 import { useRoute } from 'vue-router'
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { AppRouteRecordRaw } from '@/router/types'
 import { articleTagsRoute, articleListRoute } from '@router/route/article'
 import { routes } from '@router/route'
@@ -20,9 +20,9 @@ const transformRouteToTab = (routes: AppRouteRecordRaw[]): TabItem[] =>
 
 export const usePage = () => {
   const route = useRoute()
+  const { getCurrentPath } = useMenu()
 
   const pageTitle = computed(() => {
-    const { getCurrentPath } = useMenu()
     let title = ''
     const findPathName = (allRoutes: AppRouteRecordRaw[], path: string) => {
       allRoutes.forEach(route => {
@@ -39,13 +39,12 @@ export const usePage = () => {
   })
 
   const currentPageTabs = computed(() => {
-    let curTab
-    if (route.path.includes(articleTagsRoute.path)) {
-      curTab = transformRouteToTab(articleTagsRoute.children)
-    } else if (route.path.includes(articleListRoute.path)) {
-      curTab = transformRouteToTab(articleListRoute.children)
+    if (getCurrentPath.value.includes(articleTagsRoute.path)) {
+      return transformRouteToTab(articleTagsRoute.children)
+    } else if (getCurrentPath.value.includes(articleListRoute.path)) {
+      return transformRouteToTab(articleListRoute.children)
     }
-    return curTab
+    return []
   })
 
   const currentTab = computed(() => {

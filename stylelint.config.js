@@ -17,5 +17,11 @@ export default {
       files: ['**/*.{css,scss}'],
       customSyntax: 'postcss-scss',
     },
+    // {
+    //   files: ['**/*.{css,scss,vue,html}'],
+    //   rules: {
+    //     'selector-class-pattern': /^([a-z0-9]+(-[a-z0-9]+)*|([a-z0-9]+__[a-z0-9]+))$/,
+    //   },
+    // },
   ],
 }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { TabItem } from '@hooks/components/usePage'
+import { toRefs } from 'vue'
 
 interface TabProps {
   tabData: Array<TabItem>
@@ -13,10 +14,10 @@ const props = withDefaults(defineProps<TabProps>(), {
 
 const emits = defineEmits(['tab-change'])
 
-const { tabData, activePath } = props
+const { tabData, activePath } = toRefs(props)
 
 const handleClick = (tabName: string) => {
-  const curTabItem = tabData.find(item => item.name === tabName)
+  const curTabItem = tabData.value.find(item => item.name === tabName)
   if (curTabItem) {
     emits('tab-change', curTabItem)
   }
@@ -24,7 +25,7 @@ const handleClick = (tabName: string) => {
 </script>
 
 <template>
-  <el-tabs v-model="activePath" @tab-change="handleClick">
+  <el-tabs :v-model="activePath" @tab-change="handleClick">
     <el-tab-pane v-for="item in tabData" :key="item.path" :label="item.title" :name="item.name" class="tab-item" />
   </el-tabs>
 </template>

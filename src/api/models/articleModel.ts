@@ -11,6 +11,7 @@ export interface ArticleType {
   id: number
   uid: string
   name: string
+  catKey: string
   description: string
   visitCount?: number
   createAt?: Date

@@ -2,9 +2,7 @@
   <el-container class="container">
     <RSider />
     <el-main class="main-content">
-      <el-scrollbar>
-        <router-view />
-      </el-scrollbar>
+      <router-view />
     </el-main>
   </el-container>
 </template>
@@ -44,6 +42,7 @@ import RSider from './sider'
 
 .main-content {
   flex: 1;
+  padding: 0;
   overflow: auto;
 }
 </style>

@@ -1,10 +1,12 @@
 <template>
-  <div class="article-page">
-    <!-- <div class="page-title"><span>文章管理</span></div> -->
-    <PageTitle :page-title="pageTitle" />
-    <PageTab :tab-data="currentPageTabs" :active-path="currentTab.name" @tab-change="onTabChange" />
-    <router-view></router-view>
-  </div>
+  <el-scrollbar class="article-page">
+    <div>
+      <!-- <div class="page-title"><span>文章管理</span></div> -->
+      <PageTitle :page-title="pageTitle" />
+      <PageTab :tab-data="currentPageTabs" :active-path="currentTab.name" @tab-change="onTabChange" />
+      <router-view></router-view>
+    </div>
+  </el-scrollbar>
 </template>
 
 <script setup lang="ts">
@@ -29,6 +31,14 @@ const onTabChange = (tabItem: TabItem) => {
   display: flex;
   flex: 1;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 2rem 2rem 0;
+
+  /* stylelint-disable-next-line selector-class-pattern */
+  .el-scrollbar__view {
+    height: 100%;
+  }
 }
 
 .page-title {

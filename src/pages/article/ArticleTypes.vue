@@ -4,6 +4,7 @@ import { ref } from 'vue'
 const curType = ref<ArticleType>({
   id: -1,
   uid: '',
+  catKey: '',
   name: '',
   description: '',
 })
@@ -16,6 +17,9 @@ const curType = ref<ArticleType>({
         <el-form :model="curType" label-position="top">
           <el-form-item label="类型名">
             <el-input v-model="curType.name" placeholder="类型名称" />
+          </el-form-item>
+          <el-form-item label="类型标识符">
+            <el-input v-model="curType.name" placeholder="类型标识符" />
           </el-form-item>
           <el-form-item label="类型描述">
             <el-input v-model="curType.description" placeholder="输入描述" type="textarea" rows="5" />
@@ -35,10 +39,19 @@ const curType = ref<ArticleType>({
 
 .article-types-container {
   display: flex;
+  flex: 1;
   flex-direction: row;
   gap: 5rem;
   width: 100%;
   height: 100%;
-  padding: 2rem 5rem 0;
+  padding: 1rem 0 0;
+}
+
+.article-type-list-container {
+  flex: 1;
+}
+
+.article-type-editor-container {
+  width: 36rem;
 }
 </style>
