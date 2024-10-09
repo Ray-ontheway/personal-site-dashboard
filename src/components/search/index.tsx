@@ -10,7 +10,10 @@ interface SearchProps {
 export default defineComponent({
   name: 'RSearch',
   props: {
-    placeholder: string,
+    placeholder: {
+      type: String,
+      default: '请输入关键字',
+    },
   },
   setup(props, { emit }) {
     const { placeholder } = props
