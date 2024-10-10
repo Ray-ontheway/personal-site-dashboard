@@ -5,6 +5,12 @@ export interface PageObject<T = any> {
   data: T[]
 }
 
+export interface PageInfo {
+  pageIdx: number
+  pageSize: number
+  total: number
+}
+
 export interface BaseResult<T = any> {
   status: number
   msg: string

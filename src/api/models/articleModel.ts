@@ -8,7 +8,7 @@ export interface ArticleTag {
 }
 
 export interface ArticleType {
-  id: number
+  id?: number
   uid: string
   name: string
   catKey: string

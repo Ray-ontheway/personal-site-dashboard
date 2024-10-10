@@ -92,6 +92,7 @@ export const generateArticleType = (data: ArticleTypeReq): BaseResult<ArticleTyp
     id: faker.number.int(1000),
     uid: faker.string.uuid(),
     name: data.name,
+    catKey: faker.string.uuid().substring(0, 8),
     description: 'description',
   }
   return {
@@ -105,6 +106,7 @@ export const updateArticleType = (data: ArticleTypeReq): BaseResult<ArticleType>
     id: data.id,
     uid: data.uid,
     name: data.name,
+    catKey: faker.string.uuid().substring(0, 8),
     description: 'description',
   }
   return {
@@ -114,7 +116,7 @@ export const updateArticleType = (data: ArticleTypeReq): BaseResult<ArticleType>
   }
 }
 export const deleteArticleType = (id: number): BaseResult<string> => {
-  console.log(`id: ${id}`)
+  console.log(`正在删除 id: ${id} 的文章类型`)
   return {
     status: 200,
     msg: 'delete success',
@@ -134,6 +136,7 @@ export const pageArticleType = (pageIdx: number, pageSize: number): BaseResult<P
           id: faker.number.int(1000),
           uid: faker.string.uuid(),
           name: faker.lorem.word(),
+          catKey: faker.string.uuid().substring(0, 8),
           description: 'description',
         }
       }),

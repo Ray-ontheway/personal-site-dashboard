@@ -20,7 +20,7 @@ export function mockArticleApi(mock: MockAdapter) {
   })
 }
 
-export function mockAriticleTagApi(mock: MockAdapter) {
+export function mockArticleTagApi(mock: MockAdapter) {
   mock.onPost(ArticleTagApiPath.CREATE).reply(config => {
     const data = JSON.parse(config.data)
     return [200, generateArticleTag(data)]
@@ -32,13 +32,14 @@ export function mockAriticleTagApi(mock: MockAdapter) {
   })
 
   mock.onDelete(ArticleTagApiPath.DELETE).reply(config => {
+    const pathVars = config.url
     const id = config.params.id
     return [200, deleteArticleTag(id)]
   })
 }
 
 export function mockArticleTypeApi(mock: MockAdapter) {
-  mock.onGet(ArticleTypeApiPath.CREATE).reply(config => {
+  mock.onPost(ArticleTypeApiPath.CREATE).reply(config => {
     const data = JSON.parse(config.data)
     return [200, generateArticleType(data)]
   })
@@ -48,8 +49,9 @@ export function mockArticleTypeApi(mock: MockAdapter) {
     return [200, updateArticleType(data)]
   })
 
-  mock.onDelete(ArticleTypeApiPath.DELETE).reply(config => {
-    const id = config.params.id
+  mock.onDelete(/\/api\/article\/type\/delete\/([0-9a-zA-Z]*)/).reply(config => {
+    const pathVars = config.url.replace(ArticleTypeApiPath.DELETE, '').replace('/', '')
+    const id = Number(pathVars)
     return [200, deleteArticleType(id)]
   })
 
