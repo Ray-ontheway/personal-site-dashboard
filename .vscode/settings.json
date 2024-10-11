@@ -16,5 +16,7 @@
   },
   "javascript.format.enable": false,
   "javascript.suggest.names": false,
-  "javascript.suggestionActions.enabled": false
+  "javascript.suggestionActions.enabled": false,
+  "css.format.enable": false,
+  "scss.format.enable": false
 }

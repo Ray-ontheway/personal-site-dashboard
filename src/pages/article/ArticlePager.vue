@@ -1,7 +1,6 @@
 <template>
   <el-scrollbar class="article-page">
     <div>
-      <!-- <div class="page-title"><span>文章管理</span></div> -->
       <PageTitle :page-title="pageTitle" />
       <PageTab :tab-data="currentPageTabs" :active-path="currentTab.name" @tab-change="onTabChange" />
       <router-view></router-view>
@@ -15,14 +14,20 @@ import PageTab from '@pages/component/PageTab.vue'
 import type { TabItem } from '@hooks/components/usePage'
 import { usePage } from '@/hooks/components/usePage'
 import { useRouter } from 'vue-router'
+import { watch } from 'vue'
 
 const { pageTitle, currentPageTabs, currentTab } = usePage()
 
 const router = useRouter()
+console.log(`currentTab`, currentTab.value)
 
 const onTabChange = (tabItem: TabItem) => {
   router.push({ name: tabItem.name })
 }
+console.log(`currentTab`, currentTab)
+watch(currentTab, newVal => {
+  console.log(`newVal`, newVal)
+})
 </script>
 
 <style lang="scss" scoped>

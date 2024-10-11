@@ -1,10 +1,13 @@
 import { UserResp } from './userModel'
 
 export interface ArticleTag {
-  id: number
+  id?: number
   uid: string
   name: string
+  catKey: string
   description: string
+  createAt?: Date
+  updateAt?: Date
 }
 
 export interface ArticleType {

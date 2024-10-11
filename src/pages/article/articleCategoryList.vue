@@ -8,7 +8,7 @@ import ArticleCategoryEditor from './components/articleCategoryEditor.vue'
 export default defineComponent({
   name: 'ArticleCategory',
   setup() {
-    const { currentAricleCategories, fetchArticleCategoryByUserId } = useArticleManager()
+    const { currentArticleCategories, fetchArticleCategoryByUserId } = useArticleManager()
 
     fetchArticleCategoryByUserId('userId_dfasfdsa')
 
@@ -80,7 +80,7 @@ export default defineComponent({
     const renderArticleCategory = () => {
       return (
         <>
-          {currentAricleCategories.value.map(category => (
+          {currentArticleCategories.value.map(category => (
             <CategoryItem
               key={category.uid}
               uid={category.uid}

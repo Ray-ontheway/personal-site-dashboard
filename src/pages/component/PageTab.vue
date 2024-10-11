@@ -22,10 +22,12 @@ const handleClick = (tabName: string) => {
     emits('tab-change', curTabItem)
   }
 }
+console.log(`tabData`, tabData.value)
+console.log(`activePath`, activePath.value)
 </script>
 
 <template>
-  <el-tabs :v-model="activePath" @tab-change="handleClick">
+  <el-tabs v-model="activePath" @tab-change="handleClick">
     <el-tab-pane v-for="item in tabData" :key="item.path" :label="item.title" :name="item.name" class="tab-item" />
   </el-tabs>
 </template>

@@ -32,15 +32,9 @@ export const useArticleType = () => {
     articleTypePage.value.pageSize = pageSize
     syncPageArticleType()
   }
-  const deleteArticleType = (type: ArticleType) => {
-    ArticleTypeApi.delete(type.id).then(() => {
-      console.log('删除成功')
-    })
-    syncPageArticleType()
-  }
 
   // TODO 获取所有文章类型
-  const syncArticleTypeList = async () => {
+  const syncAllArticleType = async () => {
     const types = await ArticleTypeApi.all()
     articleTypeList.value = types
   }
@@ -67,12 +61,22 @@ export const useArticleType = () => {
     // 如果文章类型的id 为undefined，说明是新增的文章类型
     if (currentArticleType.value.id === undefined) {
       await ArticleTypeApi.create(currentArticleType.value)
+      console.log('新增文章类型')
     } else {
       // 如果文章类型的id 不为undefined，则说明是更新文章类型
+      console.log('更新文章类型')
       await ArticleTypeApi.update(currentArticleType.value)
     }
     resetCurrentArticleType()
+    syncAllArticleType()
     return true
+  }
+
+  const deleteArticleType = (type: ArticleType) => {
+    ArticleTypeApi.delete(type.id).then(() => {
+      console.log('删除成功')
+    })
+    syncAllArticleType()
   }
 
   return {
@@ -84,7 +88,7 @@ export const useArticleType = () => {
     changePageIdx,
     changePageSize,
     setCurrentArticleType,
-    syncArticleTypeList,
+    syncAllArticleType,
     saveArticleType,
     deleteArticleType,
   }
@@ -93,18 +97,51 @@ export const useArticleType = () => {
 export const useArticleTag = () => {
   const articleTagList = ref<ArticleTag[]>([])
 
-  // TODO 获取所有文章tag
-
-  // TODO 当前编辑的文章tag
+  const ARTICLE_TAG_DEFAULT = {
+    uid: '',
+    name: '',
+    catKey: '',
+    description: '',
+  }
+  const currentArticleTag = ref<ArticleTag>(ARTICLE_TAG_DEFAULT)
+  const resetCurrentArticleTag = () => {
+    currentArticleTag.value = ARTICLE_TAG_DEFAULT
+  }
+  const setCurrentArticleTag = (tag: ArticleTag) => {
+    currentArticleTag.value = tag
+  }
 
   // TODO 新增文章tag
+  const saveArticleTag = async () => {
+    if (currentArticleTag.value.id === undefined) {
+      await ArticleTagApi.create(currentArticleTag.value)
+    } else {
+      await ArticleTagApi.update(currentArticleTag.value)
+    }
+    resetCurrentArticleTag()
+    syncAllArticleTags()
+    return true
+  }
 
-  // 目前开始，先全部同步
-  const fetchAllArticleTag = async () => {
+  const deleteArticleTag = (tag: ArticleTag) => {
+    ArticleTagApi.delete(tag.id).then(() => {
+      console.log('删除成功')
+    })
+    syncAllArticleTags()
+  }
+
+  // 获取所有文章tag
+  const syncAllArticleTags = async () => {
     articleTagList.value = await ArticleTagApi.all()
   }
 
   return {
     articleTagList,
+    currentArticleTag,
+
+    syncAllArticleTags,
+    setCurrentArticleTag,
+    saveArticleTag,
+    deleteArticleTag,
   }
 }

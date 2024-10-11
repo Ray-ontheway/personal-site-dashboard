@@ -38,6 +38,7 @@ export const generateArticleTag = (data: ArticleTagReq): BaseResult<ArticleTag> 
     id: faker.number.int(1000),
     uid: faker.string.uuid(),
     name: data.name,
+    catKey: faker.string.uuid().substring(0, 8),
     description: 'description',
   }
   return {
@@ -50,6 +51,7 @@ export const updateArticleTag = (data: ArticleTagReq): BaseResult<ArticleTag> =>
   const tag: ArticleTag = {
     id: data.id,
     uid: data.uid,
+    catKey: faker.string.uuid().substring(0, 8),
     name: data.name,
     description: 'description',
   }
@@ -79,10 +81,26 @@ export const pageArticleTag = (pageIdx: number, pageSize: number): BaseResult<Pa
           id: faker.number.int(1000),
           uid: faker.string.uuid(),
           name: faker.lorem.word(),
+          catKey: faker.string.uuid().substring(0, 8),
           description: 'description',
         }
       }),
     },
+  }
+}
+export const allArticleTags = (): BaseResult<ArticleTag[]> => {
+  return {
+    status: 200,
+    msg: 'success',
+    data: Array.from({ length: 10 }).map(() => {
+      return {
+        id: faker.number.int(1000),
+        uid: faker.string.uuid(),
+        name: faker.lorem.word(),
+        catKey: faker.string.uuid().substring(0, 8),
+        description: 'description',
+      }
+    }),
   }
 }
 
@@ -141,6 +159,21 @@ export const pageArticleType = (pageIdx: number, pageSize: number): BaseResult<P
         }
       }),
     },
+  }
+}
+export const allArticleType = (): BaseResult<ArticleType[]> => {
+  return {
+    status: 200,
+    msg: 'success',
+    data: Array.from({ length: 10 }).map(() => {
+      return {
+        id: faker.number.int(1000),
+        uid: faker.string.uuid(),
+        name: faker.lorem.word(),
+        catKey: faker.string.uuid().substring(0, 8),
+        description: 'description',
+      }
+    }),
   }
 }
 

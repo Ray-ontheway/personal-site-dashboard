@@ -48,14 +48,14 @@ export const usePage = () => {
   })
 
   const currentTab = computed(() => {
+    console.log(`currentTab: ${route.path}`)
+
     return {
       path: route.path,
       name: route.name as string,
       title: route.meta.title,
     }
   })
-
-  // const
 
   return {
     pageTitle,

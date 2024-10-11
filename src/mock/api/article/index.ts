@@ -8,9 +8,9 @@ import {
   deleteArticleType,
   updateArticleType,
   generateArticleType,
+  allArticleType,
 } from './results'
 import { ArticleApiPath, ArticleTagApiPath, ArticleTypeApiPath } from '@/api/paths'
-import { ArticleTypeApi } from '@/api/article'
 
 export function mockArticleApi(mock: MockAdapter) {
   mock.onGet(/\/api\/article\/all([0-9a-zA-Z]*)/).reply(config => {
@@ -31,10 +31,14 @@ export function mockArticleTagApi(mock: MockAdapter) {
     return [200, updateArticleTag(data)]
   })
 
-  mock.onDelete(ArticleTagApiPath.DELETE).reply(config => {
-    const pathVars = config.url
-    const id = config.params.id
+  mock.onDelete(/\/api\/article\/tag\/delete\/([0-9a-zA-Z]*)/).reply(config => {
+    const pathVars = config.url.replace(ArticleTypeApiPath.DELETE, '').replace('/', '')
+    const id = Number(pathVars)
     return [200, deleteArticleTag(id)]
+  })
+
+  mock.onGet(ArticleTagApiPath.ALL).reply(() => {
+    return [200, allArticleType()]
   })
 }
 
@@ -59,5 +63,9 @@ export function mockArticleTypeApi(mock: MockAdapter) {
     const pageIdx = config.params.pageIdx
     const pageSize = config.params.pageSize
     return [200, pageArticleType(pageIdx, pageSize)]
+  })
+
+  mock.onGet(ArticleTypeApiPath.ALL).reply(() => {
+    return [200, allArticleType()]
   })
 }

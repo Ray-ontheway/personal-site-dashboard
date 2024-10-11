@@ -88,7 +88,7 @@ export class ArticleTypeApi {
       },
     })
   }
-
+  // 5. 查询全部的类型，目前不打算做分页了，个人网站的类型会很少
   static async all(): Promise<ArticleType[]> {
     return axiosClient.get(ArticleTypeApiPath.ALL)
   }

@@ -16,7 +16,7 @@ const useArticleManager = () => {
       })
   }
   return {
-    currentAricleCategories,
+    currentArticleCategories,
     fetchArticleCategoryByUserId,
   }
 }
