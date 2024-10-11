@@ -33,20 +33,33 @@ export interface ArticleCategoryResp {
   createAt: Date
 }
 
-export interface Article {
-  id?: string
-  uid: string
+export interface ArticleReq {
+  id?: number
+  uid?: string
   title: string
-  tags: string[]
-  category?: ArticleCategoryResp
   summary: string
   content: string
+  typeId: number
+  tagIds: number[]
+  isPublish: boolean
+}
+
+export interface Article {
+  id?: number
+  uid: string
+  title: string
+  summary: string
+  content: string
+
+  type?: ArticleType
+  tags?: string[]
+
   visitCount?: number
   isPublished?: boolean
+
   createBy?: UserResp
   publishAt?: Date
   createAt?: Date
-  type?: ArticleType
 }
 
 export interface ArticleEditModel {
@@ -72,15 +85,4 @@ export interface ArticleTypeReq {
   uid?: string
   name: string
   description: string
-}
-
-export interface ArticleReq {
-  id?: number
-  uid?: string
-  title: string
-  summary: string
-  content: string
-  typeId: number
-  tagIds: number[]
-  isPublish: boolean
 }

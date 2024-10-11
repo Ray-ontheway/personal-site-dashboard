@@ -9,14 +9,28 @@ import {
   updateArticleType,
   generateArticleType,
   allArticleType,
+  pageArticle,
+  deleteArticle,
 } from './results'
 import { ArticleApiPath, ArticleTagApiPath, ArticleTypeApiPath } from '@/api/paths'
 
 export function mockArticleApi(mock: MockAdapter) {
-  mock.onGet(/\/api\/article\/all([0-9a-zA-Z]*)/).reply(config => {
+  mock.onGet(/\/api\/article\/all\/([0-9a-zA-Z]*)/).reply(config => {
     const match = config.url?.match(/\/api\/article\/all\/([0-9a-zA-Z]*)/)
     const userId = match ? match[1] : ''
     return [200, generateArticleCategoryByUserId(userId)]
+  })
+
+  mock.onGet(ArticleApiPath.PAGE).reply(config => {
+    const pageIdx = config.params.pageIdx
+    const pageSize = config.params.pageSize
+    return [200, pageArticle(pageIdx, pageSize)]
+  })
+
+  mock.onDelete(/\/api\/article\/delete\/([0-9a-zA-Z]*)/).reply(config => {
+    const pathVars = config.url.replace(ArticleApiPath.DELETE, '').replace('/', '')
+    const uid = pathVars
+    return [200, deleteArticle(uid)]
   })
 }
 

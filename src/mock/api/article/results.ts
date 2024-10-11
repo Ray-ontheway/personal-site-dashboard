@@ -1,4 +1,11 @@
-import { ArticleCategoryResp, ArticleTag, ArticleTagReq, ArticleTypeReq, ArticleType } from '@/api/models/articleModel'
+import {
+  ArticleCategoryResp,
+  ArticleTag,
+  ArticleTagReq,
+  ArticleTypeReq,
+  ArticleType,
+  Article,
+} from '@/api/models/articleModel'
 import { faker } from '@faker-js/faker'
 import { UserResp, RoleResp } from '@api/models/userModel'
 import { generateUserRoles } from '../user/results'
@@ -13,13 +20,18 @@ export const generateArticleCategoryResp = (userId: string): ArticleCategoryResp
   articleCount: faker.number.int(100),
   visitCount: faker.number.int(1000),
   createBy: {
-    id: faker.string.uuid(),
-    userId: userId,
+    id: 1,
     username: faker.internet.userName(),
     avatar: faker.image.avatar(),
     short_bio: faker.lorem.sentence(),
     registeredAt: faker.date.past(),
-    roles: generateUserRoles() as RoleResp[],
+    roles: [
+      {
+        id: 0,
+        name: faker.lorem.word(),
+        description: faker.lorem.sentence(),
+      },
+    ],
   } as UserResp,
   createAt: faker.date.past(),
 })
@@ -29,6 +41,65 @@ export const generateArticleCategoryByUserId = (userId: string): BaseResult<Arti
     status: 200,
     msg: 'success',
     data: Array.from({ length: 10 }).map(() => generateArticleCategoryResp(userId)),
+  }
+}
+
+// 文章
+export const pageArticle = (pageIdx: number, pageSize: number): BaseResult<PageObject<Article>> => {
+  return {
+    status: 200,
+    msg: 'success',
+    data: {
+      pageIdx: pageIdx,
+      pageSize: pageSize,
+      total: faker.number.int(100),
+      data: Array.from({ length: pageSize }).map(
+        (it: number): Article => ({
+          id: it,
+          uid: faker.string.uuid(),
+          title: faker.lorem.word(),
+          summary: faker.lorem.sentence(),
+          content: faker.lorem.paragraph(),
+
+          type: {
+            id: faker.number.int(1000),
+            uid: faker.string.uuid(),
+            name: faker.lorem.word(),
+            catKey: faker.string.uuid().substring(0, 8),
+            description: 'description',
+          },
+          tags: Array.from({ length: 3 }).map(() => faker.lorem.word()),
+
+          visitCount: faker.number.int(50),
+          isPublished: faker.number.int(10) % 2 === 0,
+
+          createBy: {
+            id: 1,
+            username: faker.internet.userName(),
+            avatar: faker.image.avatar(),
+            short_bio: faker.lorem.sentence(),
+            registeredAt: faker.date.past(),
+            roles: [
+              {
+                id: 0,
+                name: faker.lorem.word(),
+                description: faker.lorem.sentence(),
+              },
+            ],
+          },
+          publishAt: faker.date.past(),
+          createAt: faker.date.past(),
+        })
+      ),
+    },
+  }
+}
+
+export const deleteArticle = (uid: string): BaseResult<string> => {
+  return {
+    status: 200,
+    msg: `delete ${uid} success`,
+    data: 'delete success',
   }
 }
 

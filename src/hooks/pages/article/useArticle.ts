@@ -1,5 +1,5 @@
 import { PageObject } from '@/api/models/common'
-import { Article } from '@/api/models/articleModel'
+import { Article, ArticleReq } from '@/api/models/articleModel'
 import { ArticleAPI } from '@/api/article'
 import { ref } from 'vue'
 
@@ -8,7 +8,7 @@ export const useArticle = () => {
   const articlePage = ref<PageObject<Article>>({
     pageIdx: 1,
     pageSize: 10,
-    total: 0,
+    total: 100,
     data: [],
   })
 
@@ -32,7 +32,7 @@ export const useArticle = () => {
   }
 
   // 2. 保存文章
-  const saveArticle = async (article: Article) => {
+  const saveArticle = async (article: ArticleReq) => {
     if (article.id === undefined) {
       await ArticleAPI.create(article)
       console.log('新增文章')
@@ -44,8 +44,9 @@ export const useArticle = () => {
   }
 
   // 3. 删除文章
-  const deleteArticle = async (uid: string) => {
-    await ArticleAPI.delete(uid)
+  const deleteArticle = async (article: Article) => {
+    const result = await ArticleAPI.delete(article.uid)
+    console.log(result)
     syncArticlePage()
   }
 
@@ -55,5 +56,6 @@ export const useArticle = () => {
     changePageIdx,
     changePageSize,
     saveArticle,
+    deleteArticle,
   }
 }

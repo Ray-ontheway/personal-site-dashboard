@@ -14,7 +14,7 @@ export interface UserUpdate {
 }
 
 export interface UserResp {
-  id: string
+  id: number
   username: string
   avatar: string
   short_bio: string
@@ -22,13 +22,13 @@ export interface UserResp {
   roles: RoleResp[]
 }
 
+export interface RoleResp {
+  id: number
+  name: string
+  description: string
+}
+
 export interface UserLogin {
   email: string
   password: string
-}
-
-export interface RoleResp {
-  id: string
-  name: string
-  description: string
 }

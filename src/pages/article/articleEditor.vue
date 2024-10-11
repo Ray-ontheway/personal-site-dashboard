@@ -48,30 +48,35 @@ const types: ArticleType[] = [
     id: 1,
     uid: '1',
     name: '前端',
+    catKey: 'frontend',
     description: '前端技术',
   },
   {
     id: 2,
     uid: '2',
     name: '后端',
+    catKey: 'backend',
     description: '后端技术',
   },
   {
     id: 3,
     uid: '3',
     name: '数据库',
+    catKey: 'database',
     description: '数据库技术',
   },
   {
     id: 4,
     uid: '4',
     name: '运维',
+    catKey: 'devops',
     description: '运维技术',
   },
   {
     id: 5,
     uid: '6',
     name: '云开发',
+    catKey: 'cloud',
     description: '云开发技术',
   },
 ]
@@ -80,30 +85,35 @@ const tags: ArticleTag[] = [
     id: 1,
     uid: '1',
     name: 'SpringBoot',
+    catKey: 'springboot',
     description: 'Spring Boot 技术',
   },
   {
     id: 2,
     uid: '2',
     name: 'Vue',
+    catKey: 'vue',
     description: 'Vue 技术',
   },
   {
     id: 3,
     uid: '3',
     name: 'MySQL',
+    catKey: 'mysql',
     description: 'MySQL 技术',
   },
   {
     id: 4,
     uid: '4',
     name: 'Nginx',
+    catKey: 'nginx',
     description: 'Nginx 技术',
   },
   {
     id: 5,
     uid: '5',
     name: '云',
+    catKey: 'cloud',
     description: '云 技术',
   },
 ]
@@ -243,6 +253,10 @@ const publish = () => {
 </template>
 
 <style lang="scss">
+* {
+  font-size: 16px;
+}
+
 .editor-container {
   display: flex;
   flex-direction: row;
@@ -256,10 +270,14 @@ const publish = () => {
 .editor-content {
   flex: 1;
   min-height: 80vh;
+  width: 100%;
 
-  &.el-card {
+  & > .el-card__body {
     display: flex;
     flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 }
 
