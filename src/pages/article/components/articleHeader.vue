@@ -79,7 +79,7 @@ export default defineComponent({
     const renderSearch = () => {
       return (
         <>
-          <RSearch class="article-header-search" onSearch={handleSearch} />
+          <RSearch class="article-header-search" on-search={handleSearch} />
         </>
       )
     }

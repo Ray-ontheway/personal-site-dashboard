@@ -1,53 +1,28 @@
 <script setup lang="ts">
 import { useArticleType } from '@/hooks/pages/article/useArticleType'
-import { FormInstance, FormRules } from 'element-plus'
-import { reactive, ref } from 'vue'
+import { ref } from 'vue'
+import ArticleTypeForm from './components/ArticleTypeForm.vue'
+import { ArticleType } from '@/api/models/articleModel'
 
-const {
-  currentArticleType,
-  articleTypeList,
-  syncAllArticleType,
-  setCurrentArticleType,
-  saveArticleType,
-  deleteArticleType,
-} = useArticleType()
+const { articleTypeList, syncAllArticleType, deleteArticleType } = useArticleType()
 
 syncAllArticleType()
 
-const isValidated = ref(false)
+const editType = ref<ArticleType | undefined>(undefined)
+const isEditable = ref(false)
+const triggerEditable = (type: ArticleType | undefined = undefined) => {
+  editType.value = type
+  console.log('editType', editType.value)
 
-const validateTypeCatKey = (_rule: any, value: any, callback: any) => {
-  if (value === '') {
-    callback(new Error('请输入类型标识符'))
-  } else if (value !== currentArticleType.value.catKey) {
-    callback(new Error('类型标识符不可修改'))
-  } else if (!/^[a-zA-Z0-9]+$/.test(value)) {
-    callback(new Error('类型标识符只能包含字母和数字'))
-  } else {
-    callback()
-  }
+  isEditable.value = true
 }
-const typeFormRef = ref<FormInstance>()
-const rules = reactive<FormRules<typeof currentArticleType>>({
-  name: [
-    { required: true, message: '请输入类型名', trigger: 'change' },
-    { min: 1, max: 50, message: 'Length should be 3 to 5', trigger: 'change' },
-  ],
-  catKey: [
-    { required: true, message: '请输入类型标识符', trigger: 'change' },
-    { min: 3, max: 15, message: 'Length should be 3 to 5', trigger: 'change' },
-    { validator: validateTypeCatKey, trigger: 'change' },
-  ],
-})
-const isNameValidated = ref(false)
-const isCatKeyValidated = ref(false)
-const onValidate = (prop, isValid) => {
-  if (prop === 'name') {
-    isNameValidated.value = isValid
-  } else if (prop === 'catKey') {
-    isCatKeyValidated.value = isValid
-  }
-  isValidated.value = isNameValidated.value && isCatKeyValidated.value
+const handleTypeSaveSuccess = () => {
+  isEditable.value = false
+  console.log('弹窗保存成功')
+}
+const handleTypeSaveError = () => {
+  isEditable.value = false
+  console.log('弹窗保存失败')
 }
 </script>
 <template>
@@ -58,8 +33,13 @@ const onValidate = (prop, isValid) => {
         <el-table-column prop="catKey" label="类型标识符" />
         <el-table-column prop="description" label="标签描述" />
         <el-table-column label="操作" fixed="right" width="120">
+          <template #header>
+            <div style="margin: auto 0">
+              <el-button type="primary" @click="triggerEditable(undefined)">新增</el-button>
+            </div>
+          </template>
           <template #default="{ row }">
-            <el-button link type="primary" @click="setCurrentArticleType(row)">编辑</el-button>
+            <el-button link type="primary" @click="triggerEditable(row)">编辑</el-button>
             <el-popconfirm
               title="确认删除该类型吗"
               @confirm="deleteArticleType(row)"
@@ -74,41 +54,11 @@ const onValidate = (prop, isValid) => {
         </el-table-column>
       </el-table>
     </el-card>
-    <el-card class="article-type-editor-container">
-      <el-form
-        ref="typeFormRef"
-        :model="currentArticleType"
-        @validate="onValidate"
-        :rules="rules"
-        label-position="top"
-        status-icon
-      >
-        <el-form-item label="类型名" prop="name" required>
-          <el-input v-model="currentArticleType.name" placeholder="类型名称" />
-        </el-form-item>
-        <el-form-item label="类型标识符" prop="catKey" required>
-          <el-input v-model="currentArticleType.catKey" placeholder="类型标识符" />
-        </el-form-item>
-        <el-form-item label="类型描述" prop="description">
-          <el-input v-model="currentArticleType.description" placeholder="输入描述" type="textarea" rows="5" />
-        </el-form-item>
-        <el-form-item>
-          <el-popconfirm
-            title="确认保存吗?"
-            confirm-button-text="确定"
-            cancel-button-text="取消"
-            @confirm="saveArticleType"
-          >
-            <template #reference>
-              <el-button type="primary" :disabled="!isValidated">
-                {{ currentArticleType.id === undefined ? '新增' : '更新' }}
-              </el-button>
-            </template>
-          </el-popconfirm>
-        </el-form-item>
-      </el-form>
-    </el-card>
   </div>
+
+  <el-dialog v-model="isEditable">
+    <ArticleTypeForm :data="editType" @save-error="handleTypeSaveError" @save-success="handleTypeSaveSuccess" />
+  </el-dialog>
 </template>
 <style lang="scss" scoped>
 * {

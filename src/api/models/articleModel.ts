@@ -51,6 +51,8 @@ export interface Article {
   summary: string
   content: string
 
+  cover?: string
+
   type?: ArticleType
   tags?: string[]
 
@@ -63,7 +65,7 @@ export interface Article {
 }
 
 export interface ArticleEditModel {
-  id?: string
+  id?: number
   uid: string
   cover?: string
   title: string

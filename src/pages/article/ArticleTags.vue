@@ -15,7 +15,6 @@ const {
 syncAllArticleTags()
 
 const isValidated = ref(false)
-
 const validateTypeCatKey = (_rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('请输入类型标识符'))

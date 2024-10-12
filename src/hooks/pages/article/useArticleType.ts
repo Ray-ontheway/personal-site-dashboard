@@ -1,7 +1,8 @@
 import { ArticleTag, ArticleType } from '@api/models/articleModel'
-import { ref } from 'vue'
+import { Ref, ref, watchEffect } from 'vue'
 import { ArticleTagApi, ArticleTypeApi } from '@/api/article'
 import { PageObject } from '@/api/models/common'
+import { ca } from 'element-plus/es/locales.mjs'
 
 export const useArticleType = () => {
   // 文章类型列表
@@ -39,39 +40,7 @@ export const useArticleType = () => {
     articleTypeList.value = types
   }
 
-  const ARTICLE_TYPE_DEFAULT = {
-    uid: '',
-    name: '',
-    catKey: '',
-    description: '',
-  }
-  // TODO 当前编辑的文章类型
-  const currentArticleType = ref<ArticleType>(ARTICLE_TYPE_DEFAULT)
-  // 文章类型 设置为默认
-  const resetCurrentArticleType = () => {
-    currentArticleType.value = ARTICLE_TYPE_DEFAULT
-  }
-  // 如果是更新文章类型，需要设置当前文章类型
-  const setCurrentArticleType = (type: ArticleType) => {
-    currentArticleType.value = type
-  }
-
-  // TODO 保存文章类型
-  const saveArticleType = async () => {
-    // 如果文章类型的id 为undefined，说明是新增的文章类型
-    if (currentArticleType.value.id === undefined) {
-      await ArticleTypeApi.create(currentArticleType.value)
-      console.log('新增文章类型')
-    } else {
-      // 如果文章类型的id 不为undefined，则说明是更新文章类型
-      console.log('更新文章类型')
-      await ArticleTypeApi.update(currentArticleType.value)
-    }
-    resetCurrentArticleType()
-    syncAllArticleType()
-    return true
-  }
-
+  // 删除文章类型
   const deleteArticleType = (type: ArticleType) => {
     ArticleTypeApi.delete(type.id).then(() => {
       console.log('删除成功')
@@ -81,15 +50,12 @@ export const useArticleType = () => {
 
   return {
     articleTypeList,
-    currentArticleType,
     articleTypePage,
 
     syncPageArticleType,
     changePageIdx,
     changePageSize,
-    setCurrentArticleType,
     syncAllArticleType,
-    saveArticleType,
     deleteArticleType,
   }
 }
@@ -143,5 +109,94 @@ export const useArticleTag = () => {
     setCurrentArticleTag,
     saveArticleTag,
     deleteArticleTag,
+  }
+}
+
+// ArticleType 编辑响应式
+export const useArticleTypeForm = (articleType: Ref<ArticleType | undefined>) => {
+  const ARTICLE_TYPE_DEFAULT = {
+    uid: '',
+    name: '',
+    catKey: '',
+    description: '',
+  }
+  const currentArticleType = ref<ArticleType>(ARTICLE_TYPE_DEFAULT)
+
+  const resolveArticleType = () => {
+    currentArticleType.value = ARTICLE_TYPE_DEFAULT
+    if (articleType.value !== undefined) {
+      currentArticleType.value = articleType.value
+    }
+  }
+
+  watchEffect(() => {
+    resolveArticleType()
+  })
+
+  const resetCurrentArticleType = () => {
+    currentArticleType.value = ARTICLE_TYPE_DEFAULT
+  }
+
+  const saveArticleType = async () => {
+    // 如果文章类型的id 为undefined，说明是新增的文章类型
+    try {
+      if (currentArticleType.value.id === undefined) {
+        await ArticleTypeApi.create(currentArticleType.value)
+        console.log('新增文章类型')
+      } else {
+        // 如果文章类型的id 不为undefined，则说明是更新文章类型
+        console.log('更新文章类型')
+        await ArticleTypeApi.update(currentArticleType.value)
+      }
+      resetCurrentArticleType()
+    } catch (error) {
+      return false
+    }
+    return true
+  }
+  return {
+    currentArticleType,
+    resetCurrentArticleType,
+    saveArticleType,
+  }
+}
+
+// ArticleTag 编辑响应式
+export const useArticleTagForm = (articleTag: Ref<ArticleTag | undefined>) => {
+  const ARTICLE_TAG_DEFAULT = {
+    uid: '',
+    name: '',
+    catKey: '',
+    description: '',
+  }
+  const currentArticleTag = ref<ArticleTag>(ARTICLE_TAG_DEFAULT)
+
+  const resolveArticleTag = () => {
+    if (articleTag.value !== undefined) {
+      currentArticleTag.value = articleTag.value
+    }
+  }
+
+  watchEffect(() => {
+    resolveArticleTag()
+  })
+
+  // TODO 新增文章tag
+  const saveArticleTag = async () => {
+    try {
+      if (currentArticleTag.value.id === undefined) {
+        await ArticleTagApi.create(currentArticleTag.value)
+      } else {
+        await ArticleTagApi.update(currentArticleTag.value)
+      }
+    } catch (error) {
+      return false
+    }
+    return true
+  }
+
+  return {
+    currentArticleTag,
+    saveArticleTag,
   }
 }

@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { MdEditor } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
-import { reactive, ref, onMounted, onBeforeUnmount } from 'vue'
+import { onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
-import { ArticleEditModel, ArticleTag, ArticleType } from '@api/models/articleModel'
+import { ArticleTag, ArticleType } from '@api/models/articleModel'
 import ImageUpload from '@/components/upload/ImageUpload.vue'
+import { useArticleEditor } from '@/hooks/pages/article/useArticle'
+import { FileApi } from '@/api/file'
+import { ElNotification } from 'element-plus'
 
 const route = useRoute()
 
@@ -27,21 +30,14 @@ onBeforeUnmount(() => {
 const handleSave = (value: string) => {
   console.log(value)
 }
-const handleContentChange = (value: string) => {
-  articleState.summary = value.slice(0, 50)
+const onContentChange = (value: string) => {
+  editorArticle.value.summary = value.slice(0, 50)
 }
 const handleImageUpload = (files: File[], callback: (urls: string[]) => void) => {
   console.log(files)
   console.log(callback)
   callback(['https://example.com/image.png'])
 }
-
-const articleState = reactive<ArticleEditModel>({
-  uid: '1',
-  title: '',
-  summary: '',
-  content: '',
-})
 
 const types: ArticleType[] = [
   {
@@ -117,28 +113,31 @@ const tags: ArticleTag[] = [
     description: '云 技术',
   },
 ]
-const tagRef = ref<ArticleTag[]>([])
-const typeRef = ref<ArticleType | null>()
+
+const { curTypes, curTags, editorType, editorTags, editorArticle, isDraft, saveAsDraft, publish } = useArticleEditor(
+  types,
+  tags,
+  undefined
+)
 
 const handleTypeChange = (value: any) => {
-  typeRef.value = value
-  console.log(typeRef.value)
+  editorType.value = value
+  console.log(editorType.value)
   if (value) {
-    articleState.typeId = value.id
+    editorArticle.value.typeId = value.id
   }
 }
 const handleTagsChange = (value: any) => {
-  tagRef.value = value
-  console.log(tagRef.value)
-  if (value && value.length > 0) {
-    articleState.tagIds = value.map((tag: ArticleTag) => tag.id)
+  editorTags.value = value
+  if (value) {
+    editorArticle.value.tagIds = value.map((tag: ArticleTag) => tag.id)
   }
 }
 
 const handleUpload = (file: File, onLoading: () => void, onSuccess: (urls: string) => void, onError: () => void) => {
   // 处理上传逻辑
   onLoading()
-  resolveUpload(file)
+  FileApi.upload(file)
     .then(url => {
       onSuccess(url)
     })
@@ -147,63 +146,31 @@ const handleUpload = (file: File, onLoading: () => void, onSuccess: (urls: strin
     })
 }
 
-const delay = (ms: number) => {
-  return new Promise(resolve => {
-    setTimeout(resolve, ms)
-  })
-}
-
-const resolveUpload = async (file: File) => {
-  // 处理上传逻辑
-  console.log('上传文件', file)
-  await delay(3000)
-
-  return new Promise<string>((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = e => {
-      if (e.target && e.target.result) {
-        resolve(e.target.result as string)
-      } else {
-        resolve(e.target?.result as string)
-      }
-    }
-    reader.onerror = e => {
-      reject(e)
-    }
-    reader.readAsDataURL(file)
-  })
-}
-
-const handleCoverUploadSuccess = (url: string) => {
-  articleState.cover = url
+const onCoverUploadSuccess = (url: string) => {
+  editorArticle.value.cover = url
   console.log(url)
 }
-const handleConverUploadError = () => {
+const onCoverUploadError = () => {
   console.log('上传失败')
+  ElNotification.error({
+    title: '上传失败',
+    message: '上传封面图片失败',
+  })
 }
 const handleCoverUploading = () => {
   console.log('上传中')
-}
-
-const saveAsDraft = () => {
-  console.log('保存为草稿')
-  console.log(articleState)
-}
-const publish = () => {
-  console.log('发布')
-  console.log(articleState)
 }
 </script>
 
 <template>
   <div class="editor-container">
     <el-card class="editor-content">
-      <el-input v-model="articleState.title" placeholder="请输入文章标题"></el-input>
+      <el-input v-model="editorArticle.title" placeholder="请输入文章标题"></el-input>
       <MdEditor
-        v-model="articleState.content"
+        v-model="editorArticle.content"
         class="left-align-text"
         @on-save="handleSave"
-        @change="handleContentChange"
+        @change="onContentChange"
         @on-upload-img="handleImageUpload"
       />
     </el-card>
@@ -211,24 +178,24 @@ const publish = () => {
       <el-card>
         <template #header> <span>保存</span> </template>
         <div class="btn-option">
-          <el-button type="info" plain @click="saveAsDraft">保存为草稿</el-button>
-          <el-button type="primary" @click="publish">发布</el-button>
+          <el-button v-if="isDraft" type="info" plain @click="saveAsDraft">保存为草稿</el-button>
+          <el-button type="primary" @click="publish">{{ isDraft ? '发布' : '更新' }}</el-button>
         </div>
       </el-card>
       <el-card class="editor-meta__item">
         <template #header>
           <span>分类</span>
         </template>
-        <el-select v-model="typeRef" value-key="id" clearable @change="handleTypeChange">
-          <el-option v-for="type in types" :key="type.id" :label="type.name" :value="type" />
+        <el-select v-model="editorType" value-key="id" clearable @change="handleTypeChange">
+          <el-option v-for="type in curTypes" :key="type.id" :label="type.name" :value="type" />
         </el-select>
       </el-card>
       <el-card class="editor-meta__item">
         <template #header>
           <span>标签</span>
         </template>
-        <el-select v-model="tagRef" value-key="id" clearable multiple @change="handleTagsChange">
-          <el-option v-for="tag in tags" :key="tag.id" :label="tag.name" :value="tag" />
+        <el-select v-model="editorTags" value-key="id" clearable multiple @change="handleTagsChange">
+          <el-option v-for="tag in curTags" :key="tag.id" :label="tag.name" :value="tag" />
         </el-select>
       </el-card>
       <el-card class="editor-meta__item">
@@ -237,8 +204,8 @@ const publish = () => {
         </template>
         <ImageUpload
           @before-upload="handleUpload"
-          @on-success="handleCoverUploadSuccess"
-          @on-error="handleConverUploadError"
+          @on-success="onCoverUploadSuccess"
+          @on-error="onCoverUploadError"
           @on-loading="handleCoverUploading"
         />
       </el-card>
@@ -246,7 +213,13 @@ const publish = () => {
         <template #header>
           <span>摘要</span>
         </template>
-        <el-input v-model="articleState.summary" class="input-summary" type="textarea" maxlength="50" show-word-limit />
+        <el-input
+          v-model="editorArticle.summary"
+          class="input-summary"
+          type="textarea"
+          maxlength="50"
+          show-word-limit
+        />
       </el-card>
     </div>
   </div>
