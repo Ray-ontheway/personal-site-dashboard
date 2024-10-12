@@ -77,7 +77,7 @@ export const useArticleEditor = (
     title: '',
     summary: '',
     content: '',
-    isPublished: true,
+    isPublished: false,
   } as ArticleEditModel
   const editorArticle = ref<ArticleEditModel>(
     article === undefined

@@ -1,8 +1,7 @@
 import { ArticleTag, ArticleType } from '@api/models/articleModel'
-import { Ref, ref, watchEffect } from 'vue'
+import { Ref, ref, watch, watchEffect } from 'vue'
 import { ArticleTagApi, ArticleTypeApi } from '@/api/article'
 import { PageObject } from '@/api/models/common'
-import { ca } from 'element-plus/es/locales.mjs'
 
 export const useArticleType = () => {
   // 文章类型列表
@@ -123,9 +122,10 @@ export const useArticleTypeForm = (articleType: Ref<ArticleType | undefined>) =>
   const currentArticleType = ref<ArticleType>(ARTICLE_TYPE_DEFAULT)
 
   const resolveArticleType = () => {
-    currentArticleType.value = ARTICLE_TYPE_DEFAULT
     if (articleType.value !== undefined) {
-      currentArticleType.value = articleType.value
+      currentArticleType.value = { ...articleType.value }
+    } else {
+      currentArticleType.value = { ...ARTICLE_TYPE_DEFAULT }
     }
   }
 
@@ -134,25 +134,22 @@ export const useArticleTypeForm = (articleType: Ref<ArticleType | undefined>) =>
   })
 
   const resetCurrentArticleType = () => {
-    currentArticleType.value = ARTICLE_TYPE_DEFAULT
+    currentArticleType.value = { ...ARTICLE_TYPE_DEFAULT }
   }
 
   const saveArticleType = async () => {
     // 如果文章类型的id 为undefined，说明是新增的文章类型
     try {
+      let type = undefined
       if (currentArticleType.value.id === undefined) {
-        await ArticleTypeApi.create(currentArticleType.value)
-        console.log('新增文章类型')
+        type = await ArticleTypeApi.create(currentArticleType.value)
       } else {
-        // 如果文章类型的id 不为undefined，则说明是更新文章类型
-        console.log('更新文章类型')
-        await ArticleTypeApi.update(currentArticleType.value)
+        type = await ArticleTypeApi.update(currentArticleType.value)
       }
-      resetCurrentArticleType()
+      return Promise.resolve(type)
     } catch (error) {
-      return false
+      return Promise.reject(error)
     }
-    return true
   }
   return {
     currentArticleType,
@@ -173,7 +170,9 @@ export const useArticleTagForm = (articleTag: Ref<ArticleTag | undefined>) => {
 
   const resolveArticleTag = () => {
     if (articleTag.value !== undefined) {
-      currentArticleTag.value = articleTag.value
+      currentArticleTag.value = { ...articleTag.value }
+    } else {
+      currentArticleTag.value = { ...ARTICLE_TAG_DEFAULT }
     }
   }
 
@@ -181,22 +180,28 @@ export const useArticleTagForm = (articleTag: Ref<ArticleTag | undefined>) => {
     resolveArticleTag()
   })
 
+  const resetCurrentArticleTag = () => {
+    currentArticleTag.value = ARTICLE_TAG_DEFAULT
+  }
+
   // TODO 新增文章tag
   const saveArticleTag = async () => {
     try {
+      let tag = undefined
       if (currentArticleTag.value.id === undefined) {
-        await ArticleTagApi.create(currentArticleTag.value)
+        tag = await ArticleTagApi.create(currentArticleTag.value)
       } else {
-        await ArticleTagApi.update(currentArticleTag.value)
+        tag = await ArticleTagApi.update(currentArticleTag.value)
       }
+      return Promise.resolve(tag)
     } catch (error) {
-      return false
+      return Promise.reject(error)
     }
-    return true
   }
 
   return {
     currentArticleTag,
+    resetCurrentArticleTag,
     saveArticleTag,
   }
 }

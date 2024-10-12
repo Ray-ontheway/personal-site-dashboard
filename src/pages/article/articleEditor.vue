@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { MdEditor } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
-import { onMounted, onBeforeUnmount } from 'vue'
+import { onMounted, onBeforeUnmount, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { ArticleTag, ArticleType } from '@api/models/articleModel'
 import ImageUpload from '@/components/upload/ImageUpload.vue'
 import { useArticleEditor } from '@/hooks/pages/article/useArticle'
 import { FileApi } from '@/api/file'
 import { ElNotification } from 'element-plus'
+import ArticleTypeForm from './components/ArticleTypeForm.vue'
+import ArticleTagForm from './components/ArticleTagForm.vue'
 
 const route = useRoute()
 
@@ -18,17 +20,15 @@ const handleBeforeUnload = (e: BeforeUnloadEvent) => {
 }
 
 onMounted(() => {
-  console.log('mounted')
   window.addEventListener('beforeunload', handleBeforeUnload)
 })
 
 onBeforeUnmount(() => {
-  console.log('unmounted')
   window.removeEventListener('beforeunload', handleBeforeUnload)
 })
 
-const handleSave = (value: string) => {
-  console.log(value)
+const handleSave = (_value: string) => {
+  // TODO 保存文章
 }
 const onContentChange = (value: string) => {
   editorArticle.value.summary = value.slice(0, 50)
@@ -122,7 +122,6 @@ const { curTypes, curTags, editorType, editorTags, editorArticle, isDraft, saveA
 
 const handleTypeChange = (value: any) => {
   editorType.value = value
-  console.log(editorType.value)
   if (value) {
     editorArticle.value.typeId = value.id
   }
@@ -151,7 +150,6 @@ const onCoverUploadSuccess = (url: string) => {
   console.log(url)
 }
 const onCoverUploadError = () => {
-  console.log('上传失败')
   ElNotification.error({
     title: '上传失败',
     message: '上传封面图片失败',
@@ -159,6 +157,40 @@ const onCoverUploadError = () => {
 }
 const handleCoverUploading = () => {
   console.log('上传中')
+}
+
+// dialog
+const typeDialogVisible = ref(false)
+const tagDialogVisible = ref(false)
+const editType = ref<ArticleType | undefined>(undefined)
+const editTag = ref<ArticleTag | undefined>(undefined)
+const triggerTypeDialog = () => {
+  editType.value = undefined
+  typeDialogVisible.value = true
+}
+const triggerTagDialog = () => {
+  editTag.value = undefined
+  tagDialogVisible.value = true
+}
+const onTypeSaveSuccess = (_type: ArticleType) => {
+  typeDialogVisible.value = false
+  // TODO 更新type列表
+}
+const onTagSaveSuccess = (_tag: ArticleTag) => {
+  tagDialogVisible.value = false
+  // TODO 更新tag列表
+}
+const onTypeSaveError = () => {
+  typeDialogVisible.value = false
+}
+const onTagSaveError = () => {
+  tagDialogVisible.value = false
+}
+const onTypeCancel = () => {
+  typeDialogVisible.value = false
+}
+const onTagCancel = () => {
+  tagDialogVisible.value = false
 }
 </script>
 
@@ -184,7 +216,10 @@ const handleCoverUploading = () => {
       </el-card>
       <el-card class="editor-meta__item">
         <template #header>
-          <span>分类</span>
+          <div class="tag-header">
+            <span>分类</span>
+            <el-button link type="primary" @click="triggerTypeDialog">新增</el-button>
+          </div>
         </template>
         <el-select v-model="editorType" value-key="id" clearable @change="handleTypeChange">
           <el-option v-for="type in curTypes" :key="type.id" :label="type.name" :value="type" />
@@ -192,7 +227,10 @@ const handleCoverUploading = () => {
       </el-card>
       <el-card class="editor-meta__item">
         <template #header>
-          <span>标签</span>
+          <div class="tag-header">
+            <span>标签</span>
+            <el-button link type="primary" @click="triggerTagDialog">新增</el-button>
+          </div>
         </template>
         <el-select v-model="editorTags" value-key="id" clearable multiple @change="handleTagsChange">
           <el-option v-for="tag in curTags" :key="tag.id" :label="tag.name" :value="tag" />
@@ -223,6 +261,22 @@ const handleCoverUploading = () => {
       </el-card>
     </div>
   </div>
+  <el-dialog v-model="typeDialogVisible">
+    <ArticleTypeForm
+      :type="editType"
+      @cancel="onTypeCancel"
+      @save-success="onTypeSaveSuccess"
+      @save-error="onTypeSaveError"
+    />
+  </el-dialog>
+  <el-dialog v-model="tagDialogVisible">
+    <ArticleTagForm
+      :tag="editTag"
+      @cancel="onTagCancel"
+      @save-success="onTagSaveSuccess"
+      @save-error="onTagSaveError"
+    />
+  </el-dialog>
 </template>
 
 <style lang="scss">
@@ -303,5 +357,14 @@ const handleCoverUploading = () => {
 .btn-option {
   display: flex;
   gap: 10px;
+}
+
+.tag-header {
+  display: flex;
+  justify-content: space-between;
+
+  span {
+    flex: 1;
+  }
 }
 </style>

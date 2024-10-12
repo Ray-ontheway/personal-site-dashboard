@@ -3,6 +3,7 @@ import { useArticleType } from '@/hooks/pages/article/useArticleType'
 import { ref } from 'vue'
 import ArticleTypeForm from './components/ArticleTypeForm.vue'
 import { ArticleType } from '@/api/models/articleModel'
+import { ElNotification } from 'element-plus'
 
 const { articleTypeList, syncAllArticleType, deleteArticleType } = useArticleType()
 
@@ -12,17 +13,22 @@ const editType = ref<ArticleType | undefined>(undefined)
 const isEditable = ref(false)
 const triggerEditable = (type: ArticleType | undefined = undefined) => {
   editType.value = type
-  console.log('editType', editType.value)
-
   isEditable.value = true
 }
-const handleTypeSaveSuccess = () => {
+const handleTypeSaveSuccess = (_type: ArticleType) => {
   isEditable.value = false
-  console.log('弹窗保存成功')
+  // TODO 更新type列表
+  syncAllArticleType()
 }
 const handleTypeSaveError = () => {
   isEditable.value = false
-  console.log('弹窗保存失败')
+  ElNotification.error({
+    title: '失败',
+    message: '保存文章类型失败',
+  })
+}
+const onCancel = () => {
+  isEditable.value = false
 }
 </script>
 <template>
@@ -54,11 +60,15 @@ const handleTypeSaveError = () => {
         </el-table-column>
       </el-table>
     </el-card>
+    <el-card v-show="isEditable" class="article-type-editor-container">
+      <ArticleTypeForm
+        :data="editType"
+        @save-error="handleTypeSaveError"
+        @save-success="handleTypeSaveSuccess"
+        @cancel="onCancel"
+      />
+    </el-card>
   </div>
-
-  <el-dialog v-model="isEditable">
-    <ArticleTypeForm :data="editType" @save-error="handleTypeSaveError" @save-success="handleTypeSaveSuccess" />
-  </el-dialog>
 </template>
 <style lang="scss" scoped>
 * {

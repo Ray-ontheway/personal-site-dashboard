@@ -1,38 +1,33 @@
 <template>
-  <div class="article-type-editor-container">
-    <el-form
-      ref="typeFormRef"
-      :model="currentArticleTag"
-      @validate="onValidate"
-      :rules="rules"
-      label-position="top"
-      status-icon
-    >
-      <el-form-item label="标签名" prop="name" required>
-        <el-input v-model="currentArticleTag.name" placeholder="类型名称" />
-      </el-form-item>
-      <el-form-item label="标签标识符" prop="catKey" required>
-        <el-input v-model="currentArticleTag.catKey" placeholder="类型标识符" />
-      </el-form-item>
-      <el-form-item label="标签描述" prop="description">
-        <el-input v-model="currentArticleTag.description" placeholder="输入描述" type="textarea" rows="5" />
-      </el-form-item>
-      <el-form-item>
-        <el-popconfirm
-          title="确认保存吗?"
-          confirm-button-text="确定"
-          cancel-button-text="取消"
-          @confirm="saveArticleTag"
-        >
-          <template #reference>
-            <el-button type="primary" :disabled="!isValidated">
-              {{ currentArticleTag.id === undefined ? '新增' : '更新' }}
-            </el-button>
-          </template>
-        </el-popconfirm>
-      </el-form-item>
-    </el-form>
-  </div>
+  <el-form
+    ref="typeFormRef"
+    :model="currentArticleTag"
+    @validate="onValidate"
+    :rules="rules"
+    label-position="top"
+    status-icon
+    class="article-type-form"
+  >
+    <el-form-item label="标签名" prop="name" required>
+      <el-input v-model="currentArticleTag.name" placeholder="类型名称" />
+    </el-form-item>
+    <el-form-item label="标签标识符" prop="catKey" required>
+      <el-input v-model="currentArticleTag.catKey" placeholder="类型标识符" />
+    </el-form-item>
+    <el-form-item label="标签描述" prop="description">
+      <el-input v-model="currentArticleTag.description" placeholder="输入描述" type="textarea" rows="5" />
+    </el-form-item>
+    <el-form-item>
+      <el-popconfirm title="确认保存吗?" confirm-button-text="确定" cancel-button-text="取消" @confirm="handleSaveTag">
+        <template #reference>
+          <el-button type="primary" :disabled="!isValidated">
+            {{ currentArticleTag.id === undefined ? '新增' : '更新' }}
+          </el-button>
+        </template>
+      </el-popconfirm>
+      <el-button type="info" plain @click="handleCancel">取消</el-button>
+    </el-form-item>
+  </el-form>
 </template>
 
 <script setup lang="ts">
@@ -45,13 +40,30 @@ interface FormProps {
   data?: ArticleTag
 }
 
+const emit = defineEmits(['saveSuccess', 'saveError', 'cancel'])
 const props = defineProps<FormProps>()
-
-const emit = defineEmits(['saveSuccess', 'saveError'])
 
 const { data } = toRefs(props)
 
-const { currentArticleTag, saveArticleTag } = useArticleTagForm(data)
+const { currentArticleTag, saveArticleTag, resetCurrentArticleTag } = useArticleTagForm(data)
+
+const handleSaveTag = () => {
+  saveArticleTag()
+    .then(result => {
+      emit('saveSuccess', result)
+    })
+    .catch(_err => {
+      emit('saveError')
+    })
+    .finally(() => {
+      resetCurrentArticleTag()
+    })
+}
+
+const handleCancel = () => {
+  resetCurrentArticleTag()
+  emit('cancel')
+}
 
 const isValidated = ref(false)
 const validateTypeCatKey = (_rule: any, value: any, callback: any) => {
@@ -89,4 +101,8 @@ const onValidate = (prop, isValid) => {
 }
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.article-type-form {
+  margin: 0 auto;
+}
+</style>
