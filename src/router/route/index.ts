@@ -43,6 +43,18 @@ const routes: AppRouteRecordRaw[] = [
   },
   articleRoute,
   articleEditorRoute,
+  {
+    name: 'Login',
+    path: '/login',
+    meta: { title: '登录', hidden: true, iconName: '' },
+    component: () => import('@pages/sys/Login.vue'),
+  },
+  {
+    name: 'NotFound',
+    path: '/:pathMatch(.*)*',
+    meta: { title: RouteConstantEnum.NOT_FOUND, hidden: true, iconName: '' },
+    component: () => import('@pages/sys/NotFound.vue'),
+  },
 ]
 
 export { routes }

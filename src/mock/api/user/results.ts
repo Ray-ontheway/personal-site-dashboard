@@ -2,21 +2,21 @@ import { PageObject, BaseResult } from '@api/models/common'
 import { UserResp, RoleResp } from '@api/models/userModel'
 import random from 'lodash/random'
 import sampleSize from 'lodash/sampleSize'
-import { faker } from '@faker-js/faker'
+import { fa, faker } from '@faker-js/faker'
 
-const sysRoles = [
+const sysRoles: RoleResp[] = [
   {
-    id: '1',
+    id: 1,
     name: 'Root',
     description: '系统超级管理员, 拥有任何权限',
   },
   {
-    id: '2',
+    id: 2,
     name: 'Admin',
     description: '系统管理员, 拥有大部分权限',
   },
   {
-    id: '3',
+    id: 3,
     name: 'Normal',
     description: '普通用户， 可以浏览数据',
   },
@@ -37,7 +37,7 @@ const pageUsers = (pageIdx: number, pageSize: number): UserResp[] =>
   Array.from({ length: pageSize }).map(
     (_, idx) =>
       ({
-        id: idx + '',
+        id: idx,
         userId: faker.string.uuid(),
         username: faker.internet.userName(),
         avatar: faker.image.avatar(),
@@ -64,16 +64,14 @@ export const pageUsersResult = (pageIdx: number, pageSize: number): BaseResult =
   data: pageUserInfo(pageIdx, pageSize),
 })
 
-const generateUser = (idx: string) =>
-  ({
-    id: idx,
-    userId: faker.string.uuid(),
-    username: faker.internet.userName(),
-    avatar: faker.image.avatar(),
-    short_bio: faker.lorem.sentence(),
-    registeredAt: faker.date.past(),
-    roles: generateUserRoles(),
-  }) as UserResp
+const generateUser = (idx: string): UserResp => ({
+  id: faker.number.int(1000),
+  username: faker.internet.userName(),
+  avatar: faker.image.avatar(),
+  short_bio: faker.lorem.sentence(),
+  registeredAt: faker.date.past(),
+  roles: generateUserRoles(),
+})
 
 const searchUsers = (username: string): UserResp[] => {
   console.log('searchUsers', username)
@@ -81,7 +79,7 @@ const searchUsers = (username: string): UserResp[] => {
   return Array.from({ length: 4 }).map(
     (_, idx) =>
       ({
-        id: idx + '',
+        id: idx,
         userId: faker.string.uuid(),
         username: username + faker.internet.userName(),
         avatar: faker.image.avatar(),
@@ -102,7 +100,7 @@ export const searchUserResult = (username: string): BaseResult<UserResp[]> => {
   }
 }
 
-export const updateUserRolesResult = (userId: string, roleIds: string[]): BaseResult<UserResp> => {
+export const updateUserRolesResult = (userId: string, roleIds: number[]): BaseResult<UserResp> => {
   const user = generateUser(userId)
   user.roles = sysRoles.filter(role => roleIds.includes(role.id))
   return {
