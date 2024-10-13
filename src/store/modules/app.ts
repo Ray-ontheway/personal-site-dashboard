@@ -10,7 +10,7 @@ export const useAppStore = defineStore({
   id: 'app',
   state: (): AppState => ({ routes: undefined }),
   getters: {
-    getRoutes(state): AppRouteRecordRaw[] | undefined {
+    getRoutes(state: AppState): AppRouteRecordRaw[] | undefined {
       return state.routes
     },
   },

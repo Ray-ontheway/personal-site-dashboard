@@ -22,8 +22,6 @@ const handleClick = (tabName: string) => {
     emits('tab-change', curTabItem)
   }
 }
-console.log(`tabData`, tabData.value)
-console.log(`activePath`, activePath.value)
 </script>
 
 <template>

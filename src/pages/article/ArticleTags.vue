@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { useArticleTag } from '@/hooks/pages/article/useArticleType'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import ArticleTagForm from './components/ArticleTagForm.vue'
 import { ArticleTag } from '@/api/models/articleModel'
+import { ElNotification } from 'element-plus'
 
-const { articleTagList, syncAllArticleTags, deleteArticleTag } = useArticleTag()
+const { articleTagList, syncAllArticleTags, deleteArticleTag, addTag } = useArticleTag()
 
-syncAllArticleTags()
+onMounted(() => {
+  syncAllArticleTags()
+})
 
 const editTag = ref<ArticleTag | undefined>(undefined)
 const isEditable = ref(false)
@@ -17,11 +20,14 @@ const triggerEdit = (tag: ArticleTag | undefined) => {
 const onTagSaveSuccess = (tag: ArticleTag) => {
   isEditable.value = false
   syncAllArticleTags()
-  console.log('弹窗保存成功', tag)
+  addTag(tag)
 }
 const onTagSaveError = () => {
   isEditable.value = false
-  console.log('弹窗保存失败')
+  ElNotification.error({
+    title: '失败',
+    message: '保存文章标签失败',
+  })
 }
 const onCancel = () => {
   isEditable.value = false

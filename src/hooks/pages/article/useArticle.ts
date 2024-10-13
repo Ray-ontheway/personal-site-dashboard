@@ -1,62 +1,34 @@
-import { PageObject } from '@/api/models/common'
 import { Article, ArticleEditModel, ArticleReq, ArticleTag, ArticleType } from '@/api/models/articleModel'
-import { ArticleAPI } from '@/api/article'
-import { ref, toRef, toRefs } from 'vue'
+import { computed, ref, toRef } from 'vue'
+import { useArticleStore } from '@/store/modules/article'
 
 export const useArticle = () => {
+  const articleStore = useArticleStore()
+
   // 1. 文章分页程序
-  const articlePage = ref<PageObject<Article>>({
-    pageIdx: 1,
-    pageSize: 10,
-    total: 100,
-    data: [],
-  })
+  const articlePage = computed(() => articleStore.getCurArticlePage)
 
-  const syncArticlePage = () => {
-    ArticleAPI.page(articlePage.value.pageIdx, articlePage.value.pageSize)
-      .then(page => {
-        articlePage.value = page
-        console.log(page)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
-  const changePageIdx = (pageIdx: number) => {
-    articlePage.value.pageIdx = pageIdx
-    syncArticlePage()
-  }
-  const changePageSize = (pageSize: number) => {
-    articlePage.value.pageSize = pageSize
-    syncArticlePage()
-  }
+  const curEditArticle = computed(() => articleStore.getCurEditArticle)
 
-  // 2. 保存文章
-  const saveArticle = async (article: ArticleReq) => {
-    if (article.id === undefined) {
-      await ArticleAPI.create(article)
-      console.log('新增文章')
-    } else {
-      await ArticleAPI.update(article)
-      console.log('更新文章')
-    }
-    syncArticlePage()
-  }
+  const syncArticlePage = articleStore.fetchCurArticlePage
+
+  const changePageIdx = articleStore.changePageIdx
+  const changePageSize = articleStore.changePageSize
 
   // 3. 删除文章
-  const deleteArticle = async (article: Article) => {
-    const result = await ArticleAPI.delete(article.uid)
-    console.log(result)
-    syncArticlePage()
-  }
+  const deleteArticle = articleStore.deleteArticle
+
+  const setCurEditArticle = articleStore.setCurEditArticle
 
   return {
     articlePage,
+    curEditArticle,
+
     syncArticlePage,
     changePageIdx,
     changePageSize,
-    saveArticle,
     deleteArticle,
+    setCurEditArticle,
   }
 }
 
@@ -65,6 +37,8 @@ export const useArticleEditor = (
   allTags: ArticleTag[],
   article: Article | undefined = undefined
 ) => {
+  const articleStore = useArticleStore()
+
   const curTypes = toRef<ArticleType[]>(allTypes)
   const curTags = toRef<ArticleTag[]>(allTags)
 
@@ -93,8 +67,12 @@ export const useArticleEditor = (
   )
   const isDraft = ref(!editorArticle.value.isPublished)
 
+  const saveArticle = articleStore.saveArticle
+
   const saveAsDraft = () => {
-    ArticleAPI.create({
+    console.log('saveAsDraft')
+
+    const articleReq: ArticleReq = {
       id: editorArticle.value.id,
       uid: editorArticle.value.uid,
       title: editorArticle.value.title,
@@ -103,12 +81,23 @@ export const useArticleEditor = (
       typeId: editorType.value?.id || undefined,
       tagIds: editorTags.value.map(tag => tag.id),
       isPublish: false,
-    }).then(() => {
-      console.log('save as draft')
-    })
+    }
+    saveArticle(articleReq)
   }
   const publish = () => {
-    console.log(`publish: ${editorArticle.value}`)
+    console.log('publish')
+
+    const articleReq: ArticleReq = {
+      id: editorArticle.value.id,
+      uid: editorArticle.value.uid,
+      title: editorArticle.value.title,
+      summary: editorArticle.value.summary,
+      content: editorArticle.value.content,
+      typeId: editorType.value?.id || undefined,
+      tagIds: editorTags.value.map(tag => tag.id),
+      isPublish: true,
+    }
+    saveArticle(articleReq)
   }
 
   return {

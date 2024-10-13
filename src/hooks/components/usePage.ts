@@ -1,5 +1,5 @@
 import { useRoute } from 'vue-router'
-import { computed, watch } from 'vue'
+import { computed } from 'vue'
 import { AppRouteRecordRaw } from '@/router/types'
 import { articleTagsRoute, articleListRoute } from '@router/route/article'
 import { routes } from '@router/route'
@@ -48,8 +48,6 @@ export const usePage = () => {
   })
 
   const currentTab = computed(() => {
-    console.log(`currentTab: ${route.path}`)
-
     return {
       path: route.path,
       name: route.name as string,

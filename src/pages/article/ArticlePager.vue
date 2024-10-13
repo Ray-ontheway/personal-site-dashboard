@@ -13,21 +13,27 @@ import PageTitle from '@pages/component/PageTitle.vue'
 import PageTab from '@pages/component/PageTab.vue'
 import type { TabItem } from '@hooks/components/usePage'
 import { usePage } from '@/hooks/components/usePage'
+import { useArticleType, useArticleTag } from '@/hooks/pages/article/useArticleType'
+import { useArticle } from '@/hooks/pages/article/useArticle'
 import { useRouter } from 'vue-router'
-import { watch } from 'vue'
+import { onMounted } from 'vue'
 
 const { pageTitle, currentPageTabs, currentTab } = usePage()
+const { syncArticlePage } = useArticle()
+const { syncAllArticleTypes } = useArticleType()
+const { syncAllArticleTags } = useArticleTag()
+
+onMounted(() => {
+  syncAllArticleTypes()
+  syncAllArticleTags()
+  syncArticlePage()
+})
 
 const router = useRouter()
-console.log(`currentTab`, currentTab.value)
 
 const onTabChange = (tabItem: TabItem) => {
   router.push({ name: tabItem.name })
 }
-console.log(`currentTab`, currentTab)
-watch(currentTab, newVal => {
-  console.log(`newVal`, newVal)
-})
 </script>
 
 <style lang="scss" scoped>

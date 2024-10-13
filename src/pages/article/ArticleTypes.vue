@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { useArticleType } from '@/hooks/pages/article/useArticleType'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import ArticleTypeForm from './components/ArticleTypeForm.vue'
 import { ArticleType } from '@/api/models/articleModel'
 import { ElNotification } from 'element-plus'
 
-const { articleTypeList, syncAllArticleType, deleteArticleType } = useArticleType()
+const { articleTypeList, syncAllArticleTypes, deleteArticleType, addType } = useArticleType()
 
-syncAllArticleType()
+onMounted(() => {
+  syncAllArticleTypes()
+})
 
 const editType = ref<ArticleType | undefined>(undefined)
 const isEditable = ref(false)
@@ -15,10 +17,9 @@ const triggerEditable = (type: ArticleType | undefined = undefined) => {
   editType.value = type
   isEditable.value = true
 }
-const handleTypeSaveSuccess = (_type: ArticleType) => {
+const handleTypeSaveSuccess = (type: ArticleType) => {
   isEditable.value = false
-  // TODO 更新type列表
-  syncAllArticleType()
+  addType(type)
 }
 const handleTypeSaveError = () => {
   isEditable.value = false

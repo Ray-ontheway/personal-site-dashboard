@@ -2,18 +2,20 @@
 import { MdEditor } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import { onMounted, onBeforeUnmount, ref } from 'vue'
-import { useRoute } from 'vue-router'
 import { ArticleTag, ArticleType } from '@api/models/articleModel'
 import ImageUpload from '@/components/upload/ImageUpload.vue'
-import { useArticleEditor } from '@/hooks/pages/article/useArticle'
+import { useArticleEditor, useArticle } from '@/hooks/pages/article/useArticle'
+import { useArticleType, useArticleTag } from '@/hooks/pages/article/useArticleType'
 import { FileApi } from '@/api/file'
 import { ElNotification } from 'element-plus'
 import ArticleTypeForm from './components/ArticleTypeForm.vue'
 import ArticleTagForm from './components/ArticleTagForm.vue'
 
-const route = useRoute()
-
-console.log(`route: ${route.query.id}`)
+const { curEditArticle } = useArticle()
+const { articleTypeList, addType } = useArticleType()
+const { articleTagList, addTag } = useArticleTag()
+const types = articleTypeList.value
+const tags = articleTagList.value
 
 const handleBeforeUnload = (e: BeforeUnloadEvent) => {
   e.preventDefault()
@@ -39,85 +41,10 @@ const handleImageUpload = (files: File[], callback: (urls: string[]) => void) =>
   callback(['https://example.com/image.png'])
 }
 
-const types: ArticleType[] = [
-  {
-    id: 1,
-    uid: '1',
-    name: '前端',
-    catKey: 'frontend',
-    description: '前端技术',
-  },
-  {
-    id: 2,
-    uid: '2',
-    name: '后端',
-    catKey: 'backend',
-    description: '后端技术',
-  },
-  {
-    id: 3,
-    uid: '3',
-    name: '数据库',
-    catKey: 'database',
-    description: '数据库技术',
-  },
-  {
-    id: 4,
-    uid: '4',
-    name: '运维',
-    catKey: 'devops',
-    description: '运维技术',
-  },
-  {
-    id: 5,
-    uid: '6',
-    name: '云开发',
-    catKey: 'cloud',
-    description: '云开发技术',
-  },
-]
-const tags: ArticleTag[] = [
-  {
-    id: 1,
-    uid: '1',
-    name: 'SpringBoot',
-    catKey: 'springboot',
-    description: 'Spring Boot 技术',
-  },
-  {
-    id: 2,
-    uid: '2',
-    name: 'Vue',
-    catKey: 'vue',
-    description: 'Vue 技术',
-  },
-  {
-    id: 3,
-    uid: '3',
-    name: 'MySQL',
-    catKey: 'mysql',
-    description: 'MySQL 技术',
-  },
-  {
-    id: 4,
-    uid: '4',
-    name: 'Nginx',
-    catKey: 'nginx',
-    description: 'Nginx 技术',
-  },
-  {
-    id: 5,
-    uid: '5',
-    name: '云',
-    catKey: 'cloud',
-    description: '云 技术',
-  },
-]
-
 const { curTypes, curTags, editorType, editorTags, editorArticle, isDraft, saveAsDraft, publish } = useArticleEditor(
   types,
   tags,
-  undefined
+  curEditArticle.value || undefined
 )
 
 const handleTypeChange = (value: any) => {
@@ -172,13 +99,13 @@ const triggerTagDialog = () => {
   editTag.value = undefined
   tagDialogVisible.value = true
 }
-const onTypeSaveSuccess = (_type: ArticleType) => {
+const onTypeSaveSuccess = (type: ArticleType) => {
   typeDialogVisible.value = false
-  // TODO 更新type列表
+  addType(type)
 }
-const onTagSaveSuccess = (_tag: ArticleTag) => {
+const onTagSaveSuccess = (tag: ArticleTag) => {
   tagDialogVisible.value = false
-  // TODO 更新tag列表
+  addTag(tag)
 }
 const onTypeSaveError = () => {
   typeDialogVisible.value = false

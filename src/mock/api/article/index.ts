@@ -11,8 +11,10 @@ import {
   allArticleType,
   pageArticle,
   deleteArticle,
+  createArticle,
 } from './results'
 import { ArticleApiPath, ArticleTagApiPath, ArticleTypeApiPath } from '@/api/paths'
+import { ArticleReq } from '@/api/models/articleModel'
 
 export function mockArticleApi(mock: MockAdapter) {
   mock.onGet(/\/api\/article\/all\/([0-9a-zA-Z]*)/).reply(config => {
@@ -31,6 +33,13 @@ export function mockArticleApi(mock: MockAdapter) {
     const pathVars = config.url.replace(ArticleApiPath.DELETE, '').replace('/', '')
     const uid = pathVars
     return [200, deleteArticle(uid)]
+  })
+
+  mock.onPost(ArticleApiPath.CREATE).reply(config => {
+    const data = JSON.parse(config.data) as ArticleReq
+    const result = createArticle(data)
+    console.log('create article', result)
+    return [200, result]
   })
 }
 

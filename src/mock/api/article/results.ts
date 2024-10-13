@@ -5,13 +5,13 @@ import {
   ArticleTypeReq,
   ArticleType,
   Article,
+  ArticleReq,
 } from '@/api/models/articleModel'
 import { faker } from '@faker-js/faker'
-import { UserResp, RoleResp } from '@api/models/userModel'
-import { generateUserRoles } from '../user/results'
+import { UserResp } from '@api/models/userModel'
 import { BaseResult, PageObject } from '@/api/models/common'
 
-export const generateArticleCategoryResp = (userId: string): ArticleCategoryResp => ({
+export const generateArticleCategoryResp = (_userId: string): ArticleCategoryResp => ({
   id: faker.string.uuid(),
   uid: faker.string.uuid(),
   name: faker.lorem.word(),
@@ -100,6 +100,29 @@ export const deleteArticle = (uid: string): BaseResult<string> => {
     status: 200,
     msg: `delete ${uid} success`,
     data: 'delete success',
+  }
+}
+
+export const createArticle = (articleReq: ArticleReq): BaseResult<Article> => {
+  return {
+    status: 200,
+    msg: 'create success',
+    data: {
+      id: faker.number.int(1000),
+      uid: faker.string.uuid(),
+      title: articleReq.title,
+      summary: articleReq.summary,
+      content: articleReq.content,
+      type: {
+        id: faker.number.int(1000),
+        uid: faker.string.uuid(),
+        name: 'type',
+        catKey: faker.string.uuid().substring(0, 8),
+        description: 'description',
+      },
+      tags: articleReq.tagIds.map(() => faker.lorem.word()),
+      isPublished: articleReq.isPublish,
+    } as Article,
   }
 }
 

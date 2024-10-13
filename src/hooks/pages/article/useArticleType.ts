@@ -1,92 +1,39 @@
 import { ArticleTag, ArticleType } from '@api/models/articleModel'
-import { Ref, ref, watch, watchEffect } from 'vue'
+import { computed, Ref, ref, watchEffect } from 'vue'
 import { ArticleTagApi, ArticleTypeApi } from '@/api/article'
-import { PageObject } from '@/api/models/common'
+import { useArticleTypeStore } from '@/store/modules/articleType'
 
 export const useArticleType = () => {
+  const articleTypeStore = useArticleTypeStore()
+
   // 文章类型列表
-  const articleTypeList = ref<ArticleType[]>()
+  const articleTypeList = computed(() => articleTypeStore.getAllTypes)
 
-  // 文章类型Page
-  const articleTypePage = ref<PageObject<ArticleType>>({
-    pageIdx: 1,
-    pageSize: 10,
-    total: 0,
-    data: [],
-  })
-  const syncPageArticleType = () => {
-    ArticleTypeApi.page(articleTypePage.value.pageIdx, articleTypePage.value.pageSize)
-      .then(page => {
-        articleTypePage.value = page
-        console.log(page)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
-  const changePageIdx = (pageIdx: number) => {
-    articleTypePage.value.pageIdx = pageIdx
-    syncPageArticleType()
-  }
-  const changePageSize = (pageSize: number) => {
-    articleTypePage.value.pageSize = pageSize
-    syncPageArticleType()
-  }
-
-  // TODO 获取所有文章类型
-  const syncAllArticleType = async () => {
-    const types = await ArticleTypeApi.all()
-    articleTypeList.value = types
-  }
+  // 同步所有数据
+  const syncAllArticleTypes = articleTypeStore.fetchAllTypes
 
   // 删除文章类型
   const deleteArticleType = (type: ArticleType) => {
     ArticleTypeApi.delete(type.id).then(() => {
       console.log('删除成功')
     })
-    syncAllArticleType()
   }
+
+  const addType = articleTypeStore.addType
 
   return {
     articleTypeList,
-    articleTypePage,
 
-    syncPageArticleType,
-    changePageIdx,
-    changePageSize,
-    syncAllArticleType,
+    addType,
+    syncAllArticleTypes,
     deleteArticleType,
   }
 }
 
 export const useArticleTag = () => {
-  const articleTagList = ref<ArticleTag[]>([])
+  const articleTypeStore = useArticleTypeStore()
 
-  const ARTICLE_TAG_DEFAULT = {
-    uid: '',
-    name: '',
-    catKey: '',
-    description: '',
-  }
-  const currentArticleTag = ref<ArticleTag>(ARTICLE_TAG_DEFAULT)
-  const resetCurrentArticleTag = () => {
-    currentArticleTag.value = ARTICLE_TAG_DEFAULT
-  }
-  const setCurrentArticleTag = (tag: ArticleTag) => {
-    currentArticleTag.value = tag
-  }
-
-  // TODO 新增文章tag
-  const saveArticleTag = async () => {
-    if (currentArticleTag.value.id === undefined) {
-      await ArticleTagApi.create(currentArticleTag.value)
-    } else {
-      await ArticleTagApi.update(currentArticleTag.value)
-    }
-    resetCurrentArticleTag()
-    syncAllArticleTags()
-    return true
-  }
+  const articleTagList = computed(() => articleTypeStore.getAllTags)
 
   const deleteArticleTag = (tag: ArticleTag) => {
     ArticleTagApi.delete(tag.id).then(() => {
@@ -96,17 +43,15 @@ export const useArticleTag = () => {
   }
 
   // 获取所有文章tag
-  const syncAllArticleTags = async () => {
-    articleTagList.value = await ArticleTagApi.all()
-  }
+  const syncAllArticleTags = articleTypeStore.fetchAllTags
+
+  const addTag = articleTypeStore.addTag
 
   return {
     articleTagList,
-    currentArticleTag,
 
+    addTag,
     syncAllArticleTags,
-    setCurrentArticleTag,
-    saveArticleTag,
     deleteArticleTag,
   }
 }
