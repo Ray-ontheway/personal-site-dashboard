@@ -42,15 +42,15 @@ export default defineConfig({
       '@utils': path.resolve(__dirname, './src/utils'),
     },
   },
-  // server: {
-  //   port: 3000,
-  //   open: false,
-  //   proxy: {
-  //     '/api': {
-  //       target: 'http://localhost:10001',
-  //       changeOrigin: true,
-  //       rewrite: path => path.replace(/^\/api/, ''),
-  //     },
-  //   },
-  // },
+  server: {
+    port: 3000,
+    open: false,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:10001',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api/, ''),
+      },
+    },
+  },
 })

@@ -11,7 +11,7 @@ async function bootstrap() {
   const app = createApp(App)
   setupStore(app)
   setupRouter(app)
-  setupMock()
+  // setupMock()
   app.mount('#app')
 }
 

@@ -3,10 +3,10 @@ import { RoleResp, UserLogin } from '@api/models/userModel'
 
 import { UserApiPath } from './paths'
 import { PageObject } from './models/common'
-import { UserResp } from './models/userModel'
+import { UserResp, LoginResult } from './models/userModel'
 
 export class UserApi {
-  static async login(userLogin: UserLogin) {
+  static async login(userLogin: UserLogin): Promise<LoginResult> {
     return axiosClient.post(UserApiPath.LOGIN, userLogin)
   }
 

@@ -3,7 +3,7 @@
     <el-card class="login-card">
       <el-form class="" v-model="loginReq" label-width="auto">
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="loginReq.email" placeholder="请输入用户名" />
+          <el-input v-model="loginReq.username" placeholder="请输入用户名" />
         </el-form-item>
         <el-form-item label="密码" prop="password">
           <el-input v-model="loginReq.password" type="password" placeholder="请输入用户名" />
@@ -24,7 +24,7 @@ import { useLogin } from '@/hooks/core/useLogin'
 const { doLogin } = useLogin()
 
 const loginReq = ref<UserLogin>({
-  email: '',
+  username: '',
   password: '',
 })
 

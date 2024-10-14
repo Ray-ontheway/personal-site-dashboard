@@ -1,12 +1,12 @@
 import { UserLogin } from '@/api/models/userModel'
-import { useAppStore } from '@/store/modules/app'
+import { useAuthStore } from '@/store/modules/auth'
 
 export const useLogin = () => {
-  const appStore = useAppStore()
+  const authStore = useAuthStore()
 
-  const accessToken = appStore.getAccessToken
+  const accessToken = authStore.getAccessToken
 
-  const doLogin = appStore.doLogin
+  const doLogin = authStore.doLogin
 
   return {
     accessToken,

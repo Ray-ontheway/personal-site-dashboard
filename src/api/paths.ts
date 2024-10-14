@@ -2,7 +2,7 @@ const USER_BASE_API_PATH = '/api/user'
 const ROLE_BASE_API_PATH = '/api/role'
 
 export enum UserApiPath {
-  LOGIN = `${USER_BASE_API_PATH}/login`,
+  LOGIN = `/api/login`,
   OPT_CODE = `${USER_BASE_API_PATH}/opt/code`,
   PAGE = `${USER_BASE_API_PATH}/page`,
   SEARCH = `${USER_BASE_API_PATH}/search`,

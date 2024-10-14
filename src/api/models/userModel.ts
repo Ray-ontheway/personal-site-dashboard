@@ -29,6 +29,11 @@ export interface RoleResp {
 }
 
 export interface UserLogin {
-  email: string
+  username: string
   password: string
+}
+
+export interface LoginResult {
+  accessToken: string
+  expires: number
 }

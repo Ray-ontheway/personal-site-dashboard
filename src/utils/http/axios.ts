@@ -3,7 +3,7 @@ import axios from 'axios'
 import { AxiosRequestHeaders } from 'axios'
 
 const axiosClient = axios.create({
-  baseURL: '/api',
+  baseURL: '',
   timeout: 1000 * 60 * 5,
   withCredentials: true,
 })
