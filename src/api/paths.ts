@@ -14,27 +14,27 @@ export enum UserApiPath {
 const ARTICLE_BASE_API_PATH = '/api/article'
 export enum ArticleApiPath {
   ALL_BY_USER = `${ARTICLE_BASE_API_PATH}/all/`,
-  CREATE = `${ARTICLE_BASE_API_PATH}/create`,
-  UPDATE = `${ARTICLE_BASE_API_PATH}/update`,
-  DELETE = `${ARTICLE_BASE_API_PATH}/delete`,
+  CREATE = `${ARTICLE_BASE_API_PATH}`,
+  UPDATE = `${ARTICLE_BASE_API_PATH}`,
+  DELETE = `${ARTICLE_BASE_API_PATH}`,
   PAGE = `${ARTICLE_BASE_API_PATH}/page`,
   DETAIL = `${ARTICLE_BASE_API_PATH}/post`,
 }
 
 const ARTICLE_TAG_BASE_API_PATH = '/api/article/tag'
 export enum ArticleTagApiPath {
-  CREATE = `${ARTICLE_TAG_BASE_API_PATH}/create`,
-  UPDATE = `${ARTICLE_TAG_BASE_API_PATH}/update`,
-  DELETE = `${ARTICLE_TAG_BASE_API_PATH}/delete`,
+  CREATE = `${ARTICLE_TAG_BASE_API_PATH}`,
+  UPDATE = `${ARTICLE_TAG_BASE_API_PATH}`,
+  DELETE = `${ARTICLE_TAG_BASE_API_PATH}`,
   PAGE = `${ARTICLE_TAG_BASE_API_PATH}/page`,
   ALL = `${ARTICLE_TAG_BASE_API_PATH}/all`,
 }
 
 const ARTICLE_TYPE_BASE_API_PATH = '/api/article/type'
 export enum ArticleTypeApiPath {
-  CREATE = `${ARTICLE_TYPE_BASE_API_PATH}/create`,
-  UPDATE = `${ARTICLE_TYPE_BASE_API_PATH}/update`,
-  DELETE = `${ARTICLE_TYPE_BASE_API_PATH}/delete`,
+  CREATE = `${ARTICLE_TYPE_BASE_API_PATH}`,
+  UPDATE = `${ARTICLE_TYPE_BASE_API_PATH}`,
+  DELETE = `${ARTICLE_TYPE_BASE_API_PATH}`,
   PAGE = `${ARTICLE_TYPE_BASE_API_PATH}/page`,
   ALL = `${ARTICLE_TYPE_BASE_API_PATH}/all`,
 }
