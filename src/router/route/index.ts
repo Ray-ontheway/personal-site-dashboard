@@ -21,7 +21,7 @@ const routes: AppRouteRecordRaw[] = [
       {
         name: 'Analysis',
         path: '/dashboard/analysis',
-        meta: { title: '分析页', iconName: 'analysis' },
+        meta: { title: '分析页', iconName: 'analysis', requiresAuth: true },
         component: () => import('@pages/dashboard.tsx'),
       },
     ],
@@ -36,7 +36,7 @@ const routes: AppRouteRecordRaw[] = [
       {
         name: 'UserManager',
         path: '/sys/user',
-        meta: { title: RouteConstantEnum.USER_MANAGEMENT, iconName: 'user' },
+        meta: { title: RouteConstantEnum.USER_MANAGEMENT, iconName: 'user', requiresAuth: true },
         component: () => import('@pages/user/index.tsx'),
       },
     ],

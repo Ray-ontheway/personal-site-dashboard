@@ -1,4 +1,11 @@
-import { ArticleTag, ArticleType } from '@api/models/articleModel'
+import {
+  ArticleTag,
+  ArticleTagCreateReq,
+  ArticleTagUpdateReq,
+  ArticleType,
+  ArticleTypeCreateReq,
+  ArticleTypeUpdateReq,
+} from '@api/models/articleModel'
 import { computed, Ref, ref, watchEffect } from 'vue'
 import { ArticleTagApi, ArticleTypeApi } from '@/api/article'
 import { useArticleTypeStore } from '@/store/modules/articleType'
@@ -87,9 +94,9 @@ export const useArticleTypeForm = (articleType: Ref<ArticleType | undefined>) =>
     try {
       let type = undefined
       if (currentArticleType.value.id === undefined) {
-        type = await ArticleTypeApi.create(currentArticleType.value)
+        type = await ArticleTypeApi.create(currentArticleType.value as ArticleTypeCreateReq)
       } else {
-        type = await ArticleTypeApi.update(currentArticleType.value)
+        type = await ArticleTypeApi.update(currentArticleType.value as ArticleTypeUpdateReq)
       }
       return Promise.resolve(type)
     } catch (error) {
@@ -134,9 +141,9 @@ export const useArticleTagForm = (articleTag: Ref<ArticleTag | undefined>) => {
     try {
       let tag = undefined
       if (currentArticleTag.value.id === undefined) {
-        tag = await ArticleTagApi.create(currentArticleTag.value)
+        tag = await ArticleTagApi.create(currentArticleTag.value as ArticleTagCreateReq)
       } else {
-        tag = await ArticleTagApi.update(currentArticleTag.value)
+        tag = await ArticleTagApi.update(currentArticleTag.value as ArticleTagUpdateReq)
       }
       return Promise.resolve(tag)
     } catch (error) {

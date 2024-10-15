@@ -1,6 +1,14 @@
 import axiosClient from '@/utils/http/axios'
 
-import type { ArticleReq, ArticleTag, ArticleTagReq, ArticleType, ArticleTypeReq } from './models/articleModel'
+import type {
+  ArticleReq,
+  ArticleTag,
+  ArticleTagCreateReq,
+  ArticleTagUpdateReq,
+  ArticleType,
+  ArticleTypeCreateReq,
+  ArticleTypeUpdateReq,
+} from './models/articleModel'
 
 import { ArticleApiPath, ArticleTagApiPath, ArticleTypeApiPath } from './paths'
 import { PageObject } from './models/common'
@@ -40,11 +48,11 @@ export class ArticleAPI {
 
 export class ArticleTagApi {
   // 1. 创建新的标签
-  static async create(data: ArticleTagReq): Promise<ArticleTag> {
+  static async create(data: ArticleTagCreateReq): Promise<ArticleTag> {
     return axiosClient.post(ArticleTagApiPath.CREATE, data)
   }
   // 2. 更新标签
-  static async update(data: ArticleTagReq): Promise<ArticleTag> {
+  static async update(data: ArticleTagUpdateReq): Promise<ArticleTag> {
     return axiosClient.put(ArticleTagApiPath.UPDATE, data)
   }
   // 3. 删除标签
@@ -68,11 +76,11 @@ export class ArticleTagApi {
 
 export class ArticleTypeApi {
   // 1. 创建新的类型
-  static async create(data: ArticleTypeReq): Promise<ArticleType> {
+  static async create(data: ArticleTypeCreateReq): Promise<ArticleType> {
     return axiosClient.post(ArticleTypeApiPath.CREATE, data)
   }
   // 2. 更新类型
-  static async update(data: ArticleTypeReq): Promise<ArticleType> {
+  static async update(data: ArticleTypeUpdateReq): Promise<ArticleType> {
     return axiosClient.put(ArticleTypeApiPath.UPDATE, data)
   }
   // 3. 删除类型

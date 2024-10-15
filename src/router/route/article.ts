@@ -6,20 +6,20 @@ export const articleListRoutes: AppRouteRecordRaw[] = [
   {
     name: 'ArticleEssays',
     path: '/article/list/essays',
-    meta: { title: '已发表', iconName: 'list', hidden: true },
+    meta: { title: '已发表', iconName: 'list', hidden: true, requiresAuth: true },
     component: () => import('@/pages/article/articleEssays.vue'),
   },
   {
     name: 'ArticleDrafts',
     path: '/article/list/drafts',
-    meta: { title: '草稿', iconName: 'list', hidden: true },
+    meta: { title: '草稿', iconName: 'list', hidden: true, requiresAuth: true },
     component: () => import('@/pages/article/articleDrafts.vue'),
   },
 ]
 export const articleListRoute: AppRouteRecordRaw = {
   name: 'ArticleList',
   path: '/article/list',
-  meta: { title: '文章列表', iconName: 'list' },
+  meta: { title: '文章列表', iconName: 'list', requiresAuth: true },
   component: () => import('@/pages/article/ArticlePager.vue'),
   redirect: '/article/list/essays',
   children: articleListRoutes,
@@ -29,7 +29,7 @@ export const articleTagsRoutes: AppRouteRecordRaw[] = [
   {
     name: 'ArticleType',
     path: '/article/tags/type',
-    meta: { title: '类型', hidden: true, iconName: 'type' },
+    meta: { title: '类型', hidden: true, iconName: 'type', requiresAuth: true },
     component: () => import('@/pages/article/ArticleTypes.vue'),
   },
   {
@@ -51,7 +51,7 @@ export const articleTagsRoute: AppRouteRecordRaw = {
 export const articleRoute: AppRouteRecordRaw = {
   name: 'Articles',
   path: '/article',
-  meta: { title: RouteConstantEnum.ARTICLE_MANAGEMENT, iconName: 'article' },
+  meta: { title: RouteConstantEnum.ARTICLE_MANAGEMENT, iconName: 'article', requiresAuth: true },
   component: BaseLayout,
   redirect: '/article/list',
   children: [articleListRoute, articleTagsRoute],
@@ -60,6 +60,6 @@ export const articleRoute: AppRouteRecordRaw = {
 export const articleEditorRoute: AppRouteRecordRaw = {
   name: 'ArticleEditor',
   path: '/article/editor',
-  meta: { title: '文章编辑', hidden: true, iconName: 'edit' },
+  meta: { title: '文章编辑', hidden: true, iconName: 'edit', requiresAuth: true },
   component: () => import('@/pages/article/articleEditor.vue'),
 }

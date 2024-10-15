@@ -1,26 +1,5 @@
 import { UserResp } from './userModel'
 
-export interface ArticleTag {
-  id?: number
-  uid: string
-  name: string
-  catKey: string
-  description: string
-  createAt?: Date
-  updateAt?: Date
-}
-
-export interface ArticleType {
-  id?: number
-  uid: string
-  name: string
-  catKey: string
-  description: string
-  visitCount?: number
-  createAt?: Date
-  updateAt?: Date
-}
-
 export interface ArticleCategoryResp {
   id: string
   uid: string
@@ -76,15 +55,32 @@ export interface ArticleEditModel {
   tagIds?: number[]
 }
 
-export interface ArticleTagReq {
+export interface ArticleTagCreateReq {
+  name: string
+  catKey: string
+  description: string
+}
+export interface ArticleTagUpdateReq extends ArticleTagCreateReq {
   id?: number
   uid?: string
-  name: string
+}
+export interface ArticleTag extends ArticleTagUpdateReq {
+  visitCount?: number
+  createAt?: Date
+  updateAt?: Date
 }
 
-export interface ArticleTypeReq {
+export interface ArticleTypeCreateReq {
+  name: string
+  catKey: string
+  description: string
+}
+export interface ArticleTypeUpdateReq extends ArticleTypeCreateReq {
   id?: number
   uid?: string
-  name: string
-  description: string
+}
+export interface ArticleType extends ArticleTypeUpdateReq {
+  visitCount?: number
+  createAt?: Date
+  updateAt?: Date
 }
