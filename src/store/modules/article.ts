@@ -1,5 +1,5 @@
 import { ArticleAPI } from '@/api/article'
-import { Article, ArticleCreateReq, ArticleUpdateReq } from '@/api/models/articleModel'
+import { ArticleCreateReq, ArticleResp, ArticleUpdateReq } from '@/api/models/articleModel'
 import { PageObject } from '@/api/models/common'
 import { defineStore } from 'pinia'
 
@@ -10,8 +10,8 @@ interface PageInfo {
 
 interface ArticleState {
   pageInfo: PageInfo
-  curArticlePage: PageObject<Article>
-  curEditArticle: Article | null
+  curArticlePage: PageObject<ArticleResp>
+  curEditArticle: ArticleResp | null
 }
 
 export const useArticleStore = defineStore({
@@ -30,15 +30,15 @@ export const useArticleStore = defineStore({
     curEditArticle: null,
   }),
   getters: {
-    getCurArticlePage(state: ArticleState): PageObject<Article> {
+    getCurArticlePage(state: ArticleState): PageObject<ArticleResp> {
       return state.curArticlePage
     },
-    getCurEditArticle(state: ArticleState): Article | null {
+    getCurEditArticle(state: ArticleState): ArticleResp | null {
       return state.curEditArticle
     },
   },
   actions: {
-    setCurEditArticle(article: Article | null) {
+    setCurEditArticle(article: ArticleResp | null) {
       this.curEditArticle = article
     },
     resetCurEditArticle() {
@@ -46,7 +46,9 @@ export const useArticleStore = defineStore({
     },
     async fetchCurArticlePage() {
       const { pageIdx, pageSize } = this.pageInfo
-      this.curArticlePage = await ArticleAPI.page(pageIdx, pageSize)
+      const res = await ArticleAPI.page(pageIdx, pageSize)
+      this.curArticlePage = { ...res, data: res.records }
+      console.log('fetchCurArticlePage', this.curArticlePage)
     },
     async changePageIdx(pageIdx: number) {
       this.pageInfo.pageIdx = pageIdx
@@ -65,8 +67,8 @@ export const useArticleStore = defineStore({
       }
       await this.fetchCurArticlePage()
     },
-    async deleteArticle(article: Article) {
-      await ArticleAPI.delete(article.uid)
+    async deleteArticle(article: ArticleResp) {
+      await ArticleAPI.delete(article.id)
       console.log('delete article', article)
       await this.fetchCurArticlePage()
     },

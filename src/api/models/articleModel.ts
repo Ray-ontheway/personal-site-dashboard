@@ -33,29 +33,29 @@ export interface ArticleResp extends Omit<ArticleUpdateReq, 'typeId' | 'tagsId' 
   tags: ArticleTag[]
   visitedCount: number
   isPublished: boolean
-  createBy: UserResp
+  author: UserResp
   updateAt: Date
 }
 
-export interface Article {
-  id?: number
-  uid: string
-  title: string
-  summary: string
-  content: string
+// export interface Article {
+//   id?: number
+//   uid: string
+//   title: string
+//   summary: string
+//   content: string
 
-  cover?: string
+//   cover?: string
 
-  type?: ArticleType
-  tags?: string[]
+//   type?: ArticleType
+//   tags?: string[]
 
-  visitCount?: number
-  isPublished?: boolean
+//   visitCount?: number
+//   isPublished?: boolean
 
-  createBy?: UserResp
-  publishAt?: Date
-  createAt?: Date
-}
+//   createBy?: UserResp
+//   publishAt?: Date
+//   createAt?: Date
+// }
 
 export interface ArticleEditModel {
   id?: number

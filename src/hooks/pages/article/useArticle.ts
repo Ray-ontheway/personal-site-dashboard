@@ -1,5 +1,5 @@
 import {
-  Article,
+  ArticleResp,
   ArticleEditModel,
   ArticleCreateReq,
   ArticleUpdateReq,
@@ -42,7 +42,7 @@ export const useArticle = () => {
 export const useArticleEditor = (
   allTypes: ArticleType[],
   allTags: ArticleTag[],
-  article: Article | undefined = undefined
+  article: ArticleResp | undefined = undefined
 ) => {
   const articleStore = useArticleStore()
 
@@ -51,7 +51,7 @@ export const useArticleEditor = (
 
   const editorType = ref<ArticleType | null>(article?.type || null)
   const editorTags = ref<ArticleTag[]>(
-    (article?.tags || []).map(tagName => allTags.find(tag => tag.name === tagName) as ArticleTag)
+    (article?.tags || []).map(tagName => allTags.find(tag => tag.name === tagName.name) as ArticleTag)
   )
   const DEFAULT_ARTICLE = {
     uid: '',

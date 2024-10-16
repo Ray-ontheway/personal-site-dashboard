@@ -1,6 +1,7 @@
 import { ElNotification } from 'element-plus'
 import axios from 'axios'
 import { AxiosRequestHeaders } from 'axios'
+import { useAuthStore } from '@/store/modules/auth'
 
 const axiosClient = axios.create({
   baseURL: '',
@@ -10,8 +11,9 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(
   config => {
+    const authStore = useAuthStore()
     const headers = (config.headers || {}) as AxiosRequestHeaders
-    // TODO 添加 jwt TOKEN
+    headers.Authorization = `Bearer ${authStore.getAccessToken}`
     config.headers = headers
     return config
   },

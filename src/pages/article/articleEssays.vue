@@ -2,12 +2,12 @@
 import { useRouter } from 'vue-router'
 import { useArticle } from '@/hooks/pages/article/useArticle'
 import moment from 'moment'
-import { Article } from '@/api/models/articleModel'
+import { ArticleResp } from '@/api/models/articleModel'
 
-const { articlePage, syncArticlePage, deleteArticle, setCurEditArticle } = useArticle()
+const { articlePage, changePageIdx, changePageSize, syncArticlePage, deleteArticle, setCurEditArticle } = useArticle()
 
 const router = useRouter()
-const handleEdit = (article: Article | null = null) => {
+const handleEdit = (article: ArticleResp | null = null) => {
   if (article?.uid) {
     setCurEditArticle(article)
     router.push({ name: 'ArticleEditor', query: { id: article.id } })
@@ -15,8 +15,6 @@ const handleEdit = (article: Article | null = null) => {
     router.push({ name: 'ArticleEditor' })
   }
 }
-
-syncArticlePage()
 
 const formatDatetime = (_row, _column, cellValue) => (cellValue ? moment(cellValue).format('yyyy-MM-DD') : '')
 </script>
@@ -31,12 +29,12 @@ const formatDatetime = (_row, _column, cellValue) => (cellValue ? moment(cellVal
     </template>
     <el-table :data="articlePage.data">
       <el-table-column prop="title" label="标题" />
-      <el-table-column prop="createBy.username" label="作者" />
+      <el-table-column prop="author.email" label="作者" />
       <el-table-column prop="type.name" label="文章类型" />
-      <el-table-column prop="publishAt" label="更新时间" :formatter="formatDatetime" />
+      <el-table-column prop="updateAt" label="更新时间" :formatter="formatDatetime" />
       <el-table-column label="操作" fixed="right" width="120">
         <template #default="{ row }">
-          <el-button link type="primary" @click="handleEdit">编辑</el-button>
+          <el-button link type="primary" @click="handleEdit(row)">编辑</el-button>
           <el-popconfirm
             title="确认删除当前文章吗？"
             confirm-button-text="确认"
@@ -50,6 +48,16 @@ const formatDatetime = (_row, _column, cellValue) => (cellValue ? moment(cellVal
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      class="article-page-pagination"
+      v-model:current-page="articlePage.pageIdx"
+      v-model:page-size="articlePage.pageSize"
+      :page-sizes="[20, 30, 35, 40]"
+      layout="sizes, prev, pager, next"
+      :total="articlePage.total"
+      @size-change="changePageSize"
+      @current-change="changePageIdx"
+    />
   </el-card>
 </template>
 <style lang="scss" scoped>
@@ -93,5 +101,9 @@ const formatDatetime = (_row, _column, cellValue) => (cellValue ? moment(cellVal
 
 .page-content {
   flex: 1;
+}
+
+.article-page-pagination {
+  margin-top: 2rem;
 }
 </style>

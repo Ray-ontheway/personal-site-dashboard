@@ -30,8 +30,8 @@ export class ArticleAPI {
     return axiosClient.put(ArticleApiPath.UPDATE, data)
   }
   // 3. 删除文章
-  static async delete(uid: string) {
-    return axiosClient.delete(`${ArticleApiPath.DELETE}/${uid}`)
+  static async delete(id: number) {
+    return axiosClient.delete(`${ArticleApiPath.DELETE}/${id}`)
   }
   // 4. 分页查询文章
   static async page(pageIdx: number, pageSize: number) {
