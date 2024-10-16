@@ -5,7 +5,7 @@ import ArticleTypeForm from './components/ArticleTypeForm.vue'
 import { ArticleType } from '@/api/models/articleModel'
 import { ElNotification } from 'element-plus'
 
-const { articleTypeList, syncAllArticleTypes, deleteArticleType, addType } = useArticleType()
+const { articleTypeList, syncAllArticleTypes, deleteArticleType } = useArticleType()
 
 onMounted(() => {
   syncAllArticleTypes()
@@ -17,9 +17,9 @@ const triggerEditable = (type: ArticleType | undefined = undefined) => {
   editType.value = type
   isEditable.value = true
 }
-const handleTypeSaveSuccess = (type: ArticleType) => {
+const handleTypeSaveSuccess = (_type: ArticleType) => {
   isEditable.value = false
-  addType(type)
+  syncAllArticleTypes()
 }
 const handleTypeSaveError = () => {
   isEditable.value = false

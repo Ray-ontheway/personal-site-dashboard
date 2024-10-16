@@ -1,7 +1,9 @@
 import axiosClient from '@/utils/http/axios'
 
 import type {
-  ArticleReq,
+  ArticleCreateReq,
+  ArticleUpdateReq,
+  ArticleResp,
   ArticleTag,
   ArticleTagCreateReq,
   ArticleTagUpdateReq,
@@ -20,11 +22,11 @@ export class ArticleAPI {
   }
 
   // 1. 创建新文章
-  static async create(data: ArticleReq) {
+  static async create(data: ArticleCreateReq) {
     return axiosClient.post(ArticleApiPath.CREATE, data)
   }
   // 2. 更新文章
-  static async update(data: ArticleReq) {
+  static async update(data: ArticleUpdateReq) {
     return axiosClient.put(ArticleApiPath.UPDATE, data)
   }
   // 3. 删除文章

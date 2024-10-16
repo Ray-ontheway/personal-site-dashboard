@@ -1,4 +1,11 @@
-import { Article, ArticleEditModel, ArticleReq, ArticleTag, ArticleType } from '@/api/models/articleModel'
+import {
+  Article,
+  ArticleEditModel,
+  ArticleCreateReq,
+  ArticleUpdateReq,
+  ArticleTag,
+  ArticleType,
+} from '@/api/models/articleModel'
 import { computed, ref, toRef } from 'vue'
 import { useArticleStore } from '@/store/modules/article'
 
@@ -72,7 +79,7 @@ export const useArticleEditor = (
   const saveAsDraft = () => {
     console.log('saveAsDraft')
 
-    const articleReq: ArticleReq = {
+    const articleReq: ArticleUpdateReq = {
       id: editorArticle.value.id,
       uid: editorArticle.value.uid,
       title: editorArticle.value.title,
@@ -81,13 +88,15 @@ export const useArticleEditor = (
       typeId: editorType.value?.id || undefined,
       tagIds: editorTags.value.map(tag => tag.id),
       isPublish: false,
+      cover: '',
+      createBy: 0,
     }
     saveArticle(articleReq)
   }
   const publish = () => {
     console.log('publish')
 
-    const articleReq: ArticleReq = {
+    const articleReq: ArticleUpdateReq = {
       id: editorArticle.value.id,
       uid: editorArticle.value.uid,
       title: editorArticle.value.title,
@@ -96,6 +105,8 @@ export const useArticleEditor = (
       typeId: editorType.value?.id || undefined,
       tagIds: editorTags.value.map(tag => tag.id),
       isPublish: true,
+      cover: '',
+      createBy: 0,
     }
     saveArticle(articleReq)
   }

@@ -1,5 +1,5 @@
 import { ArticleAPI } from '@/api/article'
-import { Article, ArticleReq } from '@/api/models/articleModel'
+import { Article, ArticleCreateReq, ArticleUpdateReq } from '@/api/models/articleModel'
 import { PageObject } from '@/api/models/common'
 import { defineStore } from 'pinia'
 
@@ -56,12 +56,12 @@ export const useArticleStore = defineStore({
       this.pageInfo.pageSize = pageSize
       await this.fetchCurArticlePage()
     },
-    async saveArticle(articleReq: ArticleReq) {
+    async saveArticle(articleReq: ArticleUpdateReq) {
       console.log('saveArticle', articleReq)
       if (articleReq.id) {
-        await ArticleAPI.update(articleReq)
+        await ArticleAPI.update(articleReq as ArticleUpdateReq)
       } else {
-        await ArticleAPI.create(articleReq)
+        await ArticleAPI.create(articleReq as ArticleCreateReq)
       }
       await this.fetchCurArticlePage()
     },

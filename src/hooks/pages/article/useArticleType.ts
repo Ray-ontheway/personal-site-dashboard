@@ -23,6 +23,7 @@ export const useArticleType = () => {
   const deleteArticleType = (type: ArticleType) => {
     ArticleTypeApi.delete(type.id).then(() => {
       console.log('删除成功')
+      syncAllArticleTypes()
     })
   }
 
@@ -45,8 +46,8 @@ export const useArticleTag = () => {
   const deleteArticleTag = (tag: ArticleTag) => {
     ArticleTagApi.delete(tag.id).then(() => {
       console.log('删除成功')
+      syncAllArticleTags()
     })
-    syncAllArticleTags()
   }
 
   // 获取所有文章tag
@@ -71,7 +72,7 @@ export const useArticleTypeForm = (articleType: Ref<ArticleType | undefined>) =>
     catKey: '',
     description: '',
   }
-  const currentArticleType = ref<ArticleType>(ARTICLE_TYPE_DEFAULT)
+  const currentArticleType = ref<ArticleType>({ ...ARTICLE_TYPE_DEFAULT })
 
   const resolveArticleType = () => {
     if (articleType.value !== undefined) {
@@ -118,7 +119,7 @@ export const useArticleTagForm = (articleTag: Ref<ArticleTag | undefined>) => {
     catKey: '',
     description: '',
   }
-  const currentArticleTag = ref<ArticleTag>(ARTICLE_TAG_DEFAULT)
+  const currentArticleTag = ref<ArticleTag>({ ...ARTICLE_TAG_DEFAULT })
 
   const resolveArticleTag = () => {
     if (articleTag.value !== undefined) {

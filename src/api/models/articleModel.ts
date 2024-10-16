@@ -12,15 +12,29 @@ export interface ArticleCategoryResp {
   createAt: Date
 }
 
-export interface ArticleReq {
-  id?: number
-  uid?: string
+export interface ArticleCreateReq {
   title: string
   summary: string
   content: string
+  cover: string
   typeId: number
   tagIds: number[]
   isPublish: boolean
+}
+
+export interface ArticleUpdateReq extends ArticleCreateReq {
+  id?: number
+  uid?: string
+  createBy: number
+}
+
+export interface ArticleResp extends Omit<ArticleUpdateReq, 'typeId' | 'tagsId' | 'createBy'> {
+  type: ArticleType
+  tags: ArticleTag[]
+  visitedCount: number
+  isPublished: boolean
+  createBy: UserResp
+  updateAt: Date
 }
 
 export interface Article {

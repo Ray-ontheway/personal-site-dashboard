@@ -20,7 +20,6 @@ const triggerEdit = (tag: ArticleTag | undefined) => {
 const onTagSaveSuccess = (tag: ArticleTag) => {
   isEditable.value = false
   syncAllArticleTags()
-  addTag(tag)
 }
 const onTagSaveError = () => {
   isEditable.value = false
