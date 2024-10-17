@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import { UserLogin, LoginResult } from '@/api/models/userModel'
 import { UserApi } from '@/api/user'
+import { useRouter } from 'vue-router'
+import { ElNotification } from 'element-plus'
 
 interface AuthState {
   accessToken: string
@@ -23,9 +25,14 @@ export const useAuthStore = defineStore({
   },
   actions: {
     async doLogin(userLogin: UserLogin) {
-      const loginResult = await UserApi.login(userLogin)
-      this.accessToken = loginResult.accessToken
-      this.expireAt = Date.now() + loginResult.expires
+      try {
+        const loginResult = await UserApi.login(userLogin)
+        this.accessToken = loginResult.accessToken
+        this.expireAt = Date.now() + loginResult.expires
+        return Promise.resolve(loginResult)
+      } catch (error) {
+        return Promise.reject(error)
+      }
     },
   },
   persist: {

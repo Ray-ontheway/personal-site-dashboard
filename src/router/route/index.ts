@@ -6,7 +6,7 @@ import { articleRoute, articleEditorRoute } from './article.ts'
 
 const routes: AppRouteRecordRaw[] = [
   {
-    name: 'Root',
+    name: 'Home',
     path: '/',
     redirect: '/dashboard',
     meta: { title: 'Root', hidden: true, iconName: '' },
