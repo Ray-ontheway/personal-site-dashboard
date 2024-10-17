@@ -1,12 +1,36 @@
 <script lang="ts" setup>
-import { useRouter } from 'vue-router'
 import { useArticle } from '@/hooks/pages/article/useArticle'
 import moment from 'moment'
 import { ArticleResp } from '@/api/models/articleModel'
-
-const { articlePage, changePageIdx, changePageSize, syncArticlePage, deleteArticle, setCurEditArticle } = useArticle()
-
+import { useRoute, useRouter } from 'vue-router'
+import { computed, watch } from 'vue'
+const route = useRoute()
 const router = useRouter()
+
+// TODO 这里有一个魔数
+const pageIdx = computed(() => (route.query.pageIdx ? Number(route.query.pageIdx) : 1))
+const pageSize = computed(() => (route.query.pageSize ? Number(route.query.pageSize) : 20))
+console.log(pageIdx, pageSize)
+
+const { articlePage, syncEssaysPage, deleteArticle, setCurEditArticle } = useArticle()
+
+syncEssaysPage(pageIdx.value, pageSize.value)
+
+watch(pageIdx, newPageIdx => {
+  syncEssaysPage(newPageIdx, pageSize.value)
+})
+watch(pageSize, newPageSize => {
+  syncEssaysPage(pageIdx.value, newPageSize)
+})
+
+const handlePageIdxChange = (newPageIdx: number) => {
+  router.push({ query: { pageIdx: newPageIdx, pageSize: pageSize.value } })
+}
+
+const handlePageSizeChange = (newPageSize: number) => {
+  router.push({ query: { pageIdx: pageIdx.value, pageSize: newPageSize } })
+}
+
 const handleEdit = (article: ArticleResp | null = null) => {
   if (article?.uid) {
     setCurEditArticle(article)
@@ -55,8 +79,8 @@ const formatDatetime = (_row, _column, cellValue) => (cellValue ? moment(cellVal
       :page-sizes="[20, 30, 35, 40]"
       layout="sizes, prev, pager, next"
       :total="articlePage.total"
-      @size-change="changePageSize"
-      @current-change="changePageIdx"
+      @size-change="handlePageSizeChange"
+      @current-change="handlePageIdxChange"
     />
   </el-card>
 </template>

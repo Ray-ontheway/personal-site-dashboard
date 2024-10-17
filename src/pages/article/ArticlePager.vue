@@ -19,14 +19,15 @@ import { useRouter } from 'vue-router'
 import { onMounted } from 'vue'
 
 const { pageTitle, currentPageTabs, currentTab } = usePage()
-const { syncArticlePage } = useArticle()
+const { syncDrafts, syncEssaysPage } = useArticle()
 const { syncAllArticleTypes } = useArticleType()
 const { syncAllArticleTags } = useArticleTag()
 
 onMounted(() => {
   syncAllArticleTypes()
   syncAllArticleTags()
-  syncArticlePage()
+  syncDrafts()
+  syncEssaysPage()
 })
 
 const router = useRouter()

@@ -35,16 +35,19 @@ export class ArticleAPI {
   }
   // 4. 分页查询文章
   static async page(pageIdx: number, pageSize: number) {
-    return axiosClient.get(ArticleApiPath.PAGE, {
-      params: {
-        pageIdx: pageIdx,
-        pageSize: pageSize,
-      },
-    })
+    return axiosClient.get(`${ArticleApiPath.PAGE}?pageIdx=${pageIdx}&pageSize=${pageSize}`)
   }
   // 5. 查询文章详情
   static async detail(uid: string) {
     return axiosClient.get(`${ArticleApiPath.DETAIL}/${uid}`)
+  }
+
+  static async drafts() {
+    return axiosClient.get(ArticleApiPath.DRAFTS)
+  }
+
+  static async essaysPage(pageIdx: number, pageSize: number) {
+    return axiosClient.get(`${ArticleApiPath.ESSAYS}?pageIdx=${pageIdx}&pageSize=${pageSize}`)
   }
 }
 

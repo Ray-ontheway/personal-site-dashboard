@@ -11,6 +11,7 @@ interface PageInfo {
 interface ArticleState {
   pageInfo: PageInfo
   curArticlePage: PageObject<ArticleResp>
+  drafts: ArticleResp[]
   curEditArticle: ArticleResp | null
 }
 
@@ -27,6 +28,7 @@ export const useArticleStore = defineStore({
       total: 0,
       data: [],
     },
+    drafts: [],
     curEditArticle: null,
   }),
   getters: {
@@ -36,6 +38,9 @@ export const useArticleStore = defineStore({
     getCurEditArticle(state: ArticleState): ArticleResp | null {
       return state.curEditArticle
     },
+    getDrafts(state: ArticleState): ArticleResp[] {
+      return state.drafts
+    },
   },
   actions: {
     setCurEditArticle(article: ArticleResp | null) {
@@ -44,11 +49,29 @@ export const useArticleStore = defineStore({
     resetCurEditArticle() {
       this.curEditArticle = null
     },
-    async fetchCurArticlePage() {
-      const { pageIdx, pageSize } = this.pageInfo
+    async fetchCurArticlePage(pageIdx: number = 1, pageSize: number = 10) {
       const res = await ArticleAPI.page(pageIdx, pageSize)
       this.curArticlePage = { ...res, data: res.records }
       console.log('fetchCurArticlePage', this.curArticlePage)
+    },
+    async syncDrafts() {
+      const res = await ArticleAPI.drafts()
+      console.log('syncDrafts', res)
+      this.drafts = res
+    },
+    async essaysPage(pageIdx: number = 1, pageSize: number = 10) {
+      if (
+        pageIdx === this.pageInfo.pageIdx &&
+        pageSize === this.pageInfo.pageSize &&
+        this.curArticlePage.data.length > 0
+      ) {
+        return
+      }
+      this.pageInfo.pageIdx = pageIdx
+      this.pageInfo.pageSize = pageSize
+      const res = await ArticleAPI.essaysPage(pageIdx, pageSize)
+      console.log('essaysPage', res)
+      this.curArticlePage = { ...res, data: res.records }
     },
     async changePageIdx(pageIdx: number) {
       this.pageInfo.pageIdx = pageIdx
@@ -61,8 +84,10 @@ export const useArticleStore = defineStore({
     async saveArticle(articleReq: ArticleUpdateReq) {
       console.log('saveArticle', articleReq)
       if (articleReq.id) {
+        console.log('update article', articleReq)
         await ArticleAPI.update(articleReq as ArticleUpdateReq)
       } else {
+        console.log('create article', articleReq)
         await ArticleAPI.create(articleReq as ArticleCreateReq)
       }
       await this.fetchCurArticlePage()

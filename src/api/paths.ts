@@ -18,6 +18,8 @@ export enum ArticleApiPath {
   UPDATE = `${ARTICLE_BASE_API_PATH}`,
   DELETE = `${ARTICLE_BASE_API_PATH}`,
   PAGE = `${ARTICLE_BASE_API_PATH}/page`,
+  DRAFTS = `${ARTICLE_BASE_API_PATH}/drafts`,
+  ESSAYS = `${ARTICLE_BASE_API_PATH}/essays`,
   DETAIL = `${ARTICLE_BASE_API_PATH}/post`,
 }
 

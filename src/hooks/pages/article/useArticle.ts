@@ -1,11 +1,4 @@
-import {
-  ArticleResp,
-  ArticleEditModel,
-  ArticleCreateReq,
-  ArticleUpdateReq,
-  ArticleTag,
-  ArticleType,
-} from '@/api/models/articleModel'
+import { ArticleResp, ArticleEditModel, ArticleUpdateReq, ArticleTag, ArticleType } from '@/api/models/articleModel'
 import { computed, ref, toRef } from 'vue'
 import { useArticleStore } from '@/store/modules/article'
 
@@ -14,8 +7,13 @@ export const useArticle = () => {
 
   // 1. 文章分页程序
   const articlePage = computed(() => articleStore.getCurArticlePage)
+  const articleDrafts = computed(() => articleStore.getDrafts)
 
   const curEditArticle = computed(() => articleStore.getCurEditArticle)
+
+  const syncDrafts = articleStore.syncDrafts
+
+  const syncEssaysPage = articleStore.essaysPage
 
   const syncArticlePage = articleStore.fetchCurArticlePage
 
@@ -30,8 +28,11 @@ export const useArticle = () => {
   return {
     articlePage,
     curEditArticle,
+    articleDrafts,
 
     syncArticlePage,
+    syncDrafts,
+    syncEssaysPage,
     changePageIdx,
     changePageSize,
     deleteArticle,

@@ -14,7 +14,7 @@ import {
   createArticle,
 } from './results'
 import { ArticleApiPath, ArticleTagApiPath, ArticleTypeApiPath } from '@/api/paths'
-import { ArticleReq } from '@/api/models/articleModel'
+import { ArticleCreateReq } from '@/api/models/articleModel'
 
 export function mockArticleApi(mock: MockAdapter) {
   mock.onGet(/\/api\/article\/all\/([0-9a-zA-Z]*)/).reply(config => {
@@ -36,7 +36,7 @@ export function mockArticleApi(mock: MockAdapter) {
   })
 
   mock.onPost(ArticleApiPath.CREATE).reply(config => {
-    const data = JSON.parse(config.data) as ArticleReq
+    const data = JSON.parse(config.data) as ArticleCreateReq
     const result = createArticle(data)
     console.log('create article', result)
     return [200, result]

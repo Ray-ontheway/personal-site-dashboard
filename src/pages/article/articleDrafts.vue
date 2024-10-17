@@ -4,7 +4,7 @@ import { useArticle } from '@/hooks/pages/article/useArticle'
 import moment from 'moment'
 import { ArticleResp } from '@/api/models/articleModel'
 
-const { articlePage, syncArticlePage, deleteArticle, setCurEditArticle } = useArticle()
+const { articleDrafts, syncDrafts, deleteArticle, setCurEditArticle } = useArticle()
 
 const router = useRouter()
 const handleEdit = (article: ArticleResp | null) => {
@@ -19,7 +19,7 @@ const handlePublish = () => {
   console.log('handlePublish')
 }
 
-syncArticlePage()
+syncDrafts()
 
 const formatDatetime = (_row, _column, cellValue) => (cellValue ? moment(cellValue).format('yyyy-MM-DD') : '')
 </script>
@@ -32,7 +32,7 @@ const formatDatetime = (_row, _column, cellValue) => (cellValue ? moment(cellVal
         <el-button type="primary" @click="handleEdit(null)" class="article-create">写文章</el-button>
       </div>
     </template>
-    <el-table :data="articlePage.data">
+    <el-table :data="articleDrafts">
       <el-table-column prop="title" label="标题" />
       <el-table-column prop="author.email" label="作者" />
       <el-table-column prop="type.name" label="文章类型" />
