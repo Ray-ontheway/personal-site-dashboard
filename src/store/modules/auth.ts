@@ -30,6 +30,7 @@ export const useAuthStore = defineStore({
   },
   persist: {
     key: 'auth',
-    storage: window.sessionStorage,
+    // 使用 localStorage 作为持久化存储, 这样数据可以在多个标签页中使用，并长期有效
+    storage: window.localStorage,
   },
 })
