@@ -2,7 +2,7 @@ import { PageObject, BaseResult } from '@api/models/common'
 import { UserResp, RoleResp } from '@api/models/userModel'
 import random from 'lodash/random'
 import sampleSize from 'lodash/sampleSize'
-import { fa, faker } from '@faker-js/faker'
+import { faker } from '@faker-js/faker'
 
 const sysRoles: RoleResp[] = [
   {
@@ -33,7 +33,7 @@ export const generateUserRoles = (): RoleResp[] => {
   return sampleSize(sysRoles, count)
 }
 
-const pageUsers = (pageIdx: number, pageSize: number): UserResp[] =>
+const pageUsers = (_pageIdx: number, pageSize: number): UserResp[] =>
   Array.from({ length: pageSize }).map(
     (_, idx) =>
       ({
@@ -48,7 +48,7 @@ const pageUsers = (pageIdx: number, pageSize: number): UserResp[] =>
   )
 
 export const pageUserInfo = (pageIdx: number, pageSize: number): PageObject<UserResp> => {
-  const min = (pageIdx - 1) * pageSize
+  // const _min = (pageIdx - 1) * pageSize
   const max = pageIdx * pageSize + 50
   return {
     pageIdx: pageIdx,
@@ -64,7 +64,7 @@ export const pageUsersResult = (pageIdx: number, pageSize: number): BaseResult =
   data: pageUserInfo(pageIdx, pageSize),
 })
 
-const generateUser = (idx: string): UserResp => ({
+const generateUser = (_idx: string): UserResp => ({
   id: faker.number.int(1000),
   username: faker.internet.userName(),
   avatar: faker.image.avatar(),

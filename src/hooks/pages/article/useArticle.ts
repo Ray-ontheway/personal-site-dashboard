@@ -88,7 +88,7 @@ export const useArticleEditor = (
       content: editorArticle.value.content,
       typeId: editorType.value?.id || undefined,
       tagIds: editorTags.value.map(tag => tag.id),
-      isPublish: false,
+      isPublished: false,
       cover: '',
       createBy: 0,
     }
@@ -105,7 +105,7 @@ export const useArticleEditor = (
       content: editorArticle.value.content,
       typeId: editorType.value?.id || undefined,
       tagIds: editorTags.value.map(tag => tag.id),
-      isPublish: true,
+      isPublished: true,
       cover: '',
       createBy: 0,
     }

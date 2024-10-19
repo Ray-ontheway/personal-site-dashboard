@@ -80,7 +80,7 @@ export function useUserManager() {
       })
   }
 
-  const updateUserRoles = (userId: string, roleIds: string[]) => {
+  const updateUserRoles = (userId: number, roleIds: number[]) => {
     UserApi.updateUserRoles(userId, roleIds)
       .then((user: UserResp) => {
         userTableState.data.forEach(u => {

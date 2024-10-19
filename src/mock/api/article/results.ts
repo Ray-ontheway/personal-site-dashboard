@@ -1,11 +1,13 @@
 import {
   ArticleCategoryResp,
   ArticleTag,
-  ArticleTagReq,
-  ArticleTypeReq,
+  ArticleTagCreateReq,
+  ArticleTypeCreateReq,
   ArticleType,
-  Article,
-  ArticleReq,
+  ArticleResp,
+  ArticleCreateReq,
+  ArticleTagUpdateReq,
+  ArticleTypeUpdateReq,
 } from '@/api/models/articleModel'
 import { faker } from '@faker-js/faker'
 import { UserResp } from '@api/models/userModel'
@@ -45,7 +47,7 @@ export const generateArticleCategoryByUserId = (userId: string): BaseResult<Arti
 }
 
 // 文章
-export const pageArticle = (pageIdx: number, pageSize: number): BaseResult<PageObject<Article>> => {
+export const pageArticle = (pageIdx: number, pageSize: number): BaseResult<PageObject<ArticleResp>> => {
   return {
     status: 200,
     msg: 'success',
@@ -54,12 +56,13 @@ export const pageArticle = (pageIdx: number, pageSize: number): BaseResult<PageO
       pageSize: pageSize,
       total: faker.number.int(100),
       data: Array.from({ length: pageSize }).map(
-        (it: number): Article => ({
+        (it: number): ArticleResp => ({
           id: it,
           uid: faker.string.uuid(),
           title: faker.lorem.word(),
           summary: faker.lorem.sentence(),
           content: faker.lorem.paragraph(),
+          cover: '',
 
           type: {
             id: faker.number.int(1000),
@@ -68,12 +71,12 @@ export const pageArticle = (pageIdx: number, pageSize: number): BaseResult<PageO
             catKey: faker.string.uuid().substring(0, 8),
             description: 'description',
           },
-          tags: Array.from({ length: 3 }).map(() => faker.lorem.word()),
+          tags: [],
 
-          visitCount: faker.number.int(50),
+          visitedCount: faker.number.int(50),
           isPublished: faker.number.int(10) % 2 === 0,
 
-          createBy: {
+          author: {
             id: 1,
             username: faker.internet.userName(),
             avatar: faker.image.avatar(),
@@ -87,8 +90,7 @@ export const pageArticle = (pageIdx: number, pageSize: number): BaseResult<PageO
               },
             ],
           },
-          publishAt: faker.date.past(),
-          createAt: faker.date.past(),
+          updateAt: faker.date.past(),
         })
       ),
     },
@@ -103,7 +105,7 @@ export const deleteArticle = (uid: string): BaseResult<string> => {
   }
 }
 
-export const createArticle = (articleReq: ArticleReq): BaseResult<Article> => {
+export const createArticle = (articleReq: ArticleCreateReq): BaseResult<ArticleResp> => {
   return {
     status: 200,
     msg: 'create success',
@@ -120,14 +122,15 @@ export const createArticle = (articleReq: ArticleReq): BaseResult<Article> => {
         catKey: faker.string.uuid().substring(0, 8),
         description: 'description',
       },
-      tags: articleReq.tagIds.map(() => faker.lorem.word()),
-      isPublished: articleReq.isPublish,
-    } as Article,
+      tags: [],
+      isPublished: articleReq.isPublished,
+      author: {},
+    } as ArticleResp,
   }
 }
 
 // 文章标签
-export const generateArticleTag = (data: ArticleTagReq): BaseResult<ArticleTag> => {
+export const generateArticleTag = (data: ArticleTagCreateReq): BaseResult<ArticleTag> => {
   const tag: ArticleTag = {
     id: faker.number.int(1000),
     uid: faker.string.uuid(),
@@ -141,7 +144,7 @@ export const generateArticleTag = (data: ArticleTagReq): BaseResult<ArticleTag> 
     data: tag,
   }
 }
-export const updateArticleTag = (data: ArticleTagReq): BaseResult<ArticleTag> => {
+export const updateArticleTag = (data: ArticleTagUpdateReq): BaseResult<ArticleTag> => {
   const tag: ArticleTag = {
     id: data.id,
     uid: data.uid,
@@ -155,7 +158,7 @@ export const updateArticleTag = (data: ArticleTagReq): BaseResult<ArticleTag> =>
     data: tag,
   }
 }
-export const deleteArticleTag = (id: number): BaseResult<string> => {
+export const deleteArticleTag = (_id: number): BaseResult<string> => {
   return {
     status: 200,
     msg: 'delete success',
@@ -199,7 +202,7 @@ export const allArticleTags = (): BaseResult<ArticleTag[]> => {
 }
 
 // 文章类型
-export const generateArticleType = (data: ArticleTypeReq): BaseResult<ArticleType> => {
+export const generateArticleType = (data: ArticleTypeCreateReq): BaseResult<ArticleType> => {
   const type: ArticleType = {
     id: faker.number.int(1000),
     uid: faker.string.uuid(),
@@ -213,7 +216,7 @@ export const generateArticleType = (data: ArticleTypeReq): BaseResult<ArticleTyp
     data: type,
   }
 }
-export const updateArticleType = (data: ArticleTypeReq): BaseResult<ArticleType> => {
+export const updateArticleType = (data: ArticleTypeUpdateReq): BaseResult<ArticleType> => {
   const type: ArticleType = {
     id: data.id,
     uid: data.uid,

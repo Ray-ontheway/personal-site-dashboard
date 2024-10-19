@@ -19,7 +19,7 @@ export interface ArticleCreateReq {
   cover: string
   typeId: number
   tagIds: number[]
-  isPublish: boolean
+  isPublished: boolean
 }
 
 export interface ArticleUpdateReq extends ArticleCreateReq {
@@ -28,11 +28,10 @@ export interface ArticleUpdateReq extends ArticleCreateReq {
   createBy: number
 }
 
-export interface ArticleResp extends Omit<ArticleUpdateReq, 'typeId' | 'tagsId' | 'createBy'> {
+export interface ArticleResp extends Omit<ArticleUpdateReq, 'typeId' | 'tagIds' | 'createBy'> {
   type: ArticleType
   tags: ArticleTag[]
   visitedCount: number
-  isPublished: boolean
   author: UserResp
   updateAt: Date
 }

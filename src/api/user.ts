@@ -22,11 +22,11 @@ export class UserApi {
     return axiosClient.get(UserApiPath.SEARCH, { params: { username } })
   }
 
-  static async denyUser(userId: string) {
+  static async denyUser(userId: number) {
     return axiosClient.put(UserApiPath.DENY, { userId })
   }
 
-  static async updateUserRoles(userId: string, roleIds: string[]): Promise<UserResp> {
+  static async updateUserRoles(userId: number, roleIds: number[]): Promise<UserResp> {
     return axiosClient.put(UserApiPath.UPDATE_ROLES, { userId, roleIds })
   }
 

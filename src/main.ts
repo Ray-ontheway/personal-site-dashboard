@@ -3,7 +3,7 @@ import './style.css'
 import App from './App.vue'
 import { setupStore } from './store'
 import { setupRouter } from './router'
-import { setupMock } from './mock'
+// import { setupMock } from './mock'
 
 import 'virtual:svg-icons-register'
 

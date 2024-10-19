@@ -1,9 +1,6 @@
 import { defineStore } from 'pinia'
 import { routes } from '@/router/route'
 import { AppRouteRecordRaw } from '@router/types'
-import { UserLogin } from '@/api/models/userModel'
-import { get } from 'lodash'
-import { UserApi } from '@/api/user'
 
 interface AppState {
   routes: AppRouteRecordRaw[] | undefined

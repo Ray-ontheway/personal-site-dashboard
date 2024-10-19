@@ -1,4 +1,3 @@
-import { UserLogin } from '@/api/models/userModel'
 import { useAuthStore } from '@/store/modules/auth'
 
 export const useLogin = () => {

@@ -38,7 +38,7 @@ export default defineComponent({
     const dialogEnabled = ref(false)
 
     const curUser = ref<UserResp | null>(null)
-    const curRoleIds = ref<string[]>([])
+    const curRoleIds = ref<number[]>([])
     const renderRolesEditorDialog = (user: UserResp) => {
       curUser.value = user
       user.roles.map(role => curRoleIds.value.push(role.id))
@@ -50,7 +50,7 @@ export default defineComponent({
     }
 
     const renderTableOperator = () => (
-      <RSearch class={styles['operation-container']} placeholder="placeholder" onSearch={searchUsers} />
+      <RSearch class={styles['operation-container']} placeholder="placeholder" on-search={searchUsers} />
     )
     const renderTableColumn = (label: string, render: (scope) => JSX.Element) => (
       <ElTableColumn

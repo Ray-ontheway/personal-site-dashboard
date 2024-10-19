@@ -5,7 +5,7 @@ import ArticleTagForm from './components/ArticleTagForm.vue'
 import { ArticleTag } from '@/api/models/articleModel'
 import { ElNotification } from 'element-plus'
 
-const { articleTagList, syncAllArticleTags, deleteArticleTag, addTag } = useArticleTag()
+const { articleTagList, syncAllArticleTags, deleteArticleTag } = useArticleTag()
 
 onMounted(() => {
   syncAllArticleTags()
@@ -17,7 +17,7 @@ const triggerEdit = (tag: ArticleTag | undefined) => {
   editTag.value = tag
   isEditable.value = true
 }
-const onTagSaveSuccess = (tag: ArticleTag) => {
+const onTagSaveSuccess = (_tag: ArticleTag) => {
   isEditable.value = false
   syncAllArticleTags()
 }

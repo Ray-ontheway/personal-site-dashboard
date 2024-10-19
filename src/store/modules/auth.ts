@@ -1,8 +1,6 @@
 import { defineStore } from 'pinia'
-import { UserLogin, LoginResult } from '@/api/models/userModel'
+import { UserLogin } from '@/api/models/userModel'
 import { UserApi } from '@/api/user'
-import { useRouter } from 'vue-router'
-import { ElNotification } from 'element-plus'
 
 interface AuthState {
   accessToken: string

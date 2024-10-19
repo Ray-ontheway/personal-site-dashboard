@@ -3,7 +3,6 @@ import axiosClient from '@/utils/http/axios'
 import type {
   ArticleCreateReq,
   ArticleUpdateReq,
-  ArticleResp,
   ArticleTag,
   ArticleTagCreateReq,
   ArticleTagUpdateReq,
