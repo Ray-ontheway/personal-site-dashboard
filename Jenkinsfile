@@ -14,8 +14,10 @@ pipeline {
                     ls -al
                     node --version
                     npm --version
-                    npm ci
-                    npm run build
+                    npm i -g pnpm
+                    pnpm --version
+                    pnpm ci
+                    pnpm build
                     ls -al
                 '''
             }
