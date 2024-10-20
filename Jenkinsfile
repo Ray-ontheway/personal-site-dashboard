@@ -14,8 +14,7 @@ pipeline {
                     ls -al
                     node --version
                     npm --version
-                    npm config set registry http://registry.npm.taobao.org
-                    npm install
+                    npm ci
                     npm run build
                     ls -al
                 '''
