@@ -1,24 +1,44 @@
 pipeline {
-    agent any
+    agent  any
+    
+    tools {nodejs "21.4.0"}
+    
+    environment {
+        NPM_CONFIG_REGISTRY = 'https://registry.npmmirror.com'
+    }
 
     stages {
-        stage('Build') {
-            agent {
-                docker {
-                    image 'node:20.10.0'
-                    reuseNode true
-                }
-            }
+        stage('Check tool version') {
             steps {
                 sh '''
-                    ls -al
                     node --version
                     npm --version
-                    npm ci
-                    npm run build
-                    ls -al
+                    npm config ls
                 '''
             }
+        }
+        stage("Build Preparation") {
+            steps {
+                sh '''
+                    npm install -g pnpm --force
+                    pnpm --version
+                    pnpm install
+                '''
+            }
+        }
+        stage("Build") {
+            steps {
+                sh '''
+                    echo "Start Build"
+                    pnpm build
+                '''
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo "Build Successful"
         }
     }
 }
