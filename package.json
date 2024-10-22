@@ -14,7 +14,7 @@
     "stylelint:fix": "stylelint --fix \"src/**/*.{css,scss,vue,html}\"",
     "prettier:check": "prettier --check ./src",
     "prettier:write": "prettier --write .",
-    "cm": "git add -A && cz"
+    "cm": "git add -A && cz && git push"
   },
   "config": {
     "commitizen": {
