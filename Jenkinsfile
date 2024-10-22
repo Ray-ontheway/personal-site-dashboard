@@ -42,9 +42,9 @@ pipeline {
                     if [ ! -d "${DEPLOY_DIR}" ]; then
                         sudo mkdir -p ${DEPLOY_DIR}
                     fi
-                    sudo rm -rf $DEPLOY_DIR/*
-                    sudo cp -r ./dist/* "${DEPLOY_DIR}/"
-                    sudo chmod -R 744 ${DEPLOY_DIR}
+                    rm -rf $DEPLOY_DIR/*
+                    cp -r ./dist/* "${DEPLOY_DIR}/"
+                    chmod -R 744 ${DEPLOY_DIR}
                 '''
             }
         }
