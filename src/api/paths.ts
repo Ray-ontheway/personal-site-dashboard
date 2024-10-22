@@ -1,8 +1,8 @@
-const USER_BASE_API_PATH = '/api/user'
-const ROLE_BASE_API_PATH = '/api/role'
+const USER_BASE_API_PATH = '/user'
+const ROLE_BASE_API_PATH = '/role'
 
 export enum UserApiPath {
-  LOGIN = `/api/login`,
+  LOGIN = `/login`,
   OPT_CODE = `${USER_BASE_API_PATH}/opt/code`,
   PAGE = `${USER_BASE_API_PATH}/page`,
   SEARCH = `${USER_BASE_API_PATH}/search`,
@@ -11,7 +11,7 @@ export enum UserApiPath {
   ALL_ROLES = `${ROLE_BASE_API_PATH}/roles`,
 }
 
-const ARTICLE_BASE_API_PATH = '/api/article'
+const ARTICLE_BASE_API_PATH = '/article'
 export enum ArticleApiPath {
   ALL_BY_USER = `${ARTICLE_BASE_API_PATH}/all/`,
   CREATE = `${ARTICLE_BASE_API_PATH}`,
@@ -23,7 +23,7 @@ export enum ArticleApiPath {
   DETAIL = `${ARTICLE_BASE_API_PATH}/post`,
 }
 
-const ARTICLE_TAG_BASE_API_PATH = '/api/article/tag'
+const ARTICLE_TAG_BASE_API_PATH = '/article/tag'
 export enum ArticleTagApiPath {
   CREATE = `${ARTICLE_TAG_BASE_API_PATH}`,
   UPDATE = `${ARTICLE_TAG_BASE_API_PATH}`,
@@ -32,7 +32,7 @@ export enum ArticleTagApiPath {
   ALL = `${ARTICLE_TAG_BASE_API_PATH}/all`,
 }
 
-const ARTICLE_TYPE_BASE_API_PATH = '/api/article/type'
+const ARTICLE_TYPE_BASE_API_PATH = '/article/type'
 export enum ArticleTypeApiPath {
   CREATE = `${ARTICLE_TYPE_BASE_API_PATH}`,
   UPDATE = `${ARTICLE_TYPE_BASE_API_PATH}`,
@@ -41,7 +41,7 @@ export enum ArticleTypeApiPath {
   ALL = `${ARTICLE_TYPE_BASE_API_PATH}/all`,
 }
 
-const FILE_BASE_API_PATH = '/api/file'
+const FILE_BASE_API_PATH = '/file'
 export enum FileApiPath {
   UPLOAD = `${FILE_BASE_API_PATH}/upload`,
   DELETE = `${FILE_BASE_API_PATH}/delete`,

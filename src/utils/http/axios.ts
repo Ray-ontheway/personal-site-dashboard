@@ -4,7 +4,7 @@ import { AxiosRequestHeaders } from 'axios'
 import { useAuthStore } from '@/store/modules/auth'
 
 const axiosClient = axios.create({
-  baseURL: '',
+  baseURL: '/api',
   timeout: 1000 * 60 * 5,
   withCredentials: true,
 })
