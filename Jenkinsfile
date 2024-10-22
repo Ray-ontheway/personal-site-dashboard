@@ -5,6 +5,7 @@ pipeline {
     
     environment {
         NPM_CONFIG_REGISTRY = 'https://registry.npmmirror.com'
+        DEPLOY_DIR = "/var/www/rayc/top/dev"
     }
 
     stages {
@@ -34,11 +35,27 @@ pipeline {
                 '''
             }
         }
+        stage("Deploy") {
+            steps {
+                sh '''
+                    echo "Start Deploy ${DEPLOY_DIR}"
+                    if [! -d "${DEPLOY_DIR}"]; then
+                        sudo mkdir -p ${DEPLOY_DIR}
+                    fi
+                    sudo rm -rf $DEPLOY_DIR/*
+                    sudo cp -r ./dist/* "${DEPLOY_DIR}/"
+                    sudo chmod -R 744 ${DEPLOY_DIR}
+                '''
+            }
+        }
     }
     
     post {
         success {
-            echo "Build Successful"
+            echo "Build and Deployment Successful"
+        }
+        failure {
+            echo "Build and Deployment Failed"
         }
     }
 }
