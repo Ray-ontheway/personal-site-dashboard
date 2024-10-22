@@ -4,7 +4,7 @@ import { AxiosRequestHeaders } from 'axios'
 import { useAuthStore } from '@/store/modules/auth'
 
 const axiosClient = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_APP_API_BASE_URL as string,
   timeout: 1000 * 60 * 5,
   withCredentials: true,
 })
