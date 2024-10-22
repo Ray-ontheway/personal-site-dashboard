@@ -40,7 +40,7 @@ pipeline {
                 sh '''
                     echo "Start Deploy ${DEPLOY_DIR}"
                     if [ ! -d "${DEPLOY_DIR}" ]; then
-                        sudo mkdir -p ${DEPLOY_DIR}
+                        mkdir -p ${DEPLOY_DIR}
                     fi
                     rm -rf $DEPLOY_DIR/*
                     cp -r ./dist/* "${DEPLOY_DIR}/"
