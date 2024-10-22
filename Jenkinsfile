@@ -39,7 +39,7 @@ pipeline {
             steps {
                 sh '''
                     echo "Start Deploy ${DEPLOY_DIR}"
-                    if [! -d "${DEPLOY_DIR}"]; then
+                    if [ ! -d "${DEPLOY_DIR}" ]; then
                         sudo mkdir -p ${DEPLOY_DIR}
                     fi
                     sudo rm -rf $DEPLOY_DIR/*
