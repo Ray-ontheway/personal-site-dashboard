@@ -1,22 +1,28 @@
 import { defineStore } from 'pinia'
-import type { RouteRecordRaw } from 'vue-router'
 import { routes } from '@/router/route'
+import { AppRouteRecordRaw } from '@router/types'
 
 interface AppState {
-  routes: RouteRecordRaw[] | undefined
+  routes: AppRouteRecordRaw[] | undefined
 }
 
 export const useAppStore = defineStore({
   id: 'app',
   state: (): AppState => ({ routes: undefined }),
   getters: {
-    getRoutes(state): RouteRecordRaw[] | undefined {
+    getRoutes(state: AppState): AppRouteRecordRaw[] | undefined {
       return state.routes
     },
   },
   actions: {
     buildRoutes() {
-      this.routes = routes
+      const doFilter = (route: AppRouteRecordRaw): boolean => {
+        if (route.meta?.hidden === true) {
+          return false
+        }
+        return true
+      }
+      this.routes = routes.filter(item => doFilter(item))
     },
   },
 })

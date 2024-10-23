@@ -1,33 +1,48 @@
 <template>
   <el-container class="container">
     <RSider />
-    <el-container>
-      <el-header class="header">
-        <RHeader />
-      </el-header>
-      <el-main>
-        <router-view />
-      </el-main>
-    </el-container>
+    <el-main class="main-content">
+      <router-view />
+    </el-main>
   </el-container>
 </template>
-
 <script setup lang="ts">
-import RHeader from './header'
 import RSider from './sider'
 </script>
 
 <style lang="scss">
-* {
-  font-size: 1.6em;
-}
+@import '@styles/variables';
 
 .header {
-  background-color: #409eff;
   color: #fff;
   text-align: center;
+  background-color: #409eff;
 }
+
 .container {
-  min-height: 100vh;
+  height: 100vh;
+  background-color: $primary-background-color;
+}
+
+.main-container .el-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-container .el-scrollbar {
+  width: 100%;
+  height: 100%;
+}
+
+.main-container .el-scrollbar-view {
+  width: 100%;
+  height: 100%;
+}
+
+.main-content {
+  flex: 1;
+  padding: 0;
+  overflow: auto;
 }
 </style>

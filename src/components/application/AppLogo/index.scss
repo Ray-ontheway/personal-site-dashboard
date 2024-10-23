@@ -1,0 +1,16 @@
+@use '@styles/variables.scss' as *;
+
+.app-logo {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  justify-content: center;
+  height: $header-height;
+  font-size: 2rem;
+  color: #1a1b1c;
+}
+
+.app-logo-icon {
+  width: 3.6rem;
+  height: 3.6rem;
+}
