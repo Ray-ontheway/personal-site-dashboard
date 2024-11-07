@@ -25,7 +25,6 @@ export const useAppStore = defineStore({
         }
         return true
       }
-      const curRoutes = routes.filter(item => doFilter(item))
       this.routes = routes.filter(item => doFilter(item))
     },
   },
