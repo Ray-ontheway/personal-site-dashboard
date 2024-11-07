@@ -22,7 +22,7 @@ const routes: AppRouteRecordRaw[] = [
         name: 'Analysis',
         path: '/dashboard/analysis',
         meta: { title: '分析页', iconName: 'analysis', requiresAuth: true },
-        component: () => import('@pages/Dashboard.vue'),
+        component: () => import('@pages/dashboard/Dashboard.vue'),
       },
     ],
   },

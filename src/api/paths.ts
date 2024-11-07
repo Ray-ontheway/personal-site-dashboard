@@ -47,3 +47,8 @@ export enum FileApiPath {
   DELETE = `${FILE_BASE_API_PATH}/delete`,
   UPLOAD_CHUNK = `${FILE_BASE_API_PATH}/upload/chunk`,
 }
+
+export const DASHBOARD_API_PATH = '/dashboard'
+export enum DashboardApiPath {
+  META_DATA = `${DASHBOARD_API_PATH}/meta`,
+}

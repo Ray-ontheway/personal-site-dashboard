@@ -5,6 +5,7 @@ import axiosClient from '@/utils/http/axios'
 import MockAdapter from 'axios-mock-adapter'
 import { mockUserApi } from './api/user'
 import { mockArticleApi, mockArticleTagApi, mockArticleTypeApi } from './api/article'
+import { mockDashboardApi } from './api/dashboard'
 // const modules = import.meta.glob
 
 export function setupMock() {
@@ -13,4 +14,5 @@ export function setupMock() {
   mockArticleApi(mock)
   mockArticleTypeApi(mock)
   mockArticleTagApi(mock)
+  mockDashboardApi(mock)
 }
