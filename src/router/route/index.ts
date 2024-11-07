@@ -14,7 +14,7 @@ const routes: AppRouteRecordRaw[] = [
   {
     name: 'Dashboard',
     path: '/dashboard',
-    meta: { title: RouteConstantEnum.DASHBOARD, iconName: 'dashboard' },
+    meta: { title: RouteConstantEnum.DASHBOARD, iconName: 'tabler:layout-dashboard-filled' },
     component: BaseLayout,
     redirect: '/dashboard/analysis',
     children: [

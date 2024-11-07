@@ -1,6 +1,6 @@
 <template>
   <el-aside width="28rem" class="flex flex-col">
-    <div class="flex-1 m-8 card bg-[#fff] shadow-base">
+    <div class="flex-1 m-8 card bg-[#fff] shadow-md hover:shadow-xl">
       <AppLogo />
       <AsideMenu />
     </div>

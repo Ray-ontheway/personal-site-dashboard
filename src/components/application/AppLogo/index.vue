@@ -1,14 +1,13 @@
 <template>
   <div class="w-full flex flex-row items-center gap-8 p-8 h-[6rem]">
-    <SvgIcon name="rayc" color="#fff" class="w-[3.6rem] h-[3.6rem]" />
+    <img :src="logo" alt="logo" class="w-12 h-12" />
     <h1 class="text-[2.8rem] text-[#1a1b1c] font-logo">{{ text }}</h1>
   </div>
 </template>
 
 <script setup lang="ts">
-import { SvgIcon } from '@/components/Icon'
-import { Icon } from '@iconify/vue'
 import { toRefs } from 'vue'
+import logo from '@/assets/imgs/rayc.png'
 
 interface AppLogoProps {
   text?: string
