@@ -6,7 +6,7 @@
     :rules="rules"
     label-position="top"
     status-icon
-    class="article-type-form"
+    class="mx-auto"
   >
     <el-form-item label="标签名" prop="name" required>
       <el-input v-model="currentArticleTag.name" placeholder="类型名称" />
@@ -100,9 +100,3 @@ const onValidate = (prop, isValid) => {
   isValidated.value = isNameValidated.value && isCatKeyValidated.value
 }
 </script>
-
-<style lang="scss" scoped>
-.article-type-form {
-  margin: 0 auto;
-}
-</style>

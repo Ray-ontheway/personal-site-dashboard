@@ -20,7 +20,7 @@ export enum ArticleApiPath {
   PAGE = `${ARTICLE_BASE_API_PATH}/page`,
   DRAFTS = `${ARTICLE_BASE_API_PATH}/drafts`,
   ESSAYS = `${ARTICLE_BASE_API_PATH}/essays`,
-  DETAIL = `${ARTICLE_BASE_API_PATH}/post`,
+  DETAIL = `${ARTICLE_BASE_API_PATH}`,
 }
 
 const ARTICLE_TAG_BASE_API_PATH = '/article/tag'

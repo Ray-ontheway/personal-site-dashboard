@@ -74,8 +74,6 @@ const generateUser = (_idx: string): UserResp => ({
 })
 
 const searchUsers = (username: string): UserResp[] => {
-  console.log('searchUsers', username)
-
   return Array.from({ length: 4 }).map(
     (_, idx) =>
       ({

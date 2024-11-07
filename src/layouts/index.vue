@@ -1,48 +1,11 @@
 <template>
-  <el-container class="container">
-    <RSider />
+  <el-container class="min-h-screen min-w-screen bg-[#f6f7f8]">
+    <Aside />
     <el-main class="main-content">
       <router-view />
     </el-main>
   </el-container>
 </template>
 <script setup lang="ts">
-import RSider from './sider'
+import Aside from './sider/Aside.vue'
 </script>
-
-<style lang="scss">
-@import '@styles/variables';
-
-.header {
-  color: #fff;
-  text-align: center;
-  background-color: #409eff;
-}
-
-.container {
-  height: 100vh;
-  background-color: $primary-background-color;
-}
-
-.main-container .el-main {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.main-container .el-scrollbar {
-  width: 100%;
-  height: 100%;
-}
-
-.main-container .el-scrollbar-view {
-  width: 100%;
-  height: 100%;
-}
-
-.main-content {
-  flex: 1;
-  padding: 0;
-  overflow: auto;
-}
-</style>

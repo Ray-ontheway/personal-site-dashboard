@@ -127,7 +127,6 @@ const onTagCancel = () => {
       <el-input v-model="editorArticle.title" placeholder="请输入文章标题"></el-input>
       <MdEditor
         v-model="editorArticle.content"
-        class="left-align-text"
         @on-save="handleSave"
         @change="onContentChange"
         @on-upload-img="handleImageUpload"
