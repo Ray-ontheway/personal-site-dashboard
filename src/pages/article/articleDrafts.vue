@@ -3,14 +3,18 @@ import { useRouter } from 'vue-router'
 import { useArticle } from '@/hooks/pages/article/useArticle'
 import moment from 'moment'
 import { ArticleResp } from '@/api/models/articleModel'
+import { ArticleAPI } from '@/api/article'
 
 const { articleDrafts, syncDrafts, deleteArticle, setCurEditArticle } = useArticle()
 
 const router = useRouter()
 const handleEdit = (article: ArticleResp | null) => {
   if (article && article.uid) {
-    setCurEditArticle(article)
-    router.push({ name: 'ArticleEditor', query: { id: article.id } })
+    ArticleAPI.detail(article.uid).then(resp => {
+      setCurEditArticle(resp)
+      router.push({ name: 'ArticleEditor', query: { uid: article.uid } })
+    })
+    router.push({ name: 'ArticleEditor', query: { uid: article.uid } })
   } else {
     router.push({ name: 'ArticleEditor' })
   }
@@ -25,11 +29,11 @@ const formatDatetime = (_row, _column, cellValue) => (cellValue ? moment(cellVal
 </script>
 
 <template>
-  <el-card class="page-content">
+  <el-card class="flex-1 text-black">
     <template #header>
-      <div class="header">
-        <span class="header-title">文章列表</span>
-        <el-button type="primary" @click="handleEdit(null)" class="article-create">写文章</el-button>
+      <div class="flex items-center text-[1.6rem] text-[#333333] w-full bg-transparent">
+        <span class="flex-1 h-full text-left">文章列表</span>
+        <el-button type="primary" @click="handleEdit(null)" class="self-end">写文章</el-button>
       </div>
     </template>
     <el-table :data="articleDrafts">
@@ -56,46 +60,3 @@ const formatDatetime = (_row, _column, cellValue) => (cellValue ? moment(cellVal
     </el-table>
   </el-card>
 </template>
-<style lang="scss" scoped>
-* {
-  color: black;
-}
-
-.page-filter {
-  ul {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 20px;
-
-    li {
-      .filter-item {
-        span {
-          color: #333;
-        }
-      }
-    }
-  }
-}
-
-.header {
-  display: flex;
-  align-items: center;
-  font-size: 1.6rem;
-  width: 100%;
-  color: #333;
-  background-color: transparent;
-}
-
-.header-title {
-  flex: 1;
-  text-align: left;
-  height: 100%;
-}
-.article-create {
-  align-self: flex-end;
-}
-
-.page-content {
-  flex: 1;
-}
-</style>

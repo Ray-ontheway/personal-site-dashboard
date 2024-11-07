@@ -2,7 +2,7 @@
 <template>
   <div v-if="isUploadReady" class="upload-container" @click="handleSelectFile">
     <el-icon size="20px">
-      <SvgIcon name="vue" color="#272829" />
+      <Icon icon="iconamoon:cloud-upload-fill" color="#272829" />
     </el-icon>
     <span class="upload-tip">点击选择图片上传</span>
     <input ref="uploadInput" type="file" style="display: none" @change="handleFileChange" />
@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import Loading from '@/components/loading/Loading.vue'
-import { SvgIcon } from '@/components/Icon'
+import { Icon } from '@iconify/vue'
 enum UploadStatus {
   Ready,
   Uploading,

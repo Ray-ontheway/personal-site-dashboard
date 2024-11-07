@@ -61,6 +61,7 @@ export const useArticleEditor = (
     content: '',
     isPublished: false,
   } as ArticleEditModel
+
   const editorArticle = ref<ArticleEditModel>(
     article === undefined
       ? DEFAULT_ARTICLE
@@ -78,8 +79,6 @@ export const useArticleEditor = (
   const saveArticle = articleStore.saveArticle
 
   const saveAsDraft = () => {
-    console.log('saveAsDraft')
-
     const articleReq: ArticleUpdateReq = {
       id: editorArticle.value.id,
       uid: editorArticle.value.uid,

@@ -51,7 +51,7 @@ export const articleTagsRoute: AppRouteRecordRaw = {
 export const articleRoute: AppRouteRecordRaw = {
   name: 'Articles',
   path: '/article',
-  meta: { title: RouteConstantEnum.ARTICLE_MANAGEMENT, iconName: 'article', requiresAuth: true },
+  meta: { title: RouteConstantEnum.ARTICLE_MANAGEMENT, iconName: 'ph:article-medium-fill', requiresAuth: true },
   component: BaseLayout,
   redirect: '/article/list',
   children: [articleListRoute, articleTagsRoute],

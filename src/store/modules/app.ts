@@ -20,8 +20,12 @@ export const useAppStore = defineStore({
         if (route.meta?.hidden === true) {
           return false
         }
+        if (route.children) {
+          route.children = route.children.filter(item => doFilter(item))
+        }
         return true
       }
+      const curRoutes = routes.filter(item => doFilter(item))
       this.routes = routes.filter(item => doFilter(item))
     },
   },

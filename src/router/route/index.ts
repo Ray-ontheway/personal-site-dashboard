@@ -14,7 +14,7 @@ const routes: AppRouteRecordRaw[] = [
   {
     name: 'Dashboard',
     path: '/dashboard',
-    meta: { title: RouteConstantEnum.DASHBOARD, iconName: 'dashboard' },
+    meta: { title: RouteConstantEnum.DASHBOARD, iconName: 'tabler:layout-dashboard-filled' },
     component: BaseLayout,
     redirect: '/dashboard/analysis',
     children: [
@@ -22,14 +22,14 @@ const routes: AppRouteRecordRaw[] = [
         name: 'Analysis',
         path: '/dashboard/analysis',
         meta: { title: '分析页', iconName: 'analysis', requiresAuth: true },
-        component: () => import('@pages/dashboard.tsx'),
+        component: () => import('@pages/Dashboard.vue'),
       },
     ],
   },
   {
     name: 'Setting',
     path: '/sys',
-    meta: { title: RouteConstantEnum.SYSTEM_MANAGEMENT, iconName: 'settings' },
+    meta: { title: RouteConstantEnum.SYSTEM_MANAGEMENT, iconName: 'settings', hidden: true },
     component: BaseLayout,
     redirect: '/sys/user',
     children: [

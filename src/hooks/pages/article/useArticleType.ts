@@ -22,7 +22,6 @@ export const useArticleType = () => {
   // 删除文章类型
   const deleteArticleType = (type: ArticleType) => {
     ArticleTypeApi.delete(type.id).then(() => {
-      console.log('删除成功')
       syncAllArticleTypes()
     })
   }
