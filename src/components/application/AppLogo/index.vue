@@ -17,5 +17,5 @@ const props = withDefaults(defineProps<AppLogoProps>(), {
   text: 'R-Admin',
 })
 
-const { text, collapse } = toRefs(props)
+const { text } = toRefs(props)
 </script>
