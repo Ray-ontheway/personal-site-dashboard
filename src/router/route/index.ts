@@ -42,6 +42,21 @@ const routes: AppRouteRecordRaw[] = [
     ],
   },
   articleRoute,
+  {
+    name: 'Tools',
+    path: '/tools',
+    meta: { title: RouteConstantEnum.TOOLS, iconName: 'fluent:window-dev-tools-24-filled' },
+    redirect: '/tools/wallet',
+    component: BaseLayout,
+    children: [
+      {
+        name: 'Wallet',
+        path: '/tools/wallet',
+        meta: { title: RouteConstantEnum.TOOLS_WALLET, iconName: 'wallet', requiresAuth: true },
+        component: () => import('@pages/tools/WalletPage.vue'),
+      },
+    ],
+  },
   articleEditorRoute,
   {
     name: 'Login',
