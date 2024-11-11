@@ -45,7 +45,7 @@ const routes: AppRouteRecordRaw[] = [
   {
     name: 'Tools',
     path: '/tools',
-    meta: { title: RouteConstantEnum.TOOLS, iconName: 'fluent:window-dev-tools-24-filled' },
+    meta: { title: RouteConstantEnum.TOOLS, iconName: 'fluent:window-dev-tools-24-filled', hidden: true },
     redirect: '/tools/wallet',
     component: BaseLayout,
     children: [
@@ -53,7 +53,7 @@ const routes: AppRouteRecordRaw[] = [
         name: 'Wallet',
         path: '/tools/wallet',
         meta: { title: RouteConstantEnum.TOOLS_WALLET, iconName: 'wallet', requiresAuth: true },
-        component: () => import('@pages/tools/WalletPage.vue'),
+        component: () => import('@pages/tools/ledger/WalletPage.vue'),
       },
     ],
   },
