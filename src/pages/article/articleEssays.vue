@@ -32,10 +32,7 @@ const handlePageSizeChange = (newPageSize: number) => {
 
 const handleEdit = (article: ArticleResp | null = null) => {
   if (article?.uid) {
-    ArticleAPI.detail(article.uid).then(resp => {
-      setCurEditArticle(resp)
-      router.push({ name: 'ArticleEditor', query: { uid: article.uid } })
-    })
+    router.push({ name: 'ArticleEditor', query: { uid: article.uid } })
   } else {
     router.push({ name: 'ArticleEditor' })
   }

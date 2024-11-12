@@ -30,6 +30,8 @@
       </div>
     </div>
   </div>
+
+  <input type="file" @change="handleFileChange" />
 </template>
 
 <script setup lang="ts">
@@ -37,6 +39,7 @@ import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import { DashboardAPI } from '@/api/dashboard'
 import { DashboardData } from '@/api/models/dashboardModel'
+import { FileApi } from '@/api/file'
 
 const dashboardData = ref<DashboardData>({
   articleCount: 0,
@@ -49,6 +52,19 @@ DashboardAPI.getDashboardData().then(res => {
   dashboardData.value = res
   console.log(res)
 })
+
+const handleFileChange = (e: Event) => {
+  const target = e.target as HTMLInputElement
+  const file = target.files?.[0]
+  console.log(file.name)
+  FileApi.upload(file)
+    .then(res => {
+      console.log(res)
+    })
+    .catch(err => {
+      console.error(err)
+    })
+}
 </script>
 
 <style scoped></style>

@@ -12,7 +12,6 @@ interface ArticleState {
   pageInfo: PageInfo
   curArticlePage: PageObject<ArticleResp>
   drafts: ArticleResp[]
-  curEditArticle: ArticleResp | null
 }
 
 export const useArticleStore = defineStore({
@@ -29,26 +28,17 @@ export const useArticleStore = defineStore({
       data: [],
     },
     drafts: [],
-    curEditArticle: null,
   }),
   getters: {
     getCurArticlePage(state: ArticleState): PageObject<ArticleResp> {
       return state.curArticlePage
     },
-    getCurEditArticle(state: ArticleState): ArticleResp | null {
-      return state.curEditArticle
-    },
+
     getDrafts(state: ArticleState): ArticleResp[] {
       return state.drafts
     },
   },
   actions: {
-    setCurEditArticle(article: ArticleResp | null) {
-      this.curEditArticle = article
-    },
-    resetCurEditArticle() {
-      this.curEditArticle = null
-    },
     async fetchCurArticlePage(pageIdx: number = 1, pageSize: number = 10) {
       const res = await ArticleAPI.page(pageIdx, pageSize)
       this.curArticlePage = { ...res, data: res.records }
@@ -90,5 +80,20 @@ export const useArticleStore = defineStore({
       await ArticleAPI.delete(article.id)
       await this.fetchCurArticlePage()
     },
+
+    async findArticleByUID(uid: string): Promise<ArticleResp> {
+      this.drafts.forEach(article => {
+        if (article.uid === uid) {
+          return article
+        }
+      })
+      this.curArticlePage.data.forEach(article => {
+        if (article.uid === uid) {
+          return article
+        }
+      })
+      return await ArticleAPI.detail(uid)
+    },
   },
+  persist: true,
 })

@@ -41,10 +41,10 @@ export enum ArticleTypeApiPath {
   ALL = `${ARTICLE_TYPE_BASE_API_PATH}/all`,
 }
 
-const FILE_BASE_API_PATH = '/file'
+const FILE_BASE_API_PATH = '/fs'
 export enum FileApiPath {
-  UPLOAD = `${FILE_BASE_API_PATH}/upload`,
-  DELETE = `${FILE_BASE_API_PATH}/delete`,
+  UPLOAD = `${FILE_BASE_API_PATH}`,
+  DELETE = `${FILE_BASE_API_PATH}`,
   UPLOAD_CHUNK = `${FILE_BASE_API_PATH}/upload/chunk`,
 }
 

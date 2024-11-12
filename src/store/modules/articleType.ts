@@ -42,4 +42,5 @@ export const useArticleTypeStore = defineStore({
       this.allTags.unshift(tag)
     },
   },
+  persist: true,
 })

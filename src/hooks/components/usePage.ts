@@ -1,7 +1,7 @@
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 import { AppRouteRecordRaw } from '@/router/types'
-import { articleTagsRoute, articleListRoute } from '@router/route/article'
+import { articleTagsRoute, articleListRoute, articleTagsRoutes, articleListRoutes } from '@router/route/article'
 import { routes } from '@router/route'
 import { useMenu } from '../useMenu'
 
@@ -40,9 +40,9 @@ export const usePage = () => {
 
   const currentPageTabs = computed(() => {
     if (getCurrentPath.value.includes(articleTagsRoute.path)) {
-      return transformRouteToTab(articleTagsRoute.children)
+      return transformRouteToTab(articleTagsRoutes)
     } else if (getCurrentPath.value.includes(articleListRoute.path)) {
-      return transformRouteToTab(articleListRoute.children)
+      return transformRouteToTab(articleListRoutes)
     }
     return []
   })

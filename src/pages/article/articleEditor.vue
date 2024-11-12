@@ -4,14 +4,17 @@ import 'md-editor-v3/lib/style.css'
 import { onMounted, onBeforeUnmount, ref } from 'vue'
 import { ArticleTag, ArticleType } from '@api/models/articleModel'
 import ImageUpload from '@/components/upload/ImageUpload.vue'
-import { useArticleEditor, useArticle } from '@/hooks/pages/article/useArticle'
+import { useArticleEditor } from '@/hooks/pages/article/useArticle'
 import { useArticleType, useArticleTag } from '@/hooks/pages/article/useArticleType'
 import { FileApi } from '@/api/file'
 import { ElNotification } from 'element-plus'
 import ArticleTypeForm from './components/ArticleTypeForm.vue'
 import ArticleTagForm from './components/ArticleTagForm.vue'
+import { useRoute } from 'vue-router'
 
-const { curEditArticle } = useArticle()
+const route = useRoute()
+const articleUid = route.query.uid as string
+
 const { articleTypeList, addType } = useArticleType()
 const { articleTagList, addTag } = useArticleTag()
 const types = articleTypeList.value
@@ -44,7 +47,7 @@ const handleImageUpload = (files: File[], callback: (urls: string[]) => void) =>
 const { curTypes, curTags, editorType, editorTags, editorArticle, isDraft, saveAsDraft, publish } = useArticleEditor(
   types,
   tags,
-  curEditArticle.value || undefined
+  articleUid
 )
 
 const handleTypeChange = (value: any) => {
@@ -65,6 +68,7 @@ const handleUpload = (file: File, onLoading: () => void, onSuccess: (urls: strin
   onLoading()
   FileApi.upload(file)
     .then(url => {
+      console.log(url)
       onSuccess(url)
     })
     .catch(() => {

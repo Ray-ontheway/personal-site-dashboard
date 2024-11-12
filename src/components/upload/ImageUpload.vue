@@ -1,6 +1,6 @@
 <!-- 单个图片上传 -->
 <template>
-  <div v-if="isUploadReady" class="upload-container" @click="handleSelectFile">
+  <div v-show="isUploadReady" class="upload-container" @click="handleSelectFile">
     <el-icon size="20px">
       <Icon icon="iconamoon:cloud-upload-fill" color="#272829" />
     </el-icon>
@@ -10,8 +10,8 @@
   <div v-if="isUploadLoading" class="upload-container">
     <Loading :visible="true" />
   </div>
-  <div v-if="isUploadSuccess" class="upload-container"><img :src="imgUrl" alt="" /></div>
-  <div v-if="isUploadError" class="upload-container"><img :src="imgUrl" alt="" /></div>
+  <div v-if="isUploadSuccess" class="upload-container" @click="handleSelectFile"><img :src="imgUrl" alt="" /></div>
+  <div v-if="isUploadError" class="upload-container" @click="handleSelectFile"><img :src="imgUrl" alt="" /></div>
 </template>
 
 <script setup lang="ts">

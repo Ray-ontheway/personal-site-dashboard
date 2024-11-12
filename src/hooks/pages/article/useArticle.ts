@@ -9,25 +9,17 @@ export const useArticle = () => {
   const articlePage = computed(() => articleStore.getCurArticlePage)
   const articleDrafts = computed(() => articleStore.getDrafts)
 
-  const curEditArticle = computed(() => articleStore.getCurEditArticle)
-
   const syncDrafts = articleStore.syncDrafts
-
   const syncEssaysPage = articleStore.essaysPage
-
   const syncArticlePage = articleStore.fetchCurArticlePage
-
   const changePageIdx = articleStore.changePageIdx
   const changePageSize = articleStore.changePageSize
 
   // 3. 删除文章
   const deleteArticle = articleStore.deleteArticle
 
-  const setCurEditArticle = articleStore.setCurEditArticle
-
   return {
     articlePage,
-    curEditArticle,
     articleDrafts,
 
     syncArticlePage,
@@ -36,24 +28,38 @@ export const useArticle = () => {
     changePageIdx,
     changePageSize,
     deleteArticle,
-    setCurEditArticle,
   }
 }
 
 export const useArticleEditor = (
   allTypes: ArticleType[],
   allTags: ArticleTag[],
-  article: ArticleResp | undefined = undefined
+  articleUID: string | undefined = undefined
 ) => {
   const articleStore = useArticleStore()
 
   const curTypes = toRef<ArticleType[]>(allTypes)
   const curTags = toRef<ArticleTag[]>(allTags)
+  const article = ref<ArticleResp | undefined>(undefined)
 
-  const editorType = ref<ArticleType | null>(article?.type || null)
-  const editorTags = ref<ArticleTag[]>(
-    (article?.tags || []).map(tagName => allTags.find(tag => tag.name === tagName.name) as ArticleTag)
-  )
+  const curEditorType = ref<ArticleType | undefined>(undefined)
+  const editorType = computed({
+    get: () => {
+      return curEditorType.value
+    },
+    set: (type: ArticleType) => {
+      curEditorType.value = type
+    },
+  })
+  const curEditorTag = ref<ArticleTag[] | undefined>(undefined)
+  const editorTags = computed({
+    get: () => {
+      return curEditorTag.value
+    },
+    set: (tags: ArticleTag[]) => {
+      curEditorTag.value = tags
+    },
+  })
   const DEFAULT_ARTICLE = {
     uid: '',
     title: '',
@@ -62,18 +68,13 @@ export const useArticleEditor = (
     isPublished: false,
   } as ArticleEditModel
 
-  const editorArticle = ref<ArticleEditModel>(
-    article === undefined
+  const editorArticle = computed(() => {
+    return article.value === undefined
       ? DEFAULT_ARTICLE
       : ({
-          id: article.id,
-          uid: article.uid,
-          title: article.title,
-          summary: article.summary,
-          content: article.content,
-          isPublished: article.isPublished,
+          ...article.value,
         } as ArticleEditModel)
-  )
+  })
   const isDraft = ref(!editorArticle.value.isPublished)
 
   const saveArticle = articleStore.saveArticle
@@ -110,6 +111,17 @@ export const useArticleEditor = (
     }
     saveArticle(articleReq)
   }
+
+  articleStore
+    .findArticleByUID(articleUID)
+    .then(res => {
+      article.value = res
+      editorType.value = res.type
+      editorTags.value = res.tags
+    })
+    .catch(_ => {
+      article.value = undefined
+    })
 
   return {
     curTags,

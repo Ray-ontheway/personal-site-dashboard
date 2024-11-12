@@ -3,17 +3,12 @@ import { useRouter } from 'vue-router'
 import { useArticle } from '@/hooks/pages/article/useArticle'
 import moment from 'moment'
 import { ArticleResp } from '@/api/models/articleModel'
-import { ArticleAPI } from '@/api/article'
 
-const { articleDrafts, syncDrafts, deleteArticle, setCurEditArticle } = useArticle()
+const { articleDrafts, syncDrafts, deleteArticle } = useArticle()
 
 const router = useRouter()
 const handleEdit = (article: ArticleResp | null) => {
   if (article && article.uid) {
-    ArticleAPI.detail(article.uid).then(resp => {
-      setCurEditArticle(resp)
-      router.push({ name: 'ArticleEditor', query: { uid: article.uid } })
-    })
     router.push({ name: 'ArticleEditor', query: { uid: article.uid } })
   } else {
     router.push({ name: 'ArticleEditor' })
