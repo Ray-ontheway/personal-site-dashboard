@@ -18,6 +18,16 @@ export const useArticle = () => {
   // 3. 删除文章
   const deleteArticle = articleStore.deleteArticle
 
+  const publish = (uid: string) => {
+    console.log('publish')
+    articleStore
+      .publish(uid)
+      .then(res => {
+        console.log(res)
+      })
+      .catch(() => {})
+  }
+
   return {
     articlePage,
     articleDrafts,
@@ -28,6 +38,7 @@ export const useArticle = () => {
     changePageIdx,
     changePageSize,
     deleteArticle,
+    publish,
   }
 }
 
@@ -94,20 +105,13 @@ export const useArticleEditor = (
     }
     saveArticle(articleReq)
   }
-  const publish = () => {
-    console.log('publish')
-
+  const saveAsEssay = () => {
     const articleReq: ArticleUpdateReq = {
-      id: editorArticle.value.id,
-      uid: editorArticle.value.uid,
-      title: editorArticle.value.title,
-      summary: editorArticle.value.summary,
-      content: editorArticle.value.content,
+      ...article.value,
       typeId: editorType.value?.id || undefined,
       tagIds: editorTags.value.map(tag => tag.id),
       isPublished: true,
-      cover: '',
-      createBy: 0,
+      createBy: article.value?.author.id || 0,
     }
     saveArticle(articleReq)
   }
@@ -134,6 +138,6 @@ export const useArticleEditor = (
     isDraft,
 
     saveAsDraft,
-    publish,
+    saveAsEssay,
   }
 }

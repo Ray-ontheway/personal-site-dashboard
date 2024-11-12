@@ -4,14 +4,13 @@ import moment from 'moment'
 import { ArticleResp } from '@/api/models/articleModel'
 import { useRoute, useRouter } from 'vue-router'
 import { computed, watch } from 'vue'
-import { ArticleAPI } from '@/api/article'
 const route = useRoute()
 const router = useRouter()
 
 // TODO 这里有一个魔数
 const pageIdx = computed(() => (route.query.pageIdx ? Number(route.query.pageIdx) : 1))
 const pageSize = computed(() => (route.query.pageSize ? Number(route.query.pageSize) : 20))
-const { articlePage, syncEssaysPage, deleteArticle, setCurEditArticle } = useArticle()
+const { articlePage, syncEssaysPage, deleteArticle } = useArticle()
 
 syncEssaysPage(pageIdx.value, pageSize.value)
 

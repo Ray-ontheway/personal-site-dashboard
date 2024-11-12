@@ -4,7 +4,7 @@ import { useArticle } from '@/hooks/pages/article/useArticle'
 import moment from 'moment'
 import { ArticleResp } from '@/api/models/articleModel'
 
-const { articleDrafts, syncDrafts, deleteArticle } = useArticle()
+const { articleDrafts, syncDrafts, deleteArticle, publish } = useArticle()
 
 const router = useRouter()
 const handleEdit = (article: ArticleResp | null) => {
@@ -13,9 +13,6 @@ const handleEdit = (article: ArticleResp | null) => {
   } else {
     router.push({ name: 'ArticleEditor' })
   }
-}
-const handlePublish = () => {
-  console.log('handlePublish')
 }
 
 syncDrafts()
@@ -38,7 +35,7 @@ const formatDatetime = (_row, _column, cellValue) => (cellValue ? moment(cellVal
       <el-table-column prop="updateAt" label="更新时间" :formatter="formatDatetime" />
       <el-table-column label="操作" fixed="right" width="200" align="right">
         <template #default="{ row }">
-          <el-button link type="primary" @click="handlePublish">发布</el-button>
+          <el-button link type="primary" @click="publish(row.uid)">发布</el-button>
           <el-button link type="primary" @click="handleEdit(row)">编辑</el-button>
           <el-popconfirm
             title="确认删除当前文章吗？"

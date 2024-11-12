@@ -48,6 +48,14 @@ export class ArticleAPI {
   static async essaysPage(pageIdx: number, pageSize: number) {
     return axiosClient.get(`${ArticleApiPath.ESSAYS}?pageIdx=${pageIdx}&pageSize=${pageSize}`)
   }
+
+  static async saveArticleDraft(uid: string) {
+    return axiosClient.post(ArticleApiPath.DRAFTS, { uid })
+  }
+
+  static async publish(uid: string) {
+    return axiosClient.put(`${ArticleApiPath.PUBLISH}/${uid}`)
+  }
 }
 
 export class ArticleTagApi {

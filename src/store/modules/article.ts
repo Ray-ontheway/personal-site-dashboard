@@ -81,6 +81,10 @@ export const useArticleStore = defineStore({
       await this.fetchCurArticlePage()
     },
 
+    async publish(uid: string) {
+      return await ArticleAPI.publish(uid)
+    },
+
     async findArticleByUID(uid: string): Promise<ArticleResp> {
       this.drafts.forEach(article => {
         if (article.uid === uid) {

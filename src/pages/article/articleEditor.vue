@@ -44,11 +44,8 @@ const handleImageUpload = (files: File[], callback: (urls: string[]) => void) =>
   callback(['https://example.com/image.png'])
 }
 
-const { curTypes, curTags, editorType, editorTags, editorArticle, isDraft, saveAsDraft, publish } = useArticleEditor(
-  types,
-  tags,
-  articleUid
-)
+const { curTypes, curTags, editorType, editorTags, editorArticle, isDraft, saveAsDraft, saveAsEssay } =
+  useArticleEditor(types, tags, articleUid)
 
 const handleTypeChange = (value: any) => {
   editorType.value = value
@@ -141,7 +138,7 @@ const onTagCancel = () => {
         <template #header> <span>保存</span> </template>
         <div class="btn-option">
           <el-button v-if="isDraft" type="info" plain @click="saveAsDraft">保存为草稿</el-button>
-          <el-button type="primary" @click="publish">{{ isDraft ? '发布' : '更新' }}</el-button>
+          <el-button type="primary" @click="saveAsEssay">{{ isDraft ? '发布' : '更新' }}</el-button>
         </div>
       </el-card>
       <el-card class="editor-meta__item">
