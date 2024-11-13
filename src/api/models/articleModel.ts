@@ -57,7 +57,7 @@ export interface ArticleResp extends Omit<ArticleUpdateReq, 'typeId' | 'tagIds' 
 // }
 
 export interface ArticleEditModel {
-  id?: number
+  id: number
   uid: string
   cover?: string
   title: string

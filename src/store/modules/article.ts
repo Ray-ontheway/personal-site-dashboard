@@ -2,6 +2,8 @@ import { ArticleAPI } from '@/api/article'
 import { ArticleCreateReq, ArticleResp, ArticleUpdateReq } from '@/api/models/articleModel'
 import { PageObject } from '@/api/models/common'
 import { defineStore } from 'pinia'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 interface PageInfo {
   pageIdx: number
@@ -69,12 +71,13 @@ export const useArticleStore = defineStore({
       await this.fetchCurArticlePage()
     },
     async saveArticle(articleReq: ArticleUpdateReq) {
-      if (articleReq.id) {
-        await ArticleAPI.update(articleReq as ArticleUpdateReq)
+      console.log(articleReq)
+
+      if (articleReq.uid && articleReq.uid.length > 0) {
+        return await ArticleAPI.update(articleReq as ArticleUpdateReq)
       } else {
-        await ArticleAPI.create(articleReq as ArticleCreateReq)
+        return await ArticleAPI.create(articleReq as unknown as ArticleCreateReq)
       }
-      await this.fetchCurArticlePage()
     },
     async deleteArticle(article: ArticleResp) {
       await ArticleAPI.delete(article.id)
@@ -82,10 +85,16 @@ export const useArticleStore = defineStore({
     },
 
     async publish(uid: string) {
-      return await ArticleAPI.publish(uid)
+      const result = await ArticleAPI.publish(uid)
+      this.fetchCurArticlePage()
+      this.syncDrafts()
+      return result
     },
 
-    async findArticleByUID(uid: string): Promise<ArticleResp> {
+    async findArticleByUID(uid: string): Promise<Nullable<ArticleResp>> {
+      if (uid === undefined) {
+        return null
+      }
       this.drafts.forEach(article => {
         if (article.uid === uid) {
           return article

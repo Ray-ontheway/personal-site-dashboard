@@ -1,6 +1,7 @@
 import { ArticleResp, ArticleEditModel, ArticleUpdateReq, ArticleTag, ArticleType } from '@/api/models/articleModel'
 import { computed, ref, toRef } from 'vue'
 import { useArticleStore } from '@/store/modules/article'
+import { ElNotification } from 'element-plus'
 
 export const useArticle = () => {
   const articleStore = useArticleStore()
@@ -19,11 +20,14 @@ export const useArticle = () => {
   const deleteArticle = articleStore.deleteArticle
 
   const publish = (uid: string) => {
-    console.log('publish')
     articleStore
       .publish(uid)
-      .then(res => {
-        console.log(res)
+      .then((res: ArticleResp) => {
+        ElNotification({
+          title: '成功',
+          message: `文章 ${res.title} 发布成功`,
+          type: 'success',
+        })
       })
       .catch(() => {})
   }
@@ -79,49 +83,73 @@ export const useArticleEditor = (
     isPublished: false,
   } as ArticleEditModel
 
-  const editorArticle = computed(() => {
-    return article.value === undefined
-      ? DEFAULT_ARTICLE
-      : ({
-          ...article.value,
-        } as ArticleEditModel)
+  const editorArticle = ref<ArticleEditModel>(DEFAULT_ARTICLE)
+  const isDraft = computed(() => {
+    if (editorArticle.value === undefined) {
+      return true
+    }
+    return editorArticle.value.isPublished === false
   })
-  const isDraft = ref(!editorArticle.value.isPublished)
 
   const saveArticle = articleStore.saveArticle
-
-  const saveAsDraft = () => {
-    const articleReq: ArticleUpdateReq = {
-      id: editorArticle.value.id,
-      uid: editorArticle.value.uid,
-      title: editorArticle.value.title,
-      summary: editorArticle.value.summary,
-      content: editorArticle.value.content,
-      typeId: editorType.value?.id || undefined,
-      tagIds: editorTags.value.map(tag => tag.id),
-      isPublished: false,
-      cover: '',
-      createBy: 0,
-    }
+  const doSave = (articleReq: ArticleUpdateReq) => {
     saveArticle(articleReq)
+      .then(res => {
+        updateArticle(res)
+        ElNotification({
+          title: '成功',
+          message: '文章保存成功',
+          type: 'success',
+        })
+      })
+      .catch(() => {})
   }
-  const saveAsEssay = () => {
+
+  const transformEditorArticleToUpdateReq = (curArticle: ArticleEditModel): ArticleUpdateReq => {
     const articleReq: ArticleUpdateReq = {
-      ...article.value,
+      ...curArticle,
+      cover: curArticle.cover || '',
+      createBy: article.value?.author.id || 0,
       typeId: editorType.value?.id || undefined,
       tagIds: editorTags.value.map(tag => tag.id),
       isPublished: true,
-      createBy: article.value?.author.id || 0,
     }
-    saveArticle(articleReq)
+    return articleReq
+  }
+
+  const saveAsDraft = () => {
+    const articleReq = transformEditorArticleToUpdateReq(editorArticle.value)
+    articleReq.isPublished = false
+    doSave(articleReq)
+  }
+  const saveAsEssay = () => {
+    const articleReq = transformEditorArticleToUpdateReq(editorArticle.value)
+    doSave(articleReq)
+  }
+
+  const updateArticle = (articleResp: Nullable<ArticleResp>) => {
+    if (articleResp === null) {
+      return
+    }
+    editorArticle.value = {
+      id: articleResp.id,
+      uid: articleResp.uid,
+      title: articleResp.title,
+      summary: articleResp.summary,
+      content: articleResp.content,
+      cover: articleResp.cover,
+      isPublished: articleResp.isPublished,
+      typeId: articleResp.type.id,
+      tagIds: articleResp.tags.map(tag => tag.id),
+    }
+    editorType.value = articleResp.type
+    editorTags.value = articleResp.tags
   }
 
   articleStore
     .findArticleByUID(articleUID)
-    .then(res => {
-      article.value = res
-      editorType.value = res.type
-      editorTags.value = res.tags
+    .then((res: Nullable<ArticleResp>) => {
+      updateArticle(res)
     })
     .catch(_ => {
       article.value = undefined

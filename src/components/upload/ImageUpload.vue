@@ -15,9 +15,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import Loading from '@/components/loading/Loading.vue'
 import { Icon } from '@iconify/vue'
+import { toRefs } from 'vue'
 enum UploadStatus {
   Ready,
   Uploading,
@@ -25,10 +26,23 @@ enum UploadStatus {
   Error,
 }
 
+interface ImageUploadProps {
+  imgUrl?: string
+}
 const emit = defineEmits(['before-upload', 'on-loading', 'on-success', 'on-error'])
 
+const props = defineProps<ImageUploadProps>()
+const { imgUrl } = toRefs(props)
+
 const currentFile = ref<File | null>(null)
-const imgUrl = ref<string>('')
+watch(
+  () => imgUrl.value,
+  newVal => {
+    if (newVal) {
+      uploadStatus.value = UploadStatus.Success
+    }
+  }
+)
 
 const uploadStatus = ref<UploadStatus>(UploadStatus.Ready)
 const isUploadReady = computed(() => uploadStatus.value === UploadStatus.Ready)

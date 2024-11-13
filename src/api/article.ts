@@ -9,6 +9,7 @@ import type {
   ArticleType,
   ArticleTypeCreateReq,
   ArticleTypeUpdateReq,
+  ArticleResp,
 } from './models/articleModel'
 
 import { ArticleApiPath, ArticleTagApiPath, ArticleTypeApiPath } from './paths'
@@ -21,11 +22,11 @@ export class ArticleAPI {
   }
 
   // 1. 创建新文章
-  static async create(data: ArticleCreateReq) {
+  static async create(data: ArticleCreateReq): Promise<ArticleResp> {
     return axiosClient.post(ArticleApiPath.CREATE, data)
   }
   // 2. 更新文章
-  static async update(data: ArticleUpdateReq) {
+  static async update(data: ArticleUpdateReq): Promise<ArticleResp> {
     return axiosClient.put(ArticleApiPath.UPDATE, data)
   }
   // 3. 删除文章

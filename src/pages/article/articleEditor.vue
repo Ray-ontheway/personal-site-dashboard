@@ -33,15 +33,26 @@ onBeforeUnmount(() => {
 })
 
 const handleSave = (_value: string) => {
-  // TODO 保存文章
+  if (isDraft.value) {
+    saveAsDraft()
+  } else {
+    saveAsEssay()
+  }
 }
 const onContentChange = (value: string) => {
   editorArticle.value.summary = value.slice(0, 50)
 }
 const handleImageUpload = (files: File[], callback: (urls: string[]) => void) => {
-  console.log(files)
-  console.log(callback)
-  callback(['https://example.com/image.png'])
+  if (files.length === 0) {
+    return
+  }
+  FileApi.upload(files[0])
+    .then(url => {
+      callback([url])
+    })
+    .catch(() => {
+      callback([])
+    })
 }
 
 const { curTypes, curTags, editorType, editorTags, editorArticle, isDraft, saveAsDraft, saveAsEssay } =
@@ -65,7 +76,6 @@ const handleUpload = (file: File, onLoading: () => void, onSuccess: (urls: strin
   onLoading()
   FileApi.upload(file)
     .then(url => {
-      console.log(url)
       onSuccess(url)
     })
     .catch(() => {
@@ -75,7 +85,10 @@ const handleUpload = (file: File, onLoading: () => void, onSuccess: (urls: strin
 
 const onCoverUploadSuccess = (url: string) => {
   editorArticle.value.cover = url
-  console.log(url)
+  ElNotification.success({
+    title: '上传成功',
+    message: '封面图片上传成功',
+  })
 }
 const onCoverUploadError = () => {
   ElNotification.error({
@@ -84,7 +97,10 @@ const onCoverUploadError = () => {
   })
 }
 const handleCoverUploading = () => {
-  console.log('上传中')
+  ElNotification({
+    title: '上传中',
+    message: '封面图片上传中',
+  })
 }
 
 // dialog
@@ -167,7 +183,10 @@ const onTagCancel = () => {
         <template #header>
           <span>封面图片</span>
         </template>
+        <!-- TODO 暂时先这样用，后面图片系统完成之后，添加图片素材选取的功能 -->
+        <el-input v-model="editorArticle.cover" />
         <ImageUpload
+          :imgUrl="editorArticle.cover"
           @before-upload="handleUpload"
           @on-success="onCoverUploadSuccess"
           @on-error="onCoverUploadError"
