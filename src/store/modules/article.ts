@@ -2,8 +2,6 @@ import { ArticleAPI } from '@/api/article'
 import { ArticleCreateReq, ArticleResp, ArticleUpdateReq } from '@/api/models/articleModel'
 import { PageObject } from '@/api/models/common'
 import { defineStore } from 'pinia'
-import { useRouter } from 'vue-router'
-const router = useRouter()
 
 interface PageInfo {
   pageIdx: number
